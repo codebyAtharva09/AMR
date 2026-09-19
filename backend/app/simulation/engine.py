@@ -13,10 +13,15 @@ from .metrics import Metrics
 from .warehouse import Warehouse
 
 DT = 0.1
-SPAWN_INTERVAL_TICKS = 55
-MAX_PENDING_TASKS = 3
+# Tuned for the 20-rack, 4-station-band layout: more induction/dropoff points
+# means more concurrent work is needed to keep a bigger fleet busy.
+SPAWN_INTERVAL_TICKS = 40
+MAX_PENDING_TASKS = 5
 
-_agent_colors = ["#38bdf8", "#f97316", "#a3e635", "#e879f9", "#facc15", "#34d399", "#f87171", "#60a5fa"]
+_agent_colors = [
+    "#38bdf8", "#f97316", "#a3e635", "#e879f9", "#facc15", "#34d399", "#f87171", "#60a5fa",
+    "#c084fc", "#fb923c",
+]
 
 
 class Simulation:
@@ -162,7 +167,7 @@ class Simulation:
         }
 
 
-DEFAULT_NUM_AGENTS = 5
+DEFAULT_NUM_AGENTS = 8
 
 
 class FleetEngine:

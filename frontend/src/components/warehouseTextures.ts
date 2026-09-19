@@ -281,9 +281,9 @@ export function rollerDoorTexture(): THREE.Texture {
   canvas.width = w;
   canvas.height = h;
   const ctx = canvas.getContext("2d")!;
-  ctx.fillStyle = "#d8d6cf";
+  ctx.fillStyle = "#a9a79f";
   ctx.fillRect(0, 0, w, h);
-  ctx.strokeStyle = "rgba(0,0,0,0.22)";
+  ctx.strokeStyle = "rgba(0,0,0,0.3)";
   ctx.lineWidth = 2;
   const slats = 14;
   for (let i = 0; i <= slats; i++) {

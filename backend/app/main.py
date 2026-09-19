@@ -6,7 +6,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
 from .models import BlockAisleRequest, SetModeRequest
-from .simulation.engine import FleetEngine
+from .simulation.engine import DEFAULT_NUM_AGENTS, FleetEngine
 from .simulation.warehouse import COLS, ROWS, RACK_ROWS, RACK_COLS
 
 logging.basicConfig(level=logging.INFO)
@@ -21,7 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-engine = FleetEngine(num_agents=5)
+engine = FleetEngine(num_agents=DEFAULT_NUM_AGENTS)
 TICK_HZ = 15
 _latest_snapshot: dict = {}
 

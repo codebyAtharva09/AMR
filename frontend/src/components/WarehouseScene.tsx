@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Suspense, useEffect, useMemo } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLightUniformsLib.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
@@ -15,6 +15,7 @@ import { BlockedAisleMarkers } from "./BlockedAisleMarkers";
 import { RealisticRackBlock } from "./RealisticRack";
 import { concreteFloorTexture } from "./warehouseTextures";
 import { WarehouseShell } from "./WarehouseShell";
+import { Minimap } from "./Minimap";
 
 RectAreaLightUniformsLib.init();
 
@@ -241,6 +242,66 @@ function PostFX() {
   return null;
 }
 
+/** Owns the camera outside of what OrbitControls does on its own:
+ *  - a cinematic wide-to-operating fly-in the first couple of seconds after load
+ *  - a "follow" behaviour that eases the orbit target onto the selected robot,
+ *    so picking a robot in the roster or clicking it in-scene keeps it centred
+ *    as it drives around, without taking the orbit angle away from the user.
+ */
+function CameraDirector({ centerX, centerZ, restX, restY, restZ }: { centerX: number; centerZ: number; restX: number; restY: number; restZ: number }) {
+  const { camera } = useThree();
+  // Typed loosely: drei's OrbitControls ref is the underlying three-stdlib
+  // instance, which isn't a direct project dependency to import a type from.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const controlsRef = useRef<any>(null);
+  const selectedAgentId = useFleetStore((s) => s.selectedAgentId);
+  const snapshot = useFleetStore((s) => s.snapshot);
+
+  const introProgress = useRef(0);
+  const introFrom = useRef(new THREE.Vector3());
+  const introTo = useRef(new THREE.Vector3());
+
+  useEffect(() => {
+    introTo.current.set(restX, restY, restZ);
+    introFrom.current.set(centerX - 4, restY + 30, centerZ + 18);
+    camera.position.copy(introFrom.current);
+    introProgress.current = 0;
+    // Runs once on mount, and again the one time the real layout dimensions
+    // replace the pre-layout fallback footprint.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [restX, restY, restZ, centerX, centerZ]);
+
+  useFrame((_, delta) => {
+    if (introProgress.current < 1) {
+      introProgress.current = Math.min(1, introProgress.current + delta / 2.4);
+      const ease = 1 - Math.pow(1 - introProgress.current, 3);
+      camera.position.lerpVectors(introFrom.current, introTo.current, ease);
+    }
+
+    const controls = controlsRef.current;
+    if (!controls) return;
+    const agent = selectedAgentId ? snapshot?.primary.agents.find((a) => a.id === selectedAgentId) ?? null : null;
+    const desiredX = agent ? agent.x : centerX;
+    const desiredY = agent ? 0.4 : 0.5;
+    const desiredZ = agent ? agent.y : centerZ;
+    const rate = Math.min(1, delta * (agent ? 2.5 : 2));
+    controls.target.x = THREE.MathUtils.lerp(controls.target.x, desiredX, rate);
+    controls.target.y = THREE.MathUtils.lerp(controls.target.y, desiredY, rate);
+    controls.target.z = THREE.MathUtils.lerp(controls.target.z, desiredZ, rate);
+    controls.update();
+  });
+
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      maxPolarAngle={Math.PI / 2.2}
+      minDistance={5}
+      maxDistance={60}
+      makeDefault
+    />
+  );
+}
+
 export function WarehouseScene() {
   const snapshot = useFleetStore((s) => s.snapshot);
   const layout = useFleetStore((s) => s.layout);
@@ -252,7 +313,7 @@ export function WarehouseScene() {
   const d = (layout?.rows ?? 9) * CELL;
 
   return (
-    <div className="h-full w-full">
+    <div className="relative h-full w-full">
       <Canvas
         shadows={{ type: THREE.PCFShadowMap }}
         camera={{ position: [w * 0.5 + 10, 10, d * 0.7 + 10], fov: 45 }}
@@ -281,10 +342,18 @@ export function WarehouseScene() {
             />
           ))}
 
-          <OrbitControls target={[w / 2, 0.5, d / 2]} maxPolarAngle={Math.PI / 2.2} minDistance={5} maxDistance={60} />
+          <CameraDirector centerX={w / 2} centerZ={d / 2} restX={w * 0.5 + 10} restY={10} restZ={d * 0.7 + 10} />
           <PostFX />
         </Suspense>
       </Canvas>
+
+      <Minimap width={w} depth={d} cell={CELL} />
+
+      {selectedAgentId && (
+        <div className="pointer-events-none absolute bottom-4 left-4 rounded-lg border border-white/10 bg-black/50 px-3 py-1.5 text-[11px] text-white/70 backdrop-blur">
+          Following <span className="mono font-semibold text-white">{selectedAgentId}</span> · click it again to release
+        </div>
+      )}
     </div>
   );
 }

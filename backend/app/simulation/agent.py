@@ -18,7 +18,11 @@ from .pathfinding import find_path, path_uses_blocked_edge
 from .warehouse import Warehouse
 
 MAX_SPEED = 1.5  # m/s
-COMM_RADIUS = 40.0  # generous - the small warehouse floor is within one mesh hop
+# Comfortably above the floor's corner-to-corner diagonal (~40.5m on the current
+# 17x11 grid) so every agent still hears every broadcast in one hop - this is a
+# load-bearing assumption for the deadlock/bidding consensus logic, not just a
+# range tweak, so it must be re-checked any time the grid size changes.
+COMM_RADIUS = 65.0
 ARRIVE_EPS = 0.12
 STUCK_SPEED_EPS = 0.05
 STUCK_TICKS_THRESHOLD = 18

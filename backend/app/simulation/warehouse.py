@@ -5,18 +5,27 @@ import networkx as nx
 
 CELL_SIZE = 2.0  # meters per grid cell
 
-ROWS = 9
-COLS = 13
+# 5 single-row rack aisles (rows 1,3,5,7,9) each flanked by its own aisle row,
+# x 4 rack column bands (3 cols wide each) -> 20 distinct rack runs, vs. the
+# original 2x3=6. A rack row is only 1 grid cell deep - the 3D rack render is
+# a fixed-depth structure regardless of the underlying cell footprint, so a
+# thicker band bought nothing but wasted floor; this packs in more distinct
+# aisles for the same reachable floor space instead.
+ROWS = 11
+COLS = 17
 
-RACK_ROWS = {1, 2, 3, 5, 6, 7}
-RACK_COLS = {1, 2, 3, 5, 6, 7, 9, 10, 11}
+RACK_ROWS = {1, 3, 5, 7, 9}
+RACK_COLS = {1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15}
 
-# Induction points where new pickup tasks spawn (top aisle).
-PICKUP_STATIONS = [(0, 4), (0, 8)]
-# Delivery slots representing shelf drop locations (middle cross-aisle).
-DROPOFF_STATIONS = [(4, 2), (4, 6), (4, 10)]
-# Charging dock spots (bottom aisle).
-CHARGING_STATIONS = [(8, 0), (8, 12)]
+# Induction points where new pickup tasks spawn (top aisle, at the 3 interior
+# vertical-aisle junctions).
+PICKUP_STATIONS = [(0, 4), (0, 8), (0, 12)]
+# Delivery slots representing shelf drop locations, one per rack column band,
+# on the central cross-aisle (row 6, which sits between rack rows 5 and 7).
+DROPOFF_STATIONS = [(6, 2), (6, 6), (6, 10), (6, 14)]
+# Charging dock spots: both bottom corners plus a bottom-middle spot to serve
+# the larger default fleet without everyone queuing for the same two docks.
+CHARGING_STATIONS = [(10, 0), (10, 8), (10, 16)]
 
 
 def is_rack(row: int, col: int) -> bool:

@@ -20,6 +20,7 @@ const CHASSIS_W = 0.6;
 const CHASSIS_H = 0.18;
 const CHASSIS_D = 0.5;
 const CHASSIS_Y = 0.15; // center height of chassis above ground
+const WHEEL_RADIUS = 0.08;
 
 // Lift-table cargo mechanism: a small platform on top of the chassis rises
 // a few centimetres and a pallet+box appears when the robot is carrying a
@@ -43,9 +44,14 @@ export function RobotMesh({ agent, selected, onSelect }: { agent: AgentState; se
   const platformRef = useRef<THREE.Mesh>(null);
   const cargoBoxRef = useRef<THREE.Group>(null);
   const flashRef = useRef<THREE.Mesh>(null);
+  const driveWheelRefs = useRef<(THREE.Mesh | null)[]>([null, null]);
   const target = useRef(new THREE.Vector3(agent.x, 0, agent.y));
   const initialized = useRef(false);
   target.current.set(agent.x, 0, agent.y);
+
+  // Per-robot random phase so idle "breathing" bobs aren't all in lockstep.
+  const idleBobPhase = useRef<number | null>(null);
+  if (idleBobPhase.current === null) idleBobPhase.current = Math.random() * Math.PI * 2;
 
   const heading = Math.atan2(agent.vx, agent.vy);
 
@@ -107,6 +113,28 @@ export function RobotMesh({ agent, selected, onSelect }: { agent: AgentState; se
       mat.opacity = fade * 0.85;
       mat.color.set(flashColor.current);
       flashRef.current.scale.setScalar(1 + t * 1.8);
+    }
+
+    // Drive wheels actually roll at a rate tied to real ground speed, rather
+    // than spinning at a fixed rate or staying static. Rotation is owned
+    // entirely here (not via a JSX rotation prop) so the per-frame spin isn't
+    // wiped out by the ~66ms re-renders driving the rest of this component.
+    const speed = Math.hypot(agent.vx, agent.vy);
+    const wheelSpin = (speed / WHEEL_RADIUS) * delta;
+    for (const wheel of driveWheelRefs.current) {
+      if (!wheel) continue;
+      wheel.rotation.z = Math.PI / 2;
+      wheel.rotation.x += wheelSpin;
+    }
+
+    // Idle "breathing" bob so parked/waiting/bidding robots read as alive
+    // rather than frozen - a few millimetres of vertical drift, nothing that
+    // reads as motion from across the room.
+    const isIdleLike = agent.state === "idle" || agent.state === "waiting" || agent.state === "bidding";
+    if (isIdleLike) {
+      group.current.position.y = Math.sin(performance.now() * 0.0022 + idleBobPhase.current!) * 0.012;
+    } else if (group.current.position.y !== 0) {
+      group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, 0, Math.min(1, delta * 8));
     }
   });
 
@@ -184,10 +212,24 @@ export function RobotMesh({ agent, selected, onSelect }: { agent: AgentState; se
         <meshStandardMaterial color="#000000" emissive={agent.color} emissiveIntensity={2.0} toneMapped={false} />
       </mesh>
 
-      {/* Drive wheels (differential pair) */}
-      {[-1, 1].map((side) => (
-        <mesh key={side} geometry={wheelGeom} position={[side * (CHASSIS_W / 2 - 0.03), 0.08, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+      {/* Drive wheels (differential pair) - rotation is owned imperatively in useFrame, see driveWheelRefs */}
+      {[-1, 1].map((side, i) => (
+        <mesh
+          key={side}
+          ref={(el) => { driveWheelRefs.current[i] = el; }}
+          geometry={wheelGeom}
+          position={[side * (CHASSIS_W / 2 - 0.03), 0.08, 0]}
+          castShadow
+        >
           <meshStandardMaterial color="#333333" roughness={0.8} metalness={0.1} />
+        </mesh>
+      ))}
+
+      {/* Headlights - small emissive strip at the front face */}
+      {[-0.15, 0.15].map((x) => (
+        <mesh key={x} position={[x, CHASSIS_Y, -CHASSIS_D / 2 - 0.005]}>
+          <boxGeometry args={[0.08, 0.03, 0.01]} />
+          <meshStandardMaterial color="#fffbe6" emissive="#fff2b8" emissiveIntensity={1.4} toneMapped={false} />
         </mesh>
       ))}
 

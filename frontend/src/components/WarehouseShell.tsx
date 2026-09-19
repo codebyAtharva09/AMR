@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { corrugatedMetalTexture, safetyStripeTexture, rollerDoorTexture, aisleSignTexture } from "./warehouseTextures";
 
@@ -98,10 +99,27 @@ export function WarehouseShell({ width, depth, cell }: { width: number; depth: n
     return Array.from({ length: DOOR_COUNT }, (_, i) => -halfX + spacing * (i + 1));
   }, [lengthX, halfX]);
 
+  // Cutaway: any wall the camera is standing outside of would sit between the
+  // viewer and the interior, so hide it. Orbit around and the wall you've moved
+  // behind disappears while the far walls stay to frame the space.
+  const { camera } = useThree();
+  const southRef = useRef<THREE.Group>(null);
+  const northRef = useRef<THREE.Group>(null);
+  const westRef = useRef<THREE.Group>(null);
+  const eastRef = useRef<THREE.Group>(null);
+  useFrame(() => {
+    const rx = camera.position.x - centerX;
+    const rz = camera.position.z - centerZ;
+    if (southRef.current) southRef.current.visible = !(rz < -halfZ);
+    if (northRef.current) northRef.current.visible = !(rz > halfZ);
+    if (westRef.current) westRef.current.visible = !(rx < -halfX);
+    if (eastRef.current) eastRef.current.visible = !(rx > halfX);
+  });
+
   return (
     <group position={[centerX, 0, centerZ]}>
       {/* south wall (loading dock face) */}
-      <group position={[0, 0, -halfZ]}>
+      <group ref={southRef} position={[0, 0, -halfZ]}>
         <WallPanel length={lengthX} position={[0, 0, 0]} rotationY={0} metalTex={metalTex} stripeTex={stripeTex} />
         {doorXs.map((x, i) => (
           <DockDoor key={i} x={x} doorTex={doorTex} />
@@ -113,11 +131,17 @@ export function WarehouseShell({ width, depth, cell }: { width: number; depth: n
       </group>
 
       {/* north wall */}
-      <WallPanel length={lengthX} position={[0, 0, halfZ]} rotationY={Math.PI} metalTex={metalTex} stripeTex={stripeTex} />
+      <group ref={northRef}>
+        <WallPanel length={lengthX} position={[0, 0, halfZ]} rotationY={Math.PI} metalTex={metalTex} stripeTex={stripeTex} />
+      </group>
       {/* west wall */}
-      <WallPanel length={lengthZ} position={[-halfX, 0, 0]} rotationY={-Math.PI / 2} metalTex={metalTex} stripeTex={stripeTex} />
+      <group ref={westRef}>
+        <WallPanel length={lengthZ} position={[-halfX, 0, 0]} rotationY={-Math.PI / 2} metalTex={metalTex} stripeTex={stripeTex} />
+      </group>
       {/* east wall */}
-      <WallPanel length={lengthZ} position={[halfX, 0, 0]} rotationY={Math.PI / 2} metalTex={metalTex} stripeTex={stripeTex} />
+      <group ref={eastRef}>
+        <WallPanel length={lengthZ} position={[halfX, 0, 0]} rotationY={Math.PI / 2} metalTex={metalTex} stripeTex={stripeTex} />
+      </group>
 
       {/* wall-pack lights, one per side, aimed down into the floor */}
       {[
@@ -131,7 +155,7 @@ export function WarehouseShell({ width, depth, cell }: { width: number; depth: n
             <boxGeometry args={[0.3, 0.12, 0.12]} />
             <meshStandardMaterial color="#e8e8e8" emissive="#fff6dd" emissiveIntensity={0.8} />
           </mesh>
-          <pointLight color="#fff6dd" intensity={6} distance={9} decay={2} />
+          <pointLight color="#fff6dd" intensity={2.5} distance={9} decay={2} />
         </group>
       ))}
 
