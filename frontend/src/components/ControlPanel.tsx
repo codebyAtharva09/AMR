@@ -6,8 +6,9 @@ import { Panel } from "./Panel";
 const CHOKE_POINTS: { label: string; row: number; col: number }[] = [
   { label: "Aisle 4 (mid)", row: 6, col: 4 },
   { label: "Aisle 12 (mid)", row: 6, col: 12 },
-  { label: "Top junction", row: 0, col: 8 },
-  { label: "Bottom junction", row: 10, col: 8 },
+  { label: "Aisle 20 (mid)", row: 6, col: 20 },
+  { label: "Top junction", row: 0, col: 12 },
+  { label: "Bottom junction", row: 10, col: 12 },
 ];
 
 export function ControlPanel() {
@@ -134,7 +135,7 @@ export function ControlPanel() {
         onClick={resetFleet}
         className="w-full rounded-md border border-[var(--border-soft)] bg-[#0a0f1c] py-2 text-xs font-semibold text-[var(--text-dim)] transition hover:border-amber-500/40 hover:text-amber-300 disabled:opacity-50"
       >
-        Reset Fleet (back to 8 robots)
+        Reset Fleet (back to 10 robots)
       </button>
     </Panel>
   );
