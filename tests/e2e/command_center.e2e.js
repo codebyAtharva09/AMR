@@ -14,7 +14,7 @@ async function post(page, body) {
 async function state(page) { return page.evaluate(async () => (await fetch('/api/swarm/state')).json()); }
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: exe, headless: true });
+  const browser = await chromium.launch({ executablePath: exe, headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   const page = await browser.newPage({ viewport: { width: 1500, height: 1000 } });
   const errors = [];
   page.on('pageerror', e => errors.push('pageerror: ' + e.message));
@@ -45,9 +45,25 @@ async function state(page) { return page.evaluate(async () => (await fetch('/api
   const t3 = (await state(page)).tick;
   assert(t3 === t2, 'tick frozen while paused');
   results.tick_after_start = t1;
-  // canvas drawn with robots
-  const canvasOk = await page.evaluate(() => { const c = document.getElementById('twin'); return c.width > 100 && c.height > 100; });
-  assert(canvasOk, 'digital twin canvas sized');
+  // 3D digital twin (default view): WebGL canvas rendered, one robot model per AMR, click selects a cell
+  const has3d = await page.evaluate(() => !!(window.SwarmTwin3D && window.SwarmTwin3D.supported));
+  results.webgl = has3d;
+  if (has3d) {
+    await page.waitForFunction(() => window.twin3d && window.twin3d.robots.size > 0, null, { timeout: 15000 });
+    results.twin3d_robots = await page.evaluate(() => window.twin3d.robots.size);
+    assert(results.twin3d_robots === (await state(page)).robots.length, '3D twin shows every robot');
+    const b3 = await page.locator('#twin3dCanvas').boundingBox();
+    assert(b3 && b3.width > 300 && b3.height > 300, '3D canvas sized');
+    await page.mouse.click(b3.x + b3.width * 0.5, b3.y + b3.height * 0.55);
+    await page.waitForFunction(() => /Selected cell/.test(document.getElementById('cellInfo').textContent), null, { timeout: 10000 });
+    results.cell_3d = await page.locator('#cellInfo').textContent();
+    // camera presets and sensor toggle do not throw
+    await page.click('[data-cam="top"]'); await page.click('#camSensors'); await page.click('[data-cam="iso"]');
+  }
+  // 2D view still works
+  await page.click('#v2d');
+  const canvasOk = await page.evaluate(() => { const c = document.getElementById('twin'); return c.width > 100 && c.height > 100 && getComputedStyle(c).display !== 'none'; });
+  assert(canvasOk, '2D digital twin canvas sized');
   // disruption: block an aisle at a clicked cell
   const box = await page.locator('#twin').boundingBox();
   await page.mouse.click(box.x + box.width * 0.45, box.y + box.height * 0.40);
@@ -90,6 +106,7 @@ async function state(page) { return page.evaluate(async () => (await fetch('/api
   results.demo_title = await page.locator('#demoTitle').textContent();
   await post(page, { action: 'stop_demo' });
   await post(page, { action: 'pause' });
+  await page.click('#v3d');
   await page.screenshot({ path: process.env.SHOT || '/tmp/command_center_e2e.png' });
 
   // ---------------------------------------------------------------- classic dashboard (baseline checklist, current UI)

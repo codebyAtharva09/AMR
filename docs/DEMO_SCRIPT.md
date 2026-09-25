@@ -11,6 +11,23 @@ python3 main.py --mode dashboard          # prints the port, usually http://127.
 - Offline fallback: `python3 main.py --mode edge-demo` runs the same seven scenes in the terminal.
 - Charts for slides are in `presentation_assets/`. Every number there comes from `experiments/results/`.
 
+## The 3D digital twin
+
+The Command Center opens in **3D** (switch to 2D with the toggle; the 3D view falls back to 2D if the browser has no WebGL).
+Three.js is served from `src/visualization/static/`, so it works offline.
+
+- Each AMR is drawn as a differential-drive robot with a roller deck. It **turns in place at corners, accelerates and
+  brakes on straights**, and its wheels turn with the distance travelled.
+- At a pick face it stops and a **tote slides from the rack shelf onto its rollers**. At the drop it slides off again.
+- Light strip: green = driving, amber = waiting or turning, cyan = loading or charging. Green sweep = LiDAR. The yellow
+  patch in front is the safety field, and it turns red when the robot is stopped for someone.
+- Workers in hi-vis vests walk the aisles. Red volumes are Wi-Fi dead zones, and arcs between robots show AI conflict
+  risk.
+- Camera: Isometric / Top / Side, Follow selected, Auto-rotate, Sensors on/off.
+
+The animation is **playback only**. Motion between two snapshots is rebuilt from the cells the robot actually
+drove (its broadcast plan). The simulation, not the renderer, decides every move.
+
 ## Opening (30 s)
 
 "No central controller. Every AMR runs the same code on its own computer, using only its sensors and what peers tell

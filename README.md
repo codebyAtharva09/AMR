@@ -26,7 +26,7 @@ The main gain comes from space-time reservations; the Edge-AI conflict predictor
 
 ```bash
 pip install -r requirements.txt
-python3 main.py --mode dashboard            # then open /command-center (Fleet Command Center, 7-scene demo)
+python3 main.py --mode dashboard            # then open /command-center (3D Fleet Command Center, 7-scene demo)
 python3 main.py --mode edge-demo            # same demo headless
 python3 main.py --mode swarm --scenario high_congestion --robots 10 --seed 3
 python3 main.py --mode swarm-benchmark --quick
