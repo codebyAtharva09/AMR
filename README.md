@@ -10,6 +10,12 @@ Includes an interactive **Three.js 3D Digital Twin**, real-time WebSocket teleme
 
 ## EdgeSwarm: predictive, resilient, energy-aware decentralized coordination (SIH26123)
 
+![EdgeSwarm 3D Fleet Command Center (simulation)](presentation_assets/demo/edgeswarm_demo.gif)
+
+**Demo video (40 s):** [`presentation_assets/demo/EdgeSwarm_demo.mp4`](presentation_assets/demo/EdgeSwarm_demo.mp4). It is a
+simulation recording with 10 AMRs, 15% message loss, humans, a blocked aisle and a Wi-Fi dead zone.
+Judge prep: [`docs/JUDGE_QA.md`](docs/JUDGE_QA.md).
+
 Every AMR runs its own copy of the coordinator (`src/swarm/agent.py`) using only its sensors and radio messages.
 The radio drops, delays and loses messages; a ground-truth monitor counts every collision.
 

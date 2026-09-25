@@ -9,10 +9,10 @@ import { RoomEnvironment } from '/static/three/examples/jsm/environments/RoomEnv
 
 const COMM_COLOR = { CONNECTED: 0x22c55e, DEGRADED: 0xfab219, PREDICTIVE_LOCAL: 0xf97316, SAFE_FALLBACK: 0xef4444, RECOVERED: 0x3b82f6 };
 const THEMES = {
-  dark: { bg: 0x0b1220, fog: 0x0b1220, floor: '#1a2233', line: 'rgba(148,163,184,0.16)', aisle: 'rgba(250,204,21,0.55)', hemiSky: 0x9fb4d8, hemiGround: 0x1b2230, hemi: 0.75, sun: 1.6 },
-  light: { bg: 0xe8eef6, fog: 0xe8eef6, floor: '#dfe5ec', line: 'rgba(71,85,105,0.18)', aisle: 'rgba(234,179,8,0.85)', hemiSky: 0xffffff, hemiGround: 0x9aa4b1, hemi: 0.95, sun: 1.9 },
+  dark: { bg: 0x111214, fog: 0x111214, floor: '#1f2023', line: 'rgba(236,235,230,0.07)', aisle: 'rgba(245,196,0,0.75)', hemiSky: 0xd8d4c8, hemiGround: 0x202124, hemi: 0.7, sun: 1.6 },
+  light: { bg: 0xdedbd4, fog: 0xdedbd4, floor: '#cfccc5', line: 'rgba(22,23,26,0.10)', aisle: 'rgba(245,196,0,0.95)', hemiSky: 0xffffff, hemiGround: 0x8c877c, hemi: 0.9, sun: 1.85 },
 };
-const ROBOT_EMPTY = 0x2f7de1, ROBOT_LOADED = 0xf2702a;
+const ROBOT_EMPTY = 0x2f5d8a, ROBOT_LOADED = 0xe0620d;
 const STATE_ICON = { IDLE: 'idle', TO_PICKUP: '→ pick', PICKING: 'picking', TO_DROP: '→ drop', DROPPING: 'dropping', TO_CHARGE: '→ charger', CHARGING: '⚡ charging', TO_HOME: '→ home', YIELDING: 'giving way', DEPLETED: 'battery empty' };
 
 function supportsWebGL() {
@@ -91,8 +91,8 @@ class SwarmTwin3D {
     this.hemi.color.setHex(t.hemiSky); this.hemi.groundColor.setHex(t.hemiGround); this.hemi.intensity = t.hemi;
     this.sun.intensity = t.sun;
     if (this.floor) this._paintFloor();
-    if (this.apron) this.apron.material.color.setHex(dark ? 0x0f1726 : 0xcfd7e1);
-    if (this.wallMat) this.wallMat.color.setHex(dark ? 0x3b4456 : 0xaab3bf);
+    if (this.apron) this.apron.material.color.setHex(dark ? 0x17181a : 0xbfbbb2);
+    if (this.wallMat) this.wallMat.color.setHex(dark ? 0x3a3b3f : 0x9d988e);
     this.el.classList.toggle('light', !dark);
   }
 
@@ -164,7 +164,7 @@ class SwarmTwin3D {
     const W = this.W, H = this.H;
 
     // floor + an outer apron
-    const apron = new THREE.Mesh(new THREE.PlaneGeometry(W + 30, H + 30), new THREE.MeshStandardMaterial({ color: this.dark ? 0x0f1726 : 0xcfd7e1, roughness: 1 }));
+    const apron = new THREE.Mesh(new THREE.PlaneGeometry(W + 30, H + 30), new THREE.MeshStandardMaterial({ color: this.dark ? 0x17181a : 0xbfbbb2, roughness: 1 }));
     apron.rotation.x = -Math.PI / 2; apron.position.y = -0.02; apron.receiveShadow = true; this.apron = apron;
     this.static.add(apron);
     this.floor = new THREE.Mesh(new THREE.PlaneGeometry(W, H), new THREE.MeshStandardMaterial({ roughness: 0.92, metalness: 0.02 }));
@@ -177,7 +177,7 @@ class SwarmTwin3D {
 
     // perimeter walls
     const m4 = new THREE.Matrix4();
-    this.wallMat = new THREE.MeshStandardMaterial({ color: this.dark ? 0x3b4456 : 0xaab3bf, roughness: 0.85 });
+    this.wallMat = new THREE.MeshStandardMaterial({ color: this.dark ? 0x3a3b3f : 0x9d988e, roughness: 0.9 });
     const wallMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 0.7, 1), this.wallMat, walls.length);
     walls.forEach(([x, y], i) => { const p = this.w(x, y, 0.35); m4.makeTranslation(p.x, p.y, p.z); wallMesh.setMatrixAt(i, m4); });
     wallMesh.castShadow = wallMesh.receiveShadow = true;
@@ -488,7 +488,7 @@ class SwarmTwin3D {
     if (u.xfer && u.xfer.tote) { if (u.xfer.type === 'pick') u.crate.visible = true; this.dynamic.remove(u.xfer.tote); }
     const stationQ = [...u.queue].reverse().find(q => Math.hypot(q.x - center.x, q.z - center.z) < 1e-3);
     if (stationQ) stationQ.stop = true;
-    u.xfer = { type, tote, station: center, from: type === 'pick' ? side : top, to: type === 'pick' ? top : side, t0: performance.now(), created: performance.now(), dur: Math.max(350, this.cellSec * 2 * 1000 * 0.85) };
+    u.xfer = { type, tote, station: center, from: type === 'pick' ? side : top, to: type === 'pick' ? top : side, t0: this.clockNow(), created: this.clockNow(), dur: Math.max(350, this.cellSec * 2 * 1000 * 0.85) };
   }
 
   _stepXfer(g, now) {
@@ -828,10 +828,20 @@ class SwarmTwin3D {
     u.rollers.children.forEach(rl => { rl.rotation.y = u.rollerA; });
   }
 
+  clockNow() { return this.manual ? this.virt : performance.now(); }
+  // Deterministic capture (used to record demo videos): freeze the real clock and advance by hand.
+  setManualClock(on) { this.manual = on; this.virt = performance.now(); this.prevT = null; }
+  advance(ms) { this.virt += ms; this._tick(); }
+
   _loop() {
     requestAnimationFrame(this._loop);
+    if (this.manual) return;
+    this._tick();
+  }
+
+  _tick() {
     if (!this.el.offsetParent) { this.prevT = null; return; } // hidden
-    const now = performance.now();
+    const now = this.clockNow();
     const t = (now - this.t0) / 1000;
     const dt = this.prevT ? Math.min(0.1, (now - this.prevT) / 1000) : 0;
     this.prevT = now;

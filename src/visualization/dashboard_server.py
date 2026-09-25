@@ -443,6 +443,8 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                     content_type = "text/css; charset=utf-8"
                 elif static_file.suffix == ".json":
                     content_type = "application/json"
+                elif static_file.suffix == ".woff2":
+                    content_type = "font/woff2"
                 self.send_response(200)
                 self.send_header("Content-Type", content_type)
                 self.send_header("Cache-Control", "public, max-age=3600")
