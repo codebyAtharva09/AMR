@@ -1,0 +1,11 @@
+sequenceDiagram
+  participant A as AMR-01
+  participant B as AMR-02 (within 8 m)
+  participant C as AMR-07 (out of range / dead zone)
+  A->>B: STATE {pose, plan[12], next cell, priority, claim, waiting_for, blockages}
+  A--xC: not delivered (range / dead zone / loss)
+  B->>A: STATE {...} (latency 40±20 ms, fresh next tick)
+  Note over A,B: each builds a local reservation table from the other's time-indexed plan
+  A->>A: lower priority? then plan around B's reservations
+  B->>B: higher priority? then keep plan, A will yield
+  Note over A,C: no message from C: A trusts only its sensors near C and yields by rank

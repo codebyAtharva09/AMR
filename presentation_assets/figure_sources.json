@@ -1,0 +1,34 @@
+{
+  "08_before_after_conflict.png": [
+    "simulated live: scenario four_way_intersection, seed 1"
+  ],
+  "16_edge_ai_model.png": [
+    "models/training_report.json"
+  ],
+  "10_benchmark_makespan_5amr.png": [
+    "experiments/results/benchmark_summary.json"
+  ],
+  "10_benchmark_makespan_10amr.png": [
+    "experiments/results/benchmark_summary.json"
+  ],
+  "10_benchmark_makespan_15amr.png": [
+    "experiments/results/benchmark_summary.json"
+  ],
+  "11_scalability.png": [
+    "experiments/results/benchmark_summary.json"
+  ],
+  "14_energy_waiting.png": [
+    "experiments/results/benchmark_summary.json"
+  ],
+  "13_latency_recovery.png": [
+    "experiments/results/performance.json",
+    "experiments/results/benchmark_summary.json"
+  ],
+  "12_collisions_deadlocks.png": [
+    "experiments/results/ablation_summary.json",
+    "experiments/results/deadlock_suite.json"
+  ],
+  "15_ablation.png": [
+    "experiments/results/ablation_summary.json"
+  ]
+}

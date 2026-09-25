@@ -1,0 +1,327 @@
+{
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "max_ticks": 400,
+  "results": {
+    "head_on_corridor": {
+      "stop_and_wait": {
+        "runs": 10,
+        "completed_runs": 9,
+        "makespan_mean": 63.5,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 26,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 23,
+        "timeout_replans": 79,
+        "wait_time_mean": 95.6
+      },
+      "decentralized_astar": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 17.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 4.0
+      },
+      "reservation": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 17.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 6.0
+      },
+      "reservation_ai": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 17.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 6.0
+      },
+      "full": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 17.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 6.0
+      }
+    },
+    "four_way_intersection": {
+      "stop_and_wait": {
+        "runs": 10,
+        "completed_runs": 0,
+        "makespan_mean": 400.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 239,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 407,
+        "timeout_replans": 860,
+        "wait_time_mean": 997.6
+      },
+      "decentralized_astar": {
+        "runs": 10,
+        "completed_runs": 0,
+        "makespan_mean": 400.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 10,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 1577.0
+      },
+      "reservation": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 55.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 95.0
+      },
+      "reservation_ai": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 55.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 95.0
+      },
+      "full": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 55.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 95.0
+      }
+    },
+    "narrow_choke_point": {
+      "stop_and_wait": {
+        "runs": 10,
+        "completed_runs": 9,
+        "makespan_mean": 122.2,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 53,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 33,
+        "timeout_replans": 215,
+        "wait_time_mean": 310.4
+      },
+      "decentralized_astar": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 165.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 33.0
+      },
+      "reservation": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 49.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 10,
+        "deadlock_yields": 10,
+        "backoffs": 10,
+        "timeout_replans": 0,
+        "wait_time_mean": 37.0
+      },
+      "reservation_ai": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 49.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 10,
+        "deadlock_yields": 10,
+        "backoffs": 10,
+        "timeout_replans": 0,
+        "wait_time_mean": 37.0
+      },
+      "full": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 58.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 10,
+        "deadlock_yields": 10,
+        "backoffs": 10,
+        "timeout_replans": 0,
+        "wait_time_mean": 59.0
+      }
+    },
+    "circular_wait": {
+      "stop_and_wait": {
+        "runs": 10,
+        "completed_runs": 0,
+        "makespan_mean": 400.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 244,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 323,
+        "timeout_replans": 780,
+        "wait_time_mean": 913.9
+      },
+      "decentralized_astar": {
+        "runs": 10,
+        "completed_runs": 0,
+        "makespan_mean": 400.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 10,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 1577.0
+      },
+      "reservation": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 161.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 300.0
+      },
+      "reservation_ai": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 161.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 300.0
+      },
+      "full": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 161.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 300.0
+      }
+    },
+    "single_resource": {
+      "stop_and_wait": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 30.2,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 1,
+        "timeout_replans": 2,
+        "wait_time_mean": 28.2
+      },
+      "decentralized_astar": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 39.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 10.0
+      },
+      "reservation": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 33.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 30.0
+      },
+      "reservation_ai": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 33.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 30.0
+      },
+      "full": {
+        "runs": 10,
+        "completed_runs": 10,
+        "makespan_mean": 33.0,
+        "inter_robot_collisions": 0,
+        "gt_deadlock_episodes": 0,
+        "detected_deadlocks": 0,
+        "deadlock_yields": 0,
+        "backoffs": 0,
+        "timeout_replans": 0,
+        "wait_time_mean": 30.0
+      }
+    }
+  }
+}

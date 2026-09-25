@@ -1,0 +1,11 @@
+flowchart LR
+  T["WMS publishes tasks"] --> I["Idle robot scores closest 6 open tasks"]
+  I --> C["Cost = distance + ETA + congestion<br/>+ AI conflict risk of route + energy/battery<br/>+ workload - priority"]
+  C --> F{"energy feasible?<br/>battery - need >= 12% reserve"}
+  F -- no --> X["skip task (charge if idle and < 60%)"]
+  F -- yes --> L["claim cheapest: broadcast [task, cost]"]
+  L --> K{"competing claim received?"}
+  K -- "lower (cost, id) wins" --> W["keep task, explanation logged"]
+  K -- "lost" --> R["release and re-allocate"]
+  W --> P["pickup: package present?"]
+  P -- no --> R

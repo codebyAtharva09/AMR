@@ -1,0 +1,21 @@
+flowchart TB
+  subgraph Fleet["AMR fleet: every robot is an edge node (no central controller)"]
+    direction LR
+    R1["AMR-01<br/>edge computer"] <-->|"P2P radio<br/>STATE msgs"| R2["AMR-02<br/>edge computer"]
+    R2 <-->|P2P| R3["AMR-03<br/>edge computer"]
+    R1 <-->|P2P| R3
+  end
+  subgraph Robot["On each robot (identical code)"]
+    direction LR
+    S["Onboard sensing<br/>r = 2 cells"] --> SAFE["Safety layer<br/>sensing + binding declarations"]
+    B["Belief table<br/>peer plans, age, prediction"] --> AL["Task auction<br/>energy + congestion + risk"]
+    AL --> PL["Space-time A*<br/>peer reservations"]
+    PL --> AI["Edge-AI risk model<br/>P(conflict) P(deadlock) TTC"]
+    AI --> DL["Deadlock intelligence<br/>cycles, concession, bays"]
+    DL --> DEC["Binding next-cell declaration"]
+    DEC --> SAFE
+    CM["Comm state machine<br/>CONNECTED to RECOVERED"] --> PL
+  end
+  WMS["WMS: order source only"] -.->|task list, cancellations| Fleet
+  Fleet --> Robot
+  Robot -.->|"telemetry (view only)"| CC["Fleet Command Center<br/>digital twin, benchmarks, demo"]

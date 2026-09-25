@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EdgeSwarm Command Center</title>
+<link rel="icon" href="data:,">
 <style>
 :root {
   color-scheme: light;
@@ -329,7 +330,7 @@ svg text { fill: var(--ink-2); font-size: 11px; }
   }
   function aiPanel() {
     const ai = S.ai_model;
-    $('aiModel').innerHTML = ai ? `Model: <b>${esc(ai.conflict_model)}</b> (conflict), <b>${esc(ai.deadlock_model || 'none')}</b> (deadlock) · thresholds ${ai.conflict_threshold} / ${ai.deadlock_threshold} · size ${(ai.size_bytes / 1024).toFixed(0)} KB · this run: ${ai.latency.rows} pair inferences, ${ai.latency.mean_us_per_pair} µs per pair` : 'The AI is not active in this coordination mode (modes D and E use it).';
+    $('aiModel').innerHTML = ai ? `Model: <b>${esc(ai.conflict_model)}</b> (conflict), <b>${esc(ai.deadlock_model || 'none')}</b> (deadlock) · action thresholds ${ai.conflict_threshold} / ${ai.deadlock_threshold > 1 ? 'off' : ai.deadlock_threshold} · size ${(ai.size_bytes / 1024).toFixed(0)} KB · this run: ${ai.latency.rows} pair inferences, ${ai.latency.mean_us_per_pair} µs per pair` : 'The AI is not active in this coordination mode (modes D and E use it).';
     const all = [];
     S.robots.forEach(r => (r.risks || []).forEach(k => all.push({ r: r.id, ...k })));
     all.sort((a, b) => b.conflict - a.conflict);

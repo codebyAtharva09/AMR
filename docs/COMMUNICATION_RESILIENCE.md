@@ -34,7 +34,7 @@ waiting-for. From these the robot derives:
 | `CONNECTED` | all expected neighbours fresh | normal planning with 1–2-tick-old reservations |
 | `DEGRADED` | a neighbour is 2–3 ticks stale, or estimated loss > 25% | keep using beliefs, uncertainty-inflated soft costs |
 | `PREDICTIVE_LOCAL` | nothing received for ≥ 2 ticks, or a neighbour ≥ 4 ticks stale | plan on **predicted** peer positions (beliefs kept up to 12 ticks) with uncertainty-disc soft costs. A robot blocked by a neighbour whose intent is unknown immediately detours around it instead of waiting. |
-| `SAFE_FALLBACK` | isolated ≥ 10 ticks (or ≥ 3 ticks with an unidentified robot in sensor range) | finish the current delivery on sensing and the safety layer. Claim no new tasks (claims can't be synchronised). If idle, drive back to the home area to regain radio contact. |
+| `SAFE_FALLBACK` | isolated ≥ 10 ticks (or ≥ 3 ticks with an unidentified robot in sensor range) | continue on sensing and the safety layer, with larger uncertainty margins. Tasks are still claimed **locally**: a duplicate claim across a partition is resolved by the physical pickup check. v1 froze claims here, and the benchmark showed that idled the fleet during outages; see EXPERIMENT_RESULTS.md §6. |
 | `RECOVERED` | first tick of fresh contact after `PREDICTIVE_LOCAL` / `SAFE_FALLBACK` | re-synchronise: drop beliefs older than 12 ticks, force a re-plan with fresh reservations, broadcast a longer (20-cell) plan, re-publish the task claim. The next tick is normally `CONNECTED`. |
 
 "Expected neighbours" are peers whose predicted position, plus uncertainty, lies within radio range. A robot driving

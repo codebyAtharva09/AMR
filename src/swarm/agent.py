@@ -695,14 +695,9 @@ class RobotAgent:
         self.log_decision(t, "CHARGE", f"Battery {self.battery:.0f}%: heading to dock {dock}")
 
     def _allocate(self, t: int, env) -> None:
-        if self.cfg.uses_resilience() and self.comm_mode == SAFE_FALLBACK:
-            # cannot synchronise task claims while isolated: leave the dead zone towards the
-            # home area (where the radio worked at start-up) instead of idling inside it
-            if self.state == IDLE and self.pos != self.home:
-                self.state = TO_HOME
-                self.need_replan = True
-                self.log_decision(t, "SAFE_FALLBACK", "Isolated with no task: returning to home area to re-establish radio contact")
-            return
+        # (v1 of the resilient mode refused to claim tasks in SAFE_FALLBACK; the 30-seed benchmark showed
+        # this idled the fleet during outages (comm_outage, 3 AMRs: -26.5% vs stop-and-wait).  v2 keeps
+        # claiming locally - duplicates are resolved by the physical pickup check - see EXPERIMENT_RESULTS.md)
         open_tasks = [ti for ti in self.tasks.values() if ti.status == "open" and (ti.claim is None or ti.claim[0] == self.robot_id)]
         if not open_tasks:
             if self.state == IDLE and self.pos != self.home and t > getattr(self, "home_hold_until", -1):
@@ -1022,8 +1017,13 @@ class RobotAgent:
                     for dy in range(-u + abs(dx), u - abs(dx) + 1):
                         c = (pp[0] + dx, pp[1] + dy)
                         soft[c] = soft.get(c, 0.0) + 0.5
-        # sensed robots that I cannot identify: treat as parked (their intent is unknown)
+        # sensed robots that I cannot identify: their intent is unknown.  Only robots that OUTRANK me
+        # (static position rank, the same rule the safety layer uses) are treated as obstacles; lower-ranked
+        # ones must yield to me anyway.  Treating both ways symmetrically made two radio-silent robots mirror
+        # each other's detours forever (found in the v1 benchmark, comm_outage, 3 AMRs).
         for r in sensing["robots"]:
+            if rank_key(r["pos"]) > rank_key(self.pos):
+                continue
             if r["pos"] not in known_positions and self.belief_at(r["pos"], t + 1) is None:
                 parked.add(r["pos"])
                 if self.cfg.uses_resilience():
@@ -1068,6 +1068,9 @@ class RobotAgent:
                 return
 
     def _replan_st(self, t: int, reserved, parked, soft, extra_soft: dict | None = None) -> bool:
+        if self.goal is None:
+            self.path = [self.pos]
+            return False
         kb = self.planning_blocked(t)
         s = dict(soft)
         if extra_soft:

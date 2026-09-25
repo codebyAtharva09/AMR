@@ -1,0 +1,8 @@
+flowchart LR
+  A["1. Receive<br/>peer messages<br/>(range, latency, loss)"] --> B["2. Act<br/>execute last tick's<br/>declared move<br/>through safety layer"]
+  B --> C["3. Physics<br/>all robots move<br/>simultaneously"]
+  C --> D["Ground-truth monitor<br/>collisions, near-misses,<br/>deadlock cycles"]
+  C --> E["4. Environment<br/>people, blockages,<br/>WMS events"]
+  E --> F["5. Think (per robot)<br/>OBSERVE > PREDICT ><br/>NEGOTIATE > PLAN"]
+  F --> G["Declare next cell<br/>+ broadcast STATE"]
+  G --> A

@@ -106,7 +106,7 @@ class SwarmController:
         if ai is None:
             return None
         return {"conflict_model": ai.meta.get("conflict_model"), "deadlock_model": ai.meta.get("deadlock_model"),
-                "conflict_threshold": ai.conflict_threshold, "deadlock_threshold": ai.deadlock_threshold,
+                "conflict_threshold": ai.action_conflict_threshold, "deadlock_threshold": ai.action_deadlock_threshold,
                 "size_bytes": ai.size_bytes(), "latency": ai.latency_stats()}
 
     def catalog(self) -> dict[str, Any]:

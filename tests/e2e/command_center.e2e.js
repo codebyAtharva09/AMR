@@ -23,12 +23,13 @@ async function state(page) { return page.evaluate(async () => (await fetch('/api
 
   // ---------------------------------------------------------------- Command Center
   await page.goto(BASE + '/command-center', { waitUntil: 'domcontentloaded' });
-  await page.waitForFunction(() => document.querySelectorAll('#fleetTbl tr[data-r]').length > 0, null, { timeout: 15000 });
+  await page.waitForFunction(() => document.querySelectorAll('#fleetTbl tr[data-r]').length > 0 && document.querySelectorAll('#cPreset option').length > 0, null, { timeout: 15000 });
   for (const n of [3, 5, 10, 15]) {
+    await page.click('#tabs button[data-tab="controls"]');
     await page.selectOption('#cRobots', String(n));
     await page.selectOption('#cPreset', 'NORMAL');
-    await page.click('#tabs button[data-tab="controls"]');
     await page.click('#cApply');
+    await page.click('#tabs button[data-tab="fleet"]');
     await page.waitForFunction((k) => document.querySelectorAll('#fleetTbl tr[data-r]').length === k, n, { timeout: 15000 });
     results[`fleet_${n}`] = await page.locator('#fleetTbl tr[data-r]').count();
   }
@@ -75,6 +76,7 @@ async function state(page) { return page.evaluate(async () => (await fetch('/api
   await page.selectOption('#bBase', 'blank');
   await page.fill('#bR', '4'); await page.fill('#bT', '8'); await page.fill('#bS', '3');
   await page.click('#bRun');
+  await page.click('#tabs button[data-tab="fleet"]');
   await page.waitForFunction(() => document.querySelectorAll('#fleetTbl tr[data-r]').length === 4, null, { timeout: 15000 });
   results.builder_robots = 4;
   // benchmark panel

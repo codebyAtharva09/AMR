@@ -1,0 +1,12 @@
+flowchart TB
+  D0["Blocked or no progress"] --> D1{"wait-for chain from my<br/>fresh beliefs returns to me?"}
+  D1 -- "yes: cycle" --> D2{"am I the lowest<br/>priority in the cycle?"}
+  D2 -- yes --> D3["yield: replan with every member's<br/>cell and next cell blocked"]
+  D3 --> D4{"route found?"}
+  D4 -- no --> D5["retreat to passing bay<br/>(>= 3 free neighbours, off peer paths)"]
+  D2 -- no --> D6["keep reservation; the loser yields"]
+  D1 -- no --> D7{"blocked by a LOWER-priority robot<br/>that cannot clear?"}
+  D7 -- yes --> D8["priority concession: broadcast<br/>lowered priority for 12-15 ticks"]
+  D7 -- no --> D9{"no progress 25 ticks?"}
+  D9 -- yes --> D5
+  D9 -- no --> D10["station queueing / goal clearance /<br/>asymmetric hold / back-off"]

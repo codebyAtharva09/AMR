@@ -1,0 +1,12 @@
+stateDiagram-v2
+  [*] --> CONNECTED
+  CONNECTED --> DEGRADED: neighbour 2-3 ticks stale or loss > 25%
+  DEGRADED --> CONNECTED: all expected neighbours fresh
+  DEGRADED --> PREDICTIVE_LOCAL: silent >= 2 ticks or neighbour >= 4 ticks stale
+  CONNECTED --> PREDICTIVE_LOCAL: silent >= 2 ticks
+  PREDICTIVE_LOCAL --> SAFE_FALLBACK: isolated >= 10 ticks
+  PREDICTIVE_LOCAL --> RECOVERED: fresh contact
+  SAFE_FALLBACK --> RECOVERED: fresh contact
+  RECOVERED --> CONNECTED: resync done (beliefs purged, replan, long plan broadcast)
+  note right of PREDICTIVE_LOCAL: plan on predicted peer poses, uncertainty radius grows 1 cell per tick
+  note right of SAFE_FALLBACK: finish current delivery, no new claims, return to home area if idle

@@ -1,0 +1,15 @@
+flowchart LR
+  RS["Robot state<br/>pose, plan, battery,<br/>recent blocking"] --> FE
+  NS["Neighbour belief<br/>last message, age,<br/>predicted pose"] --> FE
+  IN["Intent<br/>peer's broadcast plan"] --> FE
+  FE["Feature extraction<br/>28 features<br/>(no ground truth,<br/>no future)"] --> M["Edge-AI model<br/>MLP 32x16 + GBM heads<br/>numpy-only runtime"]
+  M --> P["P(conflict), P(deadlock),<br/>time-to-conflict"]
+  P --> Q{"peer outranks me and<br/>P >= action threshold?"}
+  Q -- no --> K["keep route"]
+  Q -- yes --> ALT["plan risk-penalised<br/>alternate (space-time A*)"]
+  ALT --> CMP{"alt cost + margin <<br/>length + P x E[delay]?"}
+  CMP -- yes --> RR["proactive reroute"]
+  CMP -- no --> W["keep / controlled wait<br/>(if deadlock risk high)"]
+  RR --> RES["reservation broadcast"]
+  W --> RES
+  K --> RES
