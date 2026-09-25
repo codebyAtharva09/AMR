@@ -1,0 +1,3 @@
+# Runtime needed ON the robot for the EdgeSwarm agent + Edge-AI inference.
+# scikit-learn is only needed on the workstation that trains the model.
+numpy>=1.24

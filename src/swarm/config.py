@@ -96,8 +96,8 @@ class SwarmConfig:
 
     # Edge-AI (modes reservation_ai / full)
     ai_model_path: str = "models/conflict_model.json"
-    ai_conflict_threshold: float = 0.5
-    ai_deadlock_threshold: float = 0.5
+    ai_conflict_threshold: float | None = None   # None -> threshold tuned on validation (stored in model)
+    ai_deadlock_threshold: float | None = None
     ai_reroute_margin: float = 1.0     # alternate route must beat expected cost by this many ticks
     ai_eval_radius: int = 6
 

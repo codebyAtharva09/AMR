@@ -48,7 +48,16 @@ def run_demo(seed: int = 42, robot_count: int = 5, task_count: int = 12):
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="AMR warehouse coordination prototype")
-    parser.add_argument("--mode", choices=["demo", "simulation", "benchmark", "dashboard"], default="demo")
+    parser.add_argument("--mode", choices=["demo", "simulation", "benchmark", "dashboard",
+                                           "swarm", "edge-demo", "swarm-benchmark", "ablation", "train-ai",
+                                           "deadlock-suite", "edge-profile"], default="demo")
+    parser.add_argument("--coordination", default="full",
+                        help="EdgeSwarm mode: stop_and_wait | decentralized_astar | reservation | reservation_ai | full")
+    parser.add_argument("--scenario", default="medium_congestion")
+    parser.add_argument("--seeds", type=int, default=30)
+    parser.add_argument("--workers", type=int, default=2)
+    parser.add_argument("--quick", action="store_true", help="small smoke matrix for swarm-benchmark / ablation")
+    parser.add_argument("--edge", default="simulation", help="edge hardware profile: simulation | raspberry_pi_4 | jetson_nano")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--robots", type=int, default=5)
     parser.add_argument("--tasks", type=int, default=12)
@@ -63,6 +72,9 @@ def main() -> None:
     elif args.mode == "benchmark":
         report = run_benchmark(seed_count=10, robot_count=args.robots, task_count=args.tasks, steps=args.steps)
         print(json.dumps(report["summary"], indent=2))
+    else:
+        from src.cli_swarm import run_swarm_cli
+        run_swarm_cli(args)
 
 
 if __name__ == "__main__":

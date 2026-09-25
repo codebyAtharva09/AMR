@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EdgeSwarm Command Center</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --surface-2: #f3f2ee; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10); --rack: #b9b6aa; --wall: #6f6d66;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s7: #4a3aa7;
+  --good: #0ca30c; --warning: #fab219; --serious: #ec835a; --critical: #d03b3b;
+  --deadzone: rgba(208,59,59,0.10); --dock: #1baf7a; --block: #52514e; --path: rgba(42,120,214,0.55);
+  --accent-bg: rgba(42,120,214,0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10); --rack: #4a4944; --wall: #6f6d66;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s7: #9085e9;
+    --deadzone: rgba(208,59,59,0.18); --dock: #199e70; --block: #c3c2b7; --path: rgba(57,135,229,0.6);
+    --accent-bg: rgba(57,135,229,0.14);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10); --rack: #4a4944; --wall: #6f6d66;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s7: #9085e9;
+  --deadzone: rgba(208,59,59,0.18); --dock: #199e70; --block: #c3c2b7; --path: rgba(57,135,229,0.6);
+  --accent-bg: rgba(57,135,229,0.14);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 5; }
+header h1 { font-size: 16px; margin: 0 12px 0 0; font-weight: 650; }
+.pill { padding: 2px 10px; border-radius: 999px; border: 1px solid var(--border); font-size: 12px; color: var(--ink-2); white-space: nowrap; }
+.pill b { color: var(--ink); font-weight: 600; }
+button, select, input { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--axis); border-radius: 6px; padding: 5px 10px; }
+button { cursor: pointer; }
+button:hover { background: var(--accent-bg); }
+button.primary { background: var(--s1); color: #fff; border-color: var(--s1); }
+.grow { flex: 1; }
+main { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; padding: 16px; }
+@media (max-width: 1000px) { main { grid-template-columns: 1fr; } }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; min-width: 0; }
+.card h2 { font-size: 13px; margin: 0 0 10px; color: var(--ink-2); font-weight: 600; letter-spacing: .02em; text-transform: uppercase; }
+#twinWrap { position: relative; }
+canvas#twin { width: 100%; height: auto; display: block; border-radius: 6px; background: var(--surface); cursor: crosshair; }
+.layers { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; font-size: 12px; color: var(--ink-2); }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; font-size: 12px; color: var(--ink-2); }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-bottom: 12px; }
+.kpi { background: var(--surface-2); border-radius: 8px; padding: 8px 10px; }
+.kpi .l { font-size: 11px; color: var(--muted); }
+.kpi .v { font-size: 20px; font-weight: 650; }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.tabs button { border: none; border-bottom: 2px solid transparent; border-radius: 0; background: none; color: var(--ink-2); padding: 6px 8px; }
+.tabs button.on { color: var(--ink); border-bottom-color: var(--s1); font-weight: 600; }
+.pane { display: none; } .pane.on { display: block; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th { text-align: left; color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--grid); padding: 4px 6px; }
+td { border-bottom: 1px solid var(--grid); padding: 4px 6px; font-variant-numeric: tabular-nums; vertical-align: top; }
+tr.sel td { background: var(--accent-bg); }
+tr { cursor: default; }
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; white-space: nowrap; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.bar { height: 6px; border-radius: 3px; background: var(--grid); position: relative; min-width: 60px; }
+.bar > i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; background: var(--s1); }
+.feed { max-height: 360px; overflow: auto; font-size: 12.5px; }
+.feed div { padding: 4px 0; border-bottom: 1px solid var(--grid); }
+.feed .t { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
+.feed .k { font-weight: 600; margin-right: 6px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+.row label { font-size: 12px; color: var(--ink-2); display: flex; flex-direction: column; gap: 2px; }
+.note { font-size: 12px; color: var(--ink-2); }
+.demo { background: var(--accent-bg); border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; display: none; }
+.demo.on { display: block; }
+.demo .ttl { font-weight: 650; }
+pre { white-space: pre-wrap; word-break: break-word; font-size: 12px; background: var(--surface-2); padding: 8px; border-radius: 6px; margin: 6px 0; max-height: 260px; overflow: auto; }
+textarea { width: 100%; min-height: 160px; font: 12px ui-monospace, monospace; color: var(--ink); background: var(--surface-2); border: 1px solid var(--axis); border-radius: 6px; padding: 8px; }
+.tip { position: fixed; pointer-events: none; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.15); display: none; z-index: 20; }
+svg text { fill: var(--ink-2); font-size: 11px; }
+.chartwrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<header>
+  <h1>EdgeSwarm Command Center</h1>
+  <span class="pill">Tick <b id="hTick">0</b></span>
+  <span class="pill" id="hRun">paused</span>
+  <span class="pill">Mode <b id="hMode">-</b></span>
+  <span class="pill">Scenario <b id="hScen">-</b></span>
+  <span class="grow"></span>
+  <button class="primary" data-cmd="start">Start</button>
+  <button data-cmd="pause">Pause</button>
+  <button data-cmd="step">Step</button>
+  <button data-cmd="reset">Reset</button>
+  <label class="note">Speed <select id="speed"><option>0.5</option><option selected>1</option><option>2</option><option>4</option><option>8</option></select></label>
+  <button id="themeBtn" title="Toggle theme">Theme</button>
+  <a class="note" href="/">Classic dashboard</a>
+</header>
+<main>
+  <section>
+    <div class="demo" id="demo"><div class="ttl" id="demoTitle"></div><div id="demoNarr" class="note"></div><div id="demoBanner" style="margin-top:6px"></div></div>
+    <div class="card">
+      <h2>Warehouse digital twin</h2>
+      <div id="twinWrap"><canvas id="twin" width="900" height="900"></canvas></div>
+      <div class="layers">
+        <label><input type="checkbox" id="lyPaths" checked> planned paths</label>
+        <label><input type="checkbox" id="lyRes" checked> broadcast reservations</label>
+        <label><input type="checkbox" id="lyRisk" checked> AI conflict risk</label>
+        <label><input type="checkbox" id="lyRange"> radio range (selected)</label>
+        <label><input type="checkbox" id="lyIds" checked> robot IDs</label>
+      </div>
+      <div class="legend" id="legend"></div>
+      <div class="note" id="cellInfo" style="margin-top:6px">Click a cell to target disruptions; click a robot to inspect it.</div>
+    </div>
+  </section>
+  <section>
+    <div class="card">
+      <div class="kpis" id="kpis"></div>
+      <div class="tabs" id="tabs">
+        <button data-tab="fleet" class="on">Fleet</button>
+        <button data-tab="ai">AI decisions</button>
+        <button data-tab="robot">Robot</button>
+        <button data-tab="events">Timeline</button>
+        <button data-tab="controls">Scenario</button>
+        <button data-tab="builder">Builder</button>
+        <button data-tab="bench">Benchmark</button>
+      </div>
+      <div class="pane on" id="p-fleet"><table id="fleetTbl"></table></div>
+      <div class="pane" id="p-ai">
+        <p class="note">Edge-AI pairwise risk, computed on each robot from its own beliefs. It acts only on peers that outrank it. Thresholds were tuned on validation data.</p>
+        <div id="aiModel" class="note"></div>
+        <h2 style="margin-top:10px">Current highest risks</h2>
+        <table id="riskTbl"></table>
+        <h2 style="margin-top:12px">Decisions (proactive reroute / controlled wait / predictive reroute)</h2>
+        <div class="feed" id="aiFeed"></div>
+      </div>
+      <div class="pane" id="p-robot"><div id="robotDetail" class="note">Select a robot in the twin or in the fleet table.</div></div>
+      <div class="pane" id="p-events"><div class="feed" id="events"></div></div>
+      <div class="pane" id="p-controls">
+        <div class="row">
+          <label>Preset<select id="cPreset"></select></label>
+          <label>Coordination mode<select id="cMode"></select></label>
+          <label>AMRs<select id="cRobots"><option>3</option><option selected>5</option><option>10</option><option>15</option><option>20</option></select></label>
+          <label>Seed<input id="cSeed" type="number" value="7" style="width:80px"></label>
+          <label>Hardware<select id="cEdge"></select></label>
+          <button class="primary" id="cApply">Load</button>
+        </div>
+        <p class="note" id="cDesc"></p>
+        <h2 style="margin-top:12px">Disruptions (applied at the selected cell / robot)</h2>
+        <div class="row">
+          <button data-ev="block">Block aisle here (60 ticks)</button>
+          <button data-ev="unblock">Clear blockages</button>
+          <button data-ev="dead_zone">Wi-Fi dead zone here (30 ticks)</button>
+          <button data-ev="outage">Global outage (15 ticks)</button>
+        </div>
+        <div class="row">
+          <button data-ev="cancel">Cancel selected robot's task</button>
+          <button data-ev="drain">Drain selected robot to 20%</button>
+          <button data-ev="link">Cut link: selected robot and nearest peer (30 ticks)</button>
+        </div>
+        <div class="row">
+          <label>Latency ms<input id="nLat" type="number" value="40" style="width:80px"></label>
+          <label>Jitter ms<input id="nJit" type="number" value="20" style="width:80px"></label>
+          <label>Packet loss<input id="nLoss" type="number" step="0.05" value="0" style="width:80px"></label>
+          <button id="nApply">Apply network</button>
+        </div>
+        <h2 style="margin-top:12px">Guided demo</h2>
+        <div class="row"><button class="primary" id="demoBtn">Run 7-scene SIH demo</button><button id="demoStop">Stop demo</button></div>
+        <div class="feed" id="demoLog"></div>
+      </div>
+      <div class="pane" id="p-builder">
+        <p class="note">Build a scenario and reproduce it exactly with its seed. Fields left empty use defaults. Coordinates are [x, y] cells (click the twin to read one).</p>
+        <div class="row">
+          <label>Base map<select id="bBase"><option value="default">rack warehouse 20x23</option><option value="narrow">narrow corridors 21x15</option><option value="blank">blank</option></select></label>
+          <label>Width<input id="bW" type="number" value="20" style="width:70px"></label>
+          <label>Height<input id="bH" type="number" value="15" style="width:70px"></label>
+          <label>AMRs<input id="bR" type="number" value="6" style="width:70px"></label>
+          <label>Tasks<input id="bT" type="number" value="24" style="width:70px"></label>
+          <label>Seed<input id="bS" type="number" value="1" style="width:70px"></label>
+        </div>
+        <div class="row">
+          <label>Radio range<input id="bRange" type="number" value="8" style="width:70px"></label>
+          <label>Latency ms<input id="bLat" type="number" value="40" style="width:70px"></label>
+          <label>Loss<input id="bLoss" type="number" value="0" step="0.05" style="width:70px"></label>
+          <label>Battery min<input id="bBmin" type="number" value="100" style="width:70px"></label>
+          <label>Battery max<input id="bBmax" type="number" value="100" style="width:70px"></label>
+        </div>
+        <label class="note">Advanced JSON (starts, tasks, obstacles, blocked_aisles, humans, network.dead_zones, priorities ...)</label>
+        <textarea id="bJson">{
+  "obstacles": [],
+  "blocked_aisles": [],
+  "humans": []
+}</textarea>
+        <div class="row" style="margin-top:8px">
+          <label>Save as<input id="bName" placeholder="my_scenario" style="width:160px"></label>
+          <button class="primary" id="bRun">Build and load</button>
+          <select id="bSaved"></select><button id="bLoad">Load saved</button>
+        </div>
+        <pre id="bOut"></pre>
+      </div>
+      <div class="pane" id="p-bench">
+        <p class="note">Measured results from <code>experiments/results/*_summary.json</code>. Every bar is a mean over seeds, and hovering shows the 95% CI. Nothing here is typed in by hand.</p>
+        <div class="row"><label>Fleet size<select id="benchN"></select></label><label>Metric<select id="benchMetric"><option value="makespan">Makespan (ticks)</option><option value="avg_task_completion_time">Avg task completion time</option><option value="wait_time">Wait time (robot-ticks)</option></select></label></div>
+        <div class="chartwrap"><svg id="benchSvg" width="640" height="300"></svg></div>
+        <div class="legend"><span><i class="sw" style="background:var(--s2)"></i>Stop-and-wait</span><span><i class="sw" style="background:var(--s1)"></i>EdgeSwarm (full)</span></div>
+        <div id="benchTable"></div>
+        <h2 style="margin-top:12px">Edge-AI model (held-out test seeds)</h2>
+        <div id="aiReport" class="note"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="tip" id="tip"></div>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  let S = null, selRobot = null, selCell = null, catalog = null, bench = null;
+  const COMM = { CONNECTED: '--good', DEGRADED: '--warning', PREDICTIVE_LOCAL: '--serious', SAFE_FALLBACK: '--critical', RECOVERED: '--s1' };
+  const STATE_LABEL = { IDLE: 'idle', TO_PICKUP: 'to pickup', PICKING: 'picking', TO_DROP: 'to drop', DROPPING: 'dropping', TO_CHARGE: 'to charger', CHARGING: 'charging', TO_HOME: 'to home', YIELDING: 'yielding', DEPLETED: 'depleted' };
+
+  async function api(path, body) {
+    const r = await fetch(path, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {});
+    return r.json();
+  }
+  const cmd = (body) => api('/api/swarm/command', body).then(refresh);
+
+  // ------------------------------------------------------------ theme
+  $('themeBtn').onclick = () => {
+    const cur = document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    try { localStorage.setItem('cc-theme', document.documentElement.getAttribute('data-theme')); } catch (e) {}
+    draw(); drawBench();
+  };
+  try { const t = localStorage.getItem('cc-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+
+  // ------------------------------------------------------------ tabs & buttons
+  document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => {
+    document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === b));
+    document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === 'p-' + b.dataset.tab));
+    if (b.dataset.tab === 'bench') loadBench();
+  });
+  document.querySelectorAll('[data-cmd]').forEach(b => b.onclick = () => cmd({ action: b.dataset.cmd }));
+  $('speed').onchange = () => cmd({ action: 'speed', value: parseFloat($('speed').value) });
+
+  // ------------------------------------------------------------ twin rendering
+  const cv = $('twin'), ctx = cv.getContext('2d');
+  let cell = 30, ox = 0, oy = 0;
+  function layout() {
+    if (!S) return;
+    const W = S.map.width, H = S.map.height;
+    const box = cv.parentElement.clientWidth;
+    const dpr = window.devicePixelRatio || 1;
+    cell = Math.max(10, Math.floor(Math.min(box / W, 760 / H)));
+    cv.style.width = (cell * W) + 'px'; cv.style.height = (cell * H) + 'px';
+    cv.width = cell * W * dpr; cv.height = cell * H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  const cx = (x) => x * cell + cell / 2, cy = (y) => y * cell + cell / 2;
+  function draw() {
+    if (!S) return;
+    layout();
+    const W = S.map.width, H = S.map.height;
+    ctx.fillStyle = css('--surface'); ctx.fillRect(0, 0, W * cell, H * cell);
+    ctx.strokeStyle = css('--grid'); ctx.lineWidth = 1;
+    for (let x = 0; x <= W; x++) { ctx.beginPath(); ctx.moveTo(x * cell + .5, 0); ctx.lineTo(x * cell + .5, H * cell); ctx.stroke(); }
+    for (let y = 0; y <= H; y++) { ctx.beginPath(); ctx.moveTo(0, y * cell + .5); ctx.lineTo(W * cell, y * cell + .5); ctx.stroke(); }
+    const walls = new Set();
+    S.map.blocked.forEach(([x, y]) => { const edge = x === 0 || y === 0 || x === W - 1 || y === H - 1; ctx.fillStyle = edge ? css('--wall') : css('--rack'); ctx.fillRect(x * cell + 1, y * cell + 1, cell - 2, cell - 2); });
+    (S.dead_zones || []).forEach(z => { ctx.fillStyle = css('--deadzone'); ctx.fillRect(z[0] * cell, z[1] * cell, (z[2] - z[0] + 1) * cell, (z[3] - z[1] + 1) * cell); ctx.strokeStyle = css('--critical'); ctx.setLineDash([4, 3]); ctx.strokeRect(z[0] * cell + .5, z[1] * cell + .5, (z[2] - z[0] + 1) * cell, (z[3] - z[1] + 1) * cell); ctx.setLineDash([]); });
+    S.map.docks.forEach(([x, y]) => { ctx.strokeStyle = css('--dock'); ctx.lineWidth = 2; ctx.strokeRect(x * cell + 3, y * cell + 3, cell - 6, cell - 6); ctx.fillStyle = css('--dock'); ctx.font = `${Math.max(9, cell * .4)}px system-ui`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('⚡', cx(x), cy(y)); });
+    // open tasks: pickups
+    (S.tasks || []).forEach(t => { if (t.delivered_tick == null && !t.cancelled && !t.picked_by) { ctx.strokeStyle = css('--s4'); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(cx(t.pickup[0]), cy(t.pickup[1]), cell * .18, 0, 7); ctx.stroke(); } });
+    (S.blockages || []).forEach(([x, y]) => { ctx.fillStyle = css('--block'); ctx.fillRect(x * cell + 2, y * cell + 2, cell - 4, cell - 4); ctx.strokeStyle = css('--critical'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x * cell + 4, y * cell + 4); ctx.lineTo(x * cell + cell - 4, y * cell + cell - 4); ctx.moveTo(x * cell + cell - 4, y * cell + 4); ctx.lineTo(x * cell + 4, y * cell + cell - 4); ctx.stroke(); });
+    (S.humans || []).forEach(([x, y]) => { ctx.fillStyle = css('--s7'); ctx.beginPath(); ctx.arc(cx(x), cy(y) - cell * .12, cell * .14, 0, 7); ctx.fill(); ctx.fillRect(cx(x) - cell * .12, cy(y) + cell * .02, cell * .24, cell * .28); });
+    if (selCell) { ctx.strokeStyle = css('--ink'); ctx.lineWidth = 2; ctx.setLineDash([3, 3]); ctx.strokeRect(selCell[0] * cell + 1, selCell[1] * cell + 1, cell - 2, cell - 2); ctx.setLineDash([]); }
+    const robots = S.robots;
+    if ($('lyRange').checked && selRobot) { const r = robots.find(r => r.id === selRobot); if (r) { ctx.strokeStyle = css('--s1'); ctx.setLineDash([2, 4]); ctx.beginPath(); ctx.arc(cx(r.pos[0]), cy(r.pos[1]), 8 * cell, 0, 7); ctx.stroke(); ctx.setLineDash([]); } }
+    if ($('lyRes').checked) robots.forEach(r => { (r.path || []).slice(1, 13).forEach((c, i) => { ctx.fillStyle = css('--path'); ctx.globalAlpha = Math.max(.12, .45 - i * .03); ctx.fillRect(c[0] * cell + cell * .35, c[1] * cell + cell * .35, cell * .3, cell * .3); }); ctx.globalAlpha = 1; });
+    if ($('lyPaths').checked) robots.forEach(r => { const p = r.path || []; if (p.length < 2) return; ctx.strokeStyle = r.id === selRobot ? css('--ink') : css('--path'); ctx.lineWidth = r.id === selRobot ? 2.5 : 2; ctx.beginPath(); ctx.moveTo(cx(p[0][0]), cy(p[0][1])); p.forEach(c => ctx.lineTo(cx(c[0]), cy(c[1]))); ctx.stroke(); if (r.goal) { ctx.strokeStyle = ctx.strokeStyle; ctx.strokeRect(r.goal[0] * cell + cell * .25, r.goal[1] * cell + cell * .25, cell * .5, cell * .5); } });
+    if ($('lyRisk').checked) robots.forEach(r => (r.risks || []).forEach(k => { if (k.conflict < .25) return; const o = robots.find(x => x.id === k.peer); if (!o) return; const col = k.conflict >= .75 ? css('--critical') : k.conflict >= .5 ? css('--serious') : css('--warning'); ctx.strokeStyle = col; ctx.lineWidth = 1 + 3 * k.conflict; ctx.setLineDash([5, 3]); ctx.beginPath(); ctx.moveTo(cx(r.pos[0]), cy(r.pos[1])); ctx.lineTo(cx(o.pos[0]), cy(o.pos[1])); ctx.stroke(); ctx.setLineDash([]); }));
+    robots.forEach(r => {
+      const x = cx(r.pos[0]), y = cy(r.pos[1]), rad = cell * .36;
+      ctx.fillStyle = css('--surface'); ctx.beginPath(); ctx.arc(x, y, rad + 2, 0, 7); ctx.fill();
+      ctx.fillStyle = r.carrying ? css('--s2') : css('--s1'); ctx.beginPath(); ctx.arc(x, y, rad, 0, 7); ctx.fill();
+      ctx.strokeStyle = css(COMM[r.comm_mode] || '--good'); ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(x, y, rad + 1, 0, 7); ctx.stroke();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + r.heading[0] * rad * .8, y + r.heading[1] * rad * .8); ctx.stroke();
+      if (r.id === selRobot) { ctx.strokeStyle = css('--ink'); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(x, y, rad + 5, 0, 7); ctx.stroke(); }
+      if ($('lyIds').checked) { ctx.fillStyle = css('--ink'); ctx.font = `600 ${Math.max(9, cell * .32)}px system-ui`; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillText(r.id.replace('AMR-', ''), x, y - rad - 3); }
+    });
+  }
+  function legend() {
+    const items = [['--s1', 'AMR (empty)'], ['--s2', 'AMR (loaded)'], ['--rack', 'rack'], ['--dock', 'charging dock'], ['--s7', 'person'], ['--block', 'blocked aisle'], ['--s4', 'open pickup']];
+    const comm = Object.entries(COMM).map(([k, v]) => `<span><i class="dot" style="border:3px solid var(${v});background:transparent;width:10px;height:10px"></i> ${k}</span>`);
+    $('legend').innerHTML = items.map(([c, l]) => `<span><i class="sw" style="background:var(${c})"></i>${l}</span>`).join('') + comm.join('') + '<span>ring = radio state · dashed line = AI conflict risk</span>';
+  }
+  legend();
+  cv.addEventListener('click', (e) => {
+    if (!S) return;
+    const rect = cv.getBoundingClientRect();
+    const x = Math.floor((e.clientX - rect.left) / cell), y = Math.floor((e.clientY - rect.top) / cell);
+    const hit = S.robots.find(r => r.pos[0] === x && r.pos[1] === y);
+    if (hit) { selRobot = hit.id; showTab('robot'); }
+    selCell = [x, y];
+    $('cellInfo').textContent = `Selected cell [${x}, ${y}]` + (hit ? ` · robot ${hit.id}` : '');
+    renderAll();
+  });
+  function showTab(t) { document.querySelector(`#tabs button[data-tab="${t}"]`).click(); }
+
+  // ------------------------------------------------------------ panels
+  const esc = (s) => String(s ?? '').replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  function badge(mode) { return `<span class="badge"><i class="dot" style="background:var(${COMM[mode] || '--muted'})"></i>${esc(mode)}</span>`; }
+  function kpis() {
+    const m = S.metrics;
+    const done = S.tasks.filter(t => t.delivered_tick != null).length;
+    const items = [['Tasks done', `${done}/${S.tasks.length}`], ['Collisions (ground truth)', m.inter_robot_collisions], ['Near-collisions', m.near_collisions], ['Deadlocks detected', m.detected_deadlocks], ['AI proactive actions', m.proactive_reroutes + m.proactive_waits], ['Messages', m.messages_sent], ['Mean tick (ms)', m.perf.tick_ms_mean], ['Robot think (ms)', m.perf.think_ms_mean]];
+    $('kpis').innerHTML = items.map(([l, v]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
+  }
+  function fleet() {
+    const rows = S.robots.map(r => `<tr data-r="${r.id}" class="${r.id === selRobot ? 'sel' : ''}"><td><b>${r.id}</b></td><td>${STATE_LABEL[r.state] || r.state}</td><td>${esc(r.task || '-')}</td><td><div class="bar" title="${r.battery}%"><i style="width:${r.battery}%;background:var(${r.battery < 25 ? '--critical' : r.battery < 45 ? '--warning' : '--good'})"></i></div><span class="note">${r.battery}%</span></td><td>${badge(r.comm_mode)}${r.radio_up ? '' : ' <span class="note">(radio down)</span>'}</td><td>${r.cpu_pct_est}%</td><td>${r.think_ms}</td><td>${esc(r.waiting_for || '')}</td></tr>`).join('');
+    $('fleetTbl').innerHTML = `<tr><th>AMR</th><th>State</th><th>Task</th><th>Battery</th><th>Radio</th><th>CPU est.</th><th>Think ms</th><th>Waiting for</th></tr>${rows}`;
+    $('fleetTbl').querySelectorAll('tr[data-r]').forEach(tr => tr.onclick = () => { selRobot = tr.dataset.r; renderAll(); });
+  }
+  function aiPanel() {
+    const ai = S.ai_model;
+    $('aiModel').innerHTML = ai ? `Model: <b>${esc(ai.conflict_model)}</b> (conflict), <b>${esc(ai.deadlock_model || 'none')}</b> (deadlock) · thresholds ${ai.conflict_threshold} / ${ai.deadlock_threshold} · size ${(ai.size_bytes / 1024).toFixed(0)} KB · this run: ${ai.latency.rows} pair inferences, ${ai.latency.mean_us_per_pair} µs per pair` : 'The AI is not active in this coordination mode (modes D and E use it).';
+    const all = [];
+    S.robots.forEach(r => (r.risks || []).forEach(k => all.push({ r: r.id, ...k })));
+    all.sort((a, b) => b.conflict - a.conflict);
+    $('riskTbl').innerHTML = '<tr><th>Robot</th><th>Peer</th><th>P(conflict)</th><th>P(deadlock)</th><th>TTC (ticks)</th><th>Level</th><th>Peer outranks</th></tr>' + all.slice(0, 8).map(k => `<tr><td>${k.r}</td><td>${k.peer}</td><td>${k.conflict}</td><td>${k.deadlock}</td><td>${k.ttc}</td><td>${k.level}</td><td>${k.peer_has_priority ? 'yes' : 'no'}</td></tr>`).join('');
+    const ev = (S.events || []).filter(e => /AI_|PREDICTIVE_REROUTE|DEADLOCK|QUEUE|RETREAT/.test(e.kind)).slice(-40).reverse();
+    $('aiFeed').innerHTML = ev.map(e => `<div><span class="t">t=${e.tick}</span><span class="k">${e.robot || ''}</span>${esc(e.summary || e.kind)}</div>`).join('') || '<div class="note">No AI-driven decisions yet.</div>';
+  }
+  function robotPanel() {
+    const r = S.robots.find(x => x.id === selRobot);
+    if (!r) { $('robotDetail').innerHTML = 'Select a robot in the twin or in the fleet table.'; return; }
+    const alloc = r.allocation;
+    const terms = alloc && alloc.terms ? Object.entries(alloc.terms).map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('') : '';
+    const rc = r.route_comparison;
+    $('robotDetail').innerHTML = `<b>${r.id}</b> · ${STATE_LABEL[r.state] || r.state} · task ${esc(r.task || '-')} · battery ${r.battery}% · ${badge(r.comm_mode)} · neighbours heard this tick: ${r.neighbors_known}<br>
+      <h2 style="margin-top:10px">Why this task?</h2>${alloc ? `<div>TASK ${esc(alloc.task)} → ${esc(alloc.robot)} (${esc(alloc.policy)}, cost ${alloc.cost})</div><ul>${(alloc.reasons || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul><table><tr><th>cost term</th><th>weighted value</th></tr>${terms}</table>` : '<div class="note">No allocation yet.</div>'}
+      <h2 style="margin-top:10px">Route comparison (blockage on route)</h2>${rc ? `<table><tr><th></th><th>distance</th><th>ETA</th><th>congestion</th></tr><tr><td>A: ${esc(rc.route_a.name)}</td><td>${rc.route_a.distance}</td><td>${rc.route_a.eta}</td><td>${rc.route_a.congestion}</td></tr><tr><td>B: ${esc(rc.route_b.name)}</td><td>${rc.route_b.distance ?? '-'}</td><td>${rc.route_b.eta ?? '-'}</td><td>${rc.route_b.congestion}</td></tr></table><div>Chosen: <b>${rc.choice}</b> (blockage age ${rc.route_a.blockage_age}, est. remaining ${rc.route_a.est_remaining} ticks)</div>` : '<div class="note">No blockage on the current route.</div>'}
+      <h2 style="margin-top:10px">Recent decisions</h2><div class="feed">${(r.decisions || []).slice().reverse().map(d => `<div><span class="t">t=${d.tick}</span><span class="k">${d.kind}</span>${esc(d.summary)}${d.explanation && d.explanation.keep_route ? `<pre>${esc(JSON.stringify(d.explanation, null, 1))}</pre>` : ''}</div>`).join('')}</div>
+      <h2 style="margin-top:10px">Counters</h2><pre>${esc(JSON.stringify(r.counters))}</pre>`;
+  }
+  function events() {
+    $('events').innerHTML = (S.events || []).slice().reverse().map(e => `<div><span class="t">t=${e.tick}</span><span class="k">${e.kind}</span>${esc(e.robot || '')} ${esc(e.summary || e.task || '')}</div>`).join('');
+  }
+  function demoPanel() {
+    const d = S.demo;
+    $('demo').classList.toggle('on', !!(d && (d.active || d.scene)));
+    if (!d) return;
+    $('demoTitle').textContent = `Scene ${d.scene}/${d.total}: ${d.title}`;
+    $('demoNarr').textContent = d.narration;
+    $('demoBanner').textContent = d.banner;
+    $('demoLog').innerHTML = (d.log || []).map(l => `<div><span class="t">t=${l.tick}</span>Scene ${l.scene}: ${esc(l.title)}</div>`).join('') + (d.details ? `<pre>${esc(JSON.stringify(d.details, null, 1))}</pre>` : '');
+  }
+  function header() {
+    $('hTick').textContent = S.tick;
+    $('hRun').textContent = S.finished ? 'all tasks done' : (S.running ? 'running' : 'paused');
+    $('hMode').textContent = S.controller.mode_label;
+    $('hScen').textContent = `${S.scenario} · ${S.robots.length} AMRs · seed ${S.seed}`;
+  }
+  function renderAll() { if (!S) return; header(); draw(); kpis(); fleet(); aiPanel(); robotPanel(); events(); demoPanel(); }
+
+  async function refresh() { try { S = await api('/api/swarm/state'); renderAll(); } catch (e) { } }
+  setInterval(refresh, 400);
+  window.addEventListener('resize', draw);
+
+  // ------------------------------------------------------------ controls
+  async function loadCatalog() {
+    catalog = await api('/api/swarm/catalog');
+    $('cPreset').innerHTML = catalog.presets.map(p => `<option value="${p.id}">${p.id}</option>`).join('') + catalog.scenarios.map(s => `<option value="${s.id}">${s.id}</option>`).join('');
+    $('cMode').innerHTML = catalog.modes.map(m => `<option value="${m.id}" ${m.id === 'full' ? 'selected' : ''}>${m.label}</option>`).join('');
+    $('cEdge').innerHTML = catalog.edge_profiles.map(p => `<option>${p}</option>`).join('');
+    $('bSaved').innerHTML = catalog.custom.map(c => `<option>${c}</option>`).join('');
+    const desc = () => { const id = $('cPreset').value; const p = catalog.presets.find(x => x.id === id) || catalog.scenarios.find(x => x.id === id); $('cDesc').textContent = p ? p.description : ''; };
+    $('cPreset').onchange = desc; desc();
+  }
+  $('cApply').onclick = () => cmd({ action: 'configure', scenario: $('cPreset').value, mode: $('cMode').value, robots: parseInt($('cRobots').value), seed: parseInt($('cSeed').value), edge_profile: $('cEdge').value });
+  document.querySelectorAll('[data-ev]').forEach(b => b.onclick = () => {
+    const k = b.dataset.ev; const c = selCell || [9, 9];
+    if (k === 'block') cmd({ action: 'event', event: { type: 'block', cells: [c], duration: 60 } });
+    if (k === 'unblock') cmd({ action: 'event', event: { type: 'unblock' } });
+    if (k === 'dead_zone') cmd({ action: 'event', event: { type: 'dead_zone', rect: [c[0] - 2, c[1] - 2, c[0] + 2, c[1] + 2], duration: 30 } });
+    if (k === 'outage') cmd({ action: 'event', event: { type: 'outage', duration: 15 } });
+    const r = S && S.robots.find(x => x.id === selRobot);
+    if (k === 'cancel' && r && r.task) cmd({ action: 'event', event: { type: 'cancel_task', task: r.task } });
+    if (k === 'drain' && r) cmd({ action: 'event', event: { type: 'drain_battery', robot: r.id, level: 20 } });
+    if (k === 'link' && r) { const o = S.robots.filter(x => x.id !== r.id).sort((a, b) => Math.hypot(a.pos[0] - r.pos[0], a.pos[1] - r.pos[1]) - Math.hypot(b.pos[0] - r.pos[0], b.pos[1] - r.pos[1]))[0]; if (o) cmd({ action: 'event', event: { type: 'link_down', robots: [r.id, o.id], duration: 30 } }); }
+  });
+  $('nApply').onclick = () => cmd({ action: 'event', event: { type: 'set_network', latency_ms: parseFloat($('nLat').value), jitter_ms: parseFloat($('nJit').value), packet_loss: parseFloat($('nLoss').value) } });
+  $('demoBtn').onclick = () => { cmd({ action: 'demo' }); };
+  $('demoStop').onclick = () => cmd({ action: 'stop_demo' });
+  $('bRun').onclick = async () => {
+    let extra = {};
+    try { extra = JSON.parse($('bJson').value || '{}'); } catch (e) { $('bOut').textContent = 'Invalid JSON: ' + e.message; return; }
+    const spec = Object.assign({ robots: parseInt($('bR').value), tasks: parseInt($('bT').value), seed: parseInt($('bS').value),
+      network: { range_cells: parseFloat($('bRange').value), latency_ms: parseFloat($('bLat').value), packet_loss: parseFloat($('bLoss').value) },
+      battery_range: [parseFloat($('bBmin').value), parseFloat($('bBmax').value)] }, extra);
+    if ($('bBase').value === 'blank') { spec.width = parseInt($('bW').value); spec.height = parseInt($('bH').value); } else spec.base = $('bBase').value;
+    if (extra.network) spec.network = Object.assign({ range_cells: parseFloat($('bRange').value), latency_ms: parseFloat($('bLat').value), packet_loss: parseFloat($('bLoss').value) }, extra.network);
+    const res = await api('/api/swarm/command', { action: 'build_scenario', spec, save_as: $('bName').value || null });
+    $('bOut').textContent = JSON.stringify({ result: res, spec }, null, 1);
+    loadCatalog(); refresh();
+  };
+  $('bLoad').onclick = () => cmd({ action: 'load_custom', name: $('bSaved').value });
+
+  // ------------------------------------------------------------ benchmark chart
+  async function loadBench() { if (!bench) bench = await api('/api/swarm/benchmark'); fillBench(); }
+  function fillBench() {
+    const b = bench && bench.benchmark;
+    if (!b) { $('benchTable').innerHTML = '<p class="note">No benchmark summary found yet. Run <code>python3 main.py --mode swarm-benchmark</code>.</p>'; return; }
+    const sizes = [...new Set(b.summary.cells.map(c => c.robots))].sort((a, c) => a - c);
+    if (!$('benchN').options.length) { $('benchN').innerHTML = sizes.map(n => `<option>${n}</option>`).join(''); $('benchN').value = sizes.includes(10) ? 10 : sizes[0]; }
+    $('benchN').onchange = drawBench; $('benchMetric').onchange = drawBench;
+    drawBench();
+    const r = bench.edge_ai;
+    if (r && r.conflict_test) { const t = r.conflict_test; $('aiReport').innerHTML = `Chosen model <b>${esc(r.conflict_model)}</b>. Test: accuracy ${t.accuracy}, precision ${t.precision}, recall ${t.recall}, F1 ${t.f1}, ROC-AUC ${t.roc_auc ?? '-'} (n=${t.n}). Rule-based reference F1 ${r.conflict_test_rule_reference ? r.conflict_test_rule_reference.f1 : '-'}. Model file ${(r.model_file_bytes / 1024).toFixed(0)} KB.`; }
+  }
+  function drawBench() {
+    const b = bench && bench.benchmark; if (!b) return;
+    const n = parseInt($('benchN').value), metric = $('benchMetric').value;
+    const cells = b.summary.cells.filter(c => c.robots === n && (c.mode === 'stop_and_wait' || c.mode === 'full'));
+    const scen = [...new Set(cells.map(c => c.scenario))];
+    const svg = $('benchSvg'); const W = Math.max(640, scen.length * 64 + 60), H = 300, L = 44, B = 70, T = 12;
+    svg.setAttribute('width', W);
+    const vals = cells.map(c => c[metric] && c[metric].mean || 0); const mx = Math.max(1, ...vals) * 1.1;
+    const y = (v) => T + (H - T - B) * (1 - v / mx);
+    let out = '';
+    for (let i = 0; i <= 4; i++) { const v = mx * i / 4; out += `<line x1="${L}" x2="${W - 8}" y1="${y(v)}" y2="${y(v)}" stroke="${css('--grid')}"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${v.toFixed(0)}</text>`; }
+    const gw = (W - L - 8) / scen.length, bw = Math.min(22, gw / 3);
+    scen.forEach((s, i) => {
+      ['stop_and_wait', 'full'].forEach((m, j) => {
+        const c = cells.find(x => x.scenario === s && x.mode === m); if (!c || !c[metric]) return;
+        const d = c[metric]; const x0 = L + i * gw + gw / 2 - bw - 1 + j * (bw + 2);
+        const top = y(d.mean), h = y(0) - top;
+        out += `<path d="M${x0},${y(0)} v${-(h - 4)} q0,-4 4,-4 h${bw - 8} q4,0 4,4 v${h - 4} z" fill="${css(m === 'full' ? '--s1' : '--s2')}" data-tip="${esc(s)} · ${m === 'full' ? 'EdgeSwarm' : 'stop-and-wait'}<br>${metric}: mean ${d.mean}, median ${d.median}<br>95% CI ${d.ci95 ? d.ci95.join(' – ') : '-'} · n=${d.n}"/>`;
+      });
+      out += `<text transform="translate(${L + i * gw + gw / 2},${H - B + 12}) rotate(35)" text-anchor="start">${esc(s.replace('_', ' '))}</text>`;
+    });
+    out += `<line x1="${L}" x2="${W - 8}" y1="${y(0)}" y2="${y(0)}" stroke="${css('--axis')}"/>`;
+    svg.innerHTML = out;
+    svg.querySelectorAll('[data-tip]').forEach(el => { el.onmousemove = (e) => { const t = $('tip'); t.innerHTML = el.dataset.tip; t.style.display = 'block'; t.style.left = (e.clientX + 12) + 'px'; t.style.top = (e.clientY + 12) + 'px'; }; el.onmouseleave = () => $('tip').style.display = 'none'; });
+    const imps = b.summary.improvements.filter(i => i.robots === n && i.mode === 'full');
+    $('benchTable').innerHTML = `<table><tr><th>Scenario</th><th>Stop-and-wait makespan</th><th>EdgeSwarm makespan</th><th>Reduction</th><th>Paired 95% CI</th><th>Runs</th></tr>${imps.map(i => `<tr><td>${esc(i.scenario)}</td><td>${i.baseline_makespan_mean}</td><td>${i.mode_makespan_mean}</td><td><b>${i.makespan_reduction_of_means_pct}%</b> ${i.makespan_reduction_of_means_pct >= 20 ? '✓ ≥20%' : '✗ <20%'}</td><td>${i.paired_makespan_reduction_pct.ci95 ? i.paired_makespan_reduction_pct.ci95.join(' – ') : '-'}</td><td>${i.paired_runs}</td></tr>`).join('')}</table>`;
+  }
+
+  loadCatalog();
+  refresh();
+})();
+</script>
+</body>
+</html>

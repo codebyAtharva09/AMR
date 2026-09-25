@@ -90,6 +90,7 @@ class AgentCounters:
     backoffs: int = 0
     oscillation_holds: int = 0
     livelock_breaks: int = 0
+    priority_concessions: int = 0
     timeout_replans: int = 0
     yield_requests_sent: int = 0
     yields_performed: int = 0
@@ -190,6 +191,8 @@ class RobotAgent:
         """Reservation priority (higher tuple = more important).  Stable during a task leg."""
         active = self.state in (TO_PICKUP, TO_DROP, TO_CHARGE, PICKING, DROPPING)
         urgent = 1 if (self.state == TO_CHARGE and self.battery < 10) else 0
+        if getattr(self, "conceding_until", -1) >= getattr(self, "_now", 0):
+            urgent = -1  # priority donated: I get out of the way (broadcast, so every peer agrees)
         return (urgent, 1 if self.carrying else 0, 1 if active else 0, self.task_priority(),
                 -self.task_start_tick, -self.index)
 
@@ -696,7 +699,7 @@ class RobotAgent:
             return  # cannot synchronise claims while isolated
         open_tasks = [ti for ti in self.tasks.values() if ti.status == "open" and (ti.claim is None or ti.claim[0] == self.robot_id)]
         if not open_tasks:
-            if self.state == IDLE and self.pos != self.home:
+            if self.state == IDLE and self.pos != self.home and t > getattr(self, "home_hold_until", -1):
                 self.state = TO_HOME
                 self.need_replan = True
             return
@@ -867,6 +870,7 @@ class RobotAgent:
             self.state = YIELDING
             self.goal = best[1]
             self.need_replan = True
+            self.home_hold_until = t + 40
             self.c.yields_performed += 1
             self.log_decision(t, "YIELD", f"Moving aside to {best[1]} for {reqs[0][0]}")
 
@@ -1048,6 +1052,15 @@ class RobotAgent:
                 self.interactions.append((t, self.robot_id, who, "reservation_conflict"))
         self._replan_st(t, reserved, parked, soft)
 
+    def _request_goal_clearance(self, t: int) -> None:
+        """An idle robot parked on my station: ask it (P2P) to move aside."""
+        station = self.station or self.goal
+        for b in self.fresh_beliefs(t, 3).values():
+            if b.predicted_pos(t) == station and b.state == IDLE:
+                self._yield_request = (b.robot_id, [list(station)] + [list(c) for c in self.path[:6]])
+                self.c.yield_requests_sent += 1
+                return
+
     def _replan_st(self, t: int, reserved, parked, soft, extra_soft: dict | None = None) -> bool:
         kb = self.planning_blocked(t)
         s = dict(soft)
@@ -1059,6 +1072,8 @@ class RobotAgent:
             if c == self.goal:
                 parked.discard(c)
         goal_parked = self.goal in parked
+        if goal_parked:
+            self._request_goal_clearance(t)
         p = None
         if not goal_parked:
             p = spacetime_astar(self.gm, self.pos, self.goal, t, reserved, self.oracle, known_blocked=kb, soft_cost=s,
@@ -1092,8 +1107,8 @@ class RobotAgent:
                           "ttc": round(float(ttc), 1), "level": risk_level(float(pc)),
                           "peer_pos": list(b.predicted_pos(t)), "peer_has_priority": tuple(b.prio) > self.prio()})
         self.last_risks = risks
-        tau_c = self.cfg.ai_conflict_threshold
-        tau_d = self.cfg.ai_deadlock_threshold
+        tau_c = self.cfg.ai_conflict_threshold if self.cfg.ai_conflict_threshold is not None else self.ai.conflict_threshold
+        tau_d = self.cfg.ai_deadlock_threshold if self.cfg.ai_deadlock_threshold is not None else self.ai.deadlock_threshold
         myprio = self.prio()
         # I act only for peers that outrank me (or whose priority is unknown/stale): consistent decentralized rule
         acting = [(b, r) for b, r in zip(peers, risks)
@@ -1239,6 +1254,18 @@ class RobotAgent:
                 self.need_replan = True
             self.goal = self.queue_cell
 
+    def _path_blocker(self, t: int):
+        """The peer (from my beliefs) standing on the next cells of my plan or of my static route."""
+        cells = [c for c in self.path[1:8] if c != self.pos]
+        if self.goal is not None:
+            route = static_astar(self.gm, self.pos, self.goal, oracle=self.oracle) or []
+            cells += route[1:8]
+        for c in cells:
+            for b in self.fresh_beliefs(t, 2).values():
+                if b.predicted_pos(t) == c:
+                    return b
+        return None
+
     def _retreat_to_bay(self, t: int, avoid: set) -> bool:
         """Escalation for boxed-in robots: move to the nearest passing bay (a cell with >=3 free
         neighbours) that is off every known peer path, wait there, then resume."""
@@ -1304,6 +1331,15 @@ class RobotAgent:
             self.best_goal_tick = t
             self.best_goal_dist = d
             self.c.livelock_breaks += 1
+            blocker = self._path_blocker(t)
+            if (self.cfg.uses_reservations() and getattr(self, "conceding_until", -1) < t - 30
+                    and blocker is not None and tuple(blocker.prio) < self.prio()):
+                # first escalation: donate priority so the robots I am reserving against can move
+                self.conceding_until = t + 15
+                self.c.priority_concessions += 1
+                self.need_replan = True
+                self.log_decision(t, "PRIORITY_CONCESSION", f"No progress for 25 ticks behind lower-priority {blocker.robot_id}: donating priority for 15 ticks")
+                return
             if self._retreat_to_bay(t, {self.bay_goal} if self.bay_goal else set()):
                 return
             self.hold_ticks = 1 + (self.index % 3)
@@ -1320,6 +1356,17 @@ class RobotAgent:
             self.replan_ticks.clear()
             self.log_decision(t, "OSCILLATION_HOLD", "Repeated rerouting detected; holding 2 ticks")
             return
+        # priority concession: I outrank the robot blocking me, but it is not moving out of my way
+        # (e.g. it is boxed in a dead end by my own reservations) -> donate my priority for 12 ticks
+        if (self.cfg.uses_reservations() and self.blocked_streak >= 4 and self.waiting_for
+                and not self.waiting_for.startswith("UNK") and getattr(self, "conceding_until", -1) < t):
+            b = self.fresh_beliefs(t, 2).get(self.waiting_for)
+            if b is not None and tuple(b.prio) < self.prio() and not b.stationary:
+                self.conceding_until = t + 12
+                self.need_replan = True
+                self.c.priority_concessions += 1
+                self.log_decision(t, "PRIORITY_CONCESSION", f"Blocked by lower-priority {b.robot_id} that cannot clear: donating priority for 12 ticks")
+                return
         # blocked progress -> local detour around the blocker, then back-off
         if self.blocked_streak >= 6 and self.last_blocker_cell is not None and self.last_blocker_cell != self.goal:
             self.temp_parked[self.last_blocker_cell] = t + 6

@@ -10,3 +10,6 @@ results/
 data/
 research/
 train/
+
+# measured evidence is versioned (legacy runtime output dir stays ignored)
+!experiments/results/

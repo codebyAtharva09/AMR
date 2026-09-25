@@ -394,8 +394,43 @@ class DashboardHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT), **kwargs)
 
+    # ---------------------------------------------------------------- EdgeSwarm Command Center
+    def _send_json(self, obj, code: int = 200) -> None:
+        data = json.dumps(obj).encode("utf-8")
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+
+    def _swarm_get(self, clean_path: str) -> bool:
+        from src.command_center.controller import get_controller
+        if clean_path.rstrip("/") == "/command-center":
+            page = (ROOT / "command_center.html").read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(page)
+            return True
+        ctl = get_controller()
+        if clean_path == "/api/swarm/state":
+            self._send_json(ctl.state())
+            return True
+        if clean_path == "/api/swarm/catalog":
+            self._send_json(ctl.catalog())
+            return True
+        if clean_path == "/api/swarm/benchmark":
+            self._send_json(ctl.benchmark())
+            return True
+        return False
+
     def do_GET(self):
         clean_path = urlsplit(self.path).path
+        if clean_path.startswith("/command-center") or clean_path.startswith("/api/swarm/"):
+            if self._swarm_get(clean_path):
+                return
         if clean_path.startswith("/static/"):
             rel_path = clean_path[len("/static/"):]
             static_file = (ROOT / "static" / rel_path).resolve()
@@ -651,6 +686,21 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_POST(self):
+        if self.path.startswith("/api/swarm/command"):
+            content_len = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(content_len) if content_len > 0 else b"{}"
+            try:
+                data = json.loads(body.decode("utf-8"))
+            except Exception:
+                data = {}
+            from src.command_center.controller import get_controller
+            try:
+                res = get_controller().command(data)
+                code = 200 if res.get("ok") else 400
+            except Exception as exc:  # report errors to the UI instead of dropping the connection
+                res, code = {"ok": False, "error": str(exc)}, 500
+            self._send_json(res, code)
+            return
         if self.path.startswith("/api/racks/update"):
             content_len = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(content_len) if content_len > 0 else b"{}"
