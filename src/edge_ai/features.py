@@ -64,6 +64,23 @@ def _future(path: list, offset: int) -> list:
     return list(path[offset:])
 
 
+def _context(me: "RobotAgent", t: int) -> dict:
+    """Per-robot, per-tick quantities shared by all of that robot's pairs (computed once)."""
+    c = getattr(me, "_feat_ctx", None)
+    if c is not None and c["t"] == t and c["n"] == len(me.beliefs):
+        return c
+    preds = []
+    future_cells = []
+    for bb in me.beliefs.values():
+        if t - bb.sent_tick > 10:
+            continue
+        preds.append(bb.predicted_pos(t))
+        future_cells.extend(_future(bb.path or [bb.pos], t - bb.sent_tick)[:6])
+    c = {"t": t, "n": len(me.beliefs), "preds": preds, "future_cells": future_cells}
+    me._feat_ctx = c
+    return c
+
+
 def pair_features(me: "RobotAgent", b: "NeighborBelief", t: int, my_path: list | None = None) -> list[float]:
     pos = me.pos
     mp = list(my_path if my_path is not None else (me.path or [pos]))
@@ -116,24 +133,19 @@ def pair_features(me: "RobotAgent", b: "NeighborBelief", t: int, my_path: list |
         last = jp_future[-1]
         res_overlap += sum(1 for k in range(len(jp_future), len(mp)) if mp[k] == last)
 
-    beliefs = me.beliefs
-    preds = {rid: bb.predicted_pos(t) for rid, bb in beliefs.items() if t - bb.sent_tick <= 10}
+    ctx = _context(me, t)
+    preds = ctx["preds"]
     if first_shared is not None:
-        occ = sum(1 for p in preds.values() if abs(p[0] - first_shared[0]) + abs(p[1] - first_shared[1]) <= 2)
+        occ = sum(1 for p in preds if abs(p[0] - first_shared[0]) + abs(p[1] - first_shared[1]) <= 2)
     else:
         occ = 0
-    nearby = sum(1 for p in preds.values() if abs(p[0] - pos[0]) + abs(p[1] - pos[1]) <= 3)
+    nearby = sum(1 for p in preds if abs(p[0] - pos[0]) + abs(p[1] - pos[1]) <= 3)
 
     gm = me.gm
     nxt = mp[1:6] or [pos]
     narrow = sum(4 - gm.degree(c) for c in nxt) / len(nxt)
 
-    cong = 0
-    for rid, bb in beliefs.items():
-        if t - bb.sent_tick > 10:
-            continue
-        fut = _future(bb.path or [bb.pos], t - bb.sent_tick)[:6]
-        cong += sum(1 for c in fut if abs(c[0] - pos[0]) + abs(c[1] - pos[1]) <= 3)
+    cong = sum(1 for c in ctx["future_cells"] if abs(c[0] - pos[0]) + abs(c[1] - pos[1]) <= 3)
 
     peer_prio_higher = 1.0 if tuple(b.prio) > tuple(me.prio()) else 0.0
     return [

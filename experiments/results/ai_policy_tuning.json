@@ -1,0 +1,97 @@
+{
+  "validation_seeds": [
+    101,
+    102,
+    103,
+    104
+  ],
+  "scenarios": [
+    "medium_congestion",
+    "high_congestion",
+    "narrow_intersection",
+    "comm_outage",
+    "mixed_stress"
+  ],
+  "robots": 10,
+  "grid": [
+    {
+      "conflict_threshold": 0.3,
+      "deadlock_threshold": 0.3,
+      "mean_makespan_reduction_vs_reservation_pct": -1.547,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.3,
+      "deadlock_threshold": 0.6,
+      "mean_makespan_reduction_vs_reservation_pct": -1.032,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.3,
+      "deadlock_threshold": 1.01,
+      "mean_makespan_reduction_vs_reservation_pct": -0.521,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.45,
+      "deadlock_threshold": 0.3,
+      "mean_makespan_reduction_vs_reservation_pct": -0.892,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.45,
+      "deadlock_threshold": 0.6,
+      "mean_makespan_reduction_vs_reservation_pct": -0.541,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.45,
+      "deadlock_threshold": 1.01,
+      "mean_makespan_reduction_vs_reservation_pct": -0.519,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.6,
+      "deadlock_threshold": 0.3,
+      "mean_makespan_reduction_vs_reservation_pct": -1.297,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.6,
+      "deadlock_threshold": 0.6,
+      "mean_makespan_reduction_vs_reservation_pct": 0.527,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.6,
+      "deadlock_threshold": 1.01,
+      "mean_makespan_reduction_vs_reservation_pct": 0.749,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.75,
+      "deadlock_threshold": 0.3,
+      "mean_makespan_reduction_vs_reservation_pct": 0.104,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.75,
+      "deadlock_threshold": 0.6,
+      "mean_makespan_reduction_vs_reservation_pct": -0.566,
+      "n": 20
+    },
+    {
+      "conflict_threshold": 0.75,
+      "deadlock_threshold": 1.01,
+      "mean_makespan_reduction_vs_reservation_pct": 0.007,
+      "n": 20
+    }
+  ],
+  "chosen": {
+    "conflict_threshold": 0.6,
+    "deadlock_threshold": 1.01,
+    "mean_makespan_reduction_vs_reservation_pct": 0.749,
+    "n": 20
+  },
+  "collisions": 0
+}

@@ -168,17 +168,18 @@ class LiveDashboard:
                 def _bg_benchmark():
                     report = run_benchmark_route(seed_count=10, robot_count=5, task_count=12, steps=30)
                     with self.lock:
-                        self.simulator.latest_benchmark_summary = {
-                            "seeds": report.get("seed_count", 10),
-                            "decentralized_makespan_mean": report.get("summary", {}).get("decentralized", {}).get("mean_makespan", 34.2),
-                            "baseline_makespan_mean": report.get("summary", {}).get("baseline", {}).get("mean_makespan", 44.8),
-                            "decentralized_throughput_gain_pct": report.get("summary", {}).get("improvement_pct", 23.6),
-                            "decentralized_collisions": report.get("summary", {}).get("actual_collisions", 0),
-                            "baseline_collisions": 0,
-                            "decentralized_deadlocks": 0,
-                            "baseline_deadlocks": 1,
+                        # Keep the measured EdgeSwarm benchmark as the headline; record the legacy benchmark
+                        # result verbatim (no fabricated fallbacks) for transparency.
+                        from src.metrics.measured_benchmark import legacy_benchmark_summary
+                        measured = legacy_benchmark_summary() or {}
+                        measured["legacy_benchmark_run"] = {
+                            "note": "legacy simulator benchmark: makespan equals the step budget (AUDIT_REPORT section 9)",
+                            "improvement_pct": report.get("summary", {}).get("improvement_pct"),
+                            "baseline_mean_makespan": report.get("summary", {}).get("baseline", {}).get("mean_makespan"),
+                            "decentralized_mean_makespan": report.get("summary", {}).get("decentralized", {}).get("mean_makespan"),
                             "timestamp": time.time(),
                         }
+                        self.simulator.latest_benchmark_summary = measured
                         self.simulator.metrics.record_event({"type": "benchmark_completed", "summary": self.simulator.latest_benchmark_summary, "time": self.simulator.time_step})
                 threading.Thread(target=_bg_benchmark, daemon=True).start()
             elif action == "trigger_scenario":

@@ -58,9 +58,9 @@ def export_simulation_to_excel(sim: "BaseFleetSimulator") -> bytes:
         ("P2P Messages Exchanged", str(sim.metrics.messages_sent), "Direct mesh traffic overhead"),
         ("Deadlock Cycles Resolved", str(sim.metrics.deadlocks), "Broken via Wait-For Graph (WFG) DFS cycle breaking"),
         ("Replanning Events", str(sim.metrics.replanning_events), "Dynamic detours around obstacles and yield maneuvers"),
-        ("Decentralized Throughput Gain", "+23.6%", "Empirical gain over centralized master controller across 10 seeds"),
+        ("Decentralized Makespan Reduction", (f"{sim.latest_benchmark_summary['decentralized_throughput_gain_pct']:+.1f}%" if sim.latest_benchmark_summary else "not measured"), "EdgeSwarm vs stop-and-wait, measured benchmark (experiments/results/benchmark_summary.json)"),
         ("Fleet Congestion Score", f"{sim.congestion_report.score:.1f}% ({sim.congestion_report.level})", "Spatial corridor density and queue pressure"),
-        ("Edge Compute Profile", f"{sim.edge_hardware.get('avg_cpu_percent', 24.5)}% CPU, {sim.edge_hardware.get('avg_ram_gb', 8.22)} GB RAM", "DEDICAT6G EU Operational Hardware Telemetry reference"),
+        ("Edge Compute Profile", f"{sim.edge_hardware.get('avg_cpu_percent', 24.5)}% CPU, {sim.edge_hardware.get('avg_ram_gb', 8.22)} GB RAM", "Synthetic per-state model, not measured"),
     ]
     for row in kpi_data:
         ws_kpi.append(row)
@@ -172,12 +172,12 @@ def export_simulation_to_excel(sim: "BaseFleetSimulator") -> bytes:
 
     bm = sim.latest_benchmark_summary or {}
     ws_bm.append([
-        "Mean (10 Seeds)",
-        f"{bm.get('baseline_makespan_mean', 44.8)} ticks",
-        f"{bm.get('decentralized_makespan_mean', 34.2)} ticks",
-        f"+{bm.get('decentralized_throughput_gain_pct', 23.6)}%",
-        "0 (Safe)",
-        "0 (Resolved)",
+        f"Mean ({bm.get('seeds', 0)} seeds x {bm.get('cells', 0)} cells)" if bm else "not measured",
+        f"{bm.get('baseline_makespan_mean')} ticks" if bm else "-",
+        f"{bm.get('decentralized_makespan_mean')} ticks" if bm else "-",
+        f"{bm.get('decentralized_throughput_gain_pct'):+.1f}%" if bm else "-",
+        str(bm.get("decentralized_collisions", "-")),
+        str(round(bm.get("decentralized_deadlocks", 0))) if bm else "-",
     ])
 
     # -------------------------------------------------------------

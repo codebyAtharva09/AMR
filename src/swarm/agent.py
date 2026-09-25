@@ -206,7 +206,7 @@ class RobotAgent:
         return {rid: b for rid, b in self.beliefs.items() if t - b.sent_tick <= max_age}
 
     def belief_max_age(self) -> int:
-        if self.mode == FULL:
+        if self.cfg.uses_resilience():
             return 12
         return self.cfg.stale_drop_ticks
 
@@ -214,7 +214,7 @@ class RobotAgent:
         """Blockages this robot will plan around (mode FULL may choose to wait instead)."""
         if not self.known_blocked:
             return frozenset()
-        if self.mode != FULL or not self.cfg.uses_predictive_rerouting():
+        if not self.cfg.uses_predictive_rerouting():
             return frozenset(self.known_blocked.keys())
         return frozenset(c for c in self.known_blocked if c not in self._wait_through)
 
@@ -248,7 +248,7 @@ class RobotAgent:
                         self.tasks[tid].status = "done"
                 if p.get("task") and p["task"] in self.tasks and p.get("c"):
                     self.tasks[p["task"]].status = "taken"
-                if self.mode == FULL:
+                if self.cfg.uses_predictive_rerouting():
                     for x, y, first in p.get("blk", []):
                         c = (x, y)
                         if c not in self.known_blocked and self.cleared_cells.get(c, -1) < first:
@@ -572,7 +572,7 @@ class RobotAgent:
                 self.outage_start = None
             self.recovery_start = t
             self.log_decision(t, "COMM_RECOVERED", "Radio contact restored: re-synchronising state and reservations")
-            if self.mode == FULL:
+            if self.cfg.uses_resilience():
                 # resync: drop very old beliefs, force replan with fresh reservations
                 for rid in [r for r, b in self.beliefs.items() if t - b.sent_tick > 12]:
                     del self.beliefs[rid]
@@ -695,8 +695,14 @@ class RobotAgent:
         self.log_decision(t, "CHARGE", f"Battery {self.battery:.0f}%: heading to dock {dock}")
 
     def _allocate(self, t: int, env) -> None:
-        if self.mode == FULL and self.comm_mode == SAFE_FALLBACK:
-            return  # cannot synchronise claims while isolated
+        if self.cfg.uses_resilience() and self.comm_mode == SAFE_FALLBACK:
+            # cannot synchronise task claims while isolated: leave the dead zone towards the
+            # home area (where the radio worked at start-up) instead of idling inside it
+            if self.state == IDLE and self.pos != self.home:
+                self.state = TO_HOME
+                self.need_replan = True
+                self.log_decision(t, "SAFE_FALLBACK", "Isolated with no task: returning to home area to re-establish radio contact")
+            return
         open_tasks = [ti for ti in self.tasks.values() if ti.status == "open" and (ti.claim is None or ti.claim[0] == self.robot_id)]
         if not open_tasks:
             if self.state == IDLE and self.pos != self.home and t > getattr(self, "home_hold_until", -1):
@@ -708,7 +714,7 @@ class RobotAgent:
         else:
             choice = self._greedy_choice(t, open_tasks)
         if choice is None:
-            if self.mode == FULL and self.state == IDLE and self.battery < 60:
+            if self.cfg.uses_smart_allocation() and self.state == IDLE and self.battery < 60:
                 self._go_charge(t)
             elif self.state == IDLE and self.pos != self.home:
                 self.state = TO_HOME
@@ -1009,7 +1015,7 @@ class RobotAgent:
                 for tau in (t, t + 1):
                     reserved.add((pp, tau))
                     owner[(pp, tau)] = rid
-            if self.mode == FULL and age >= 2:
+            if self.cfg.uses_resilience() and age >= 2:
                 # uncertainty inflation for stale peers (PREDICTIVE_LOCAL)
                 u = b.uncertainty_radius(t)
                 for dx in range(-u, u + 1):
@@ -1020,7 +1026,7 @@ class RobotAgent:
         for r in sensing["robots"]:
             if r["pos"] not in known_positions and self.belief_at(r["pos"], t + 1) is None:
                 parked.add(r["pos"])
-                if self.mode == FULL:
+                if self.cfg.uses_resilience():
                     for dx, dy in DIRS:
                         c = (r["pos"][0] + dx, r["pos"][1] + dy)
                         soft[c] = soft.get(c, 0.0) + 1.0
@@ -1107,8 +1113,10 @@ class RobotAgent:
                           "ttc": round(float(ttc), 1), "level": risk_level(float(pc)),
                           "peer_pos": list(b.predicted_pos(t)), "peer_has_priority": tuple(b.prio) > self.prio()})
         self.last_risks = risks
-        tau_c = self.cfg.ai_conflict_threshold if self.cfg.ai_conflict_threshold is not None else self.ai.conflict_threshold
-        tau_d = self.cfg.ai_deadlock_threshold if self.cfg.ai_deadlock_threshold is not None else self.ai.deadlock_threshold
+        # action thresholds (operating point of the policy) - distinct from the F1-optimal
+        # classification thresholds; tuned on validation seeds (see docs/EDGE_AI.md)
+        tau_c = self.cfg.ai_conflict_threshold if self.cfg.ai_conflict_threshold is not None else self.ai.action_conflict_threshold
+        tau_d = self.cfg.ai_deadlock_threshold if self.cfg.ai_deadlock_threshold is not None else self.ai.action_deadlock_threshold
         myprio = self.prio()
         # I act only for peers that outrank me (or whose priority is unknown/stale): consistent decentralized rule
         acting = [(b, r) for b, r in zip(peers, risks)
@@ -1156,7 +1164,7 @@ class RobotAgent:
             return
         # keep the original route
         self.path = saved
-        if r["deadlock"] >= tau_d and len(self.path) > 1:
+        if r["deadlock"] >= tau_d and r["conflict"] >= tau_c and len(self.path) > 1:
             nxt = self.path[1]
             fut = b.path[max(0, t - b.sent_tick):][:4] or [b.pos]
             if nxt in fut and self.hold_ticks == 0 and self.blocked_streak < 3:
@@ -1379,7 +1387,7 @@ class RobotAgent:
                 self._backoff(t, avoid={self.last_blocker_cell})
                 self.blocked_streak = 0
         # unknown-intent handling (FULL): immediately detour around robots we cannot hear
-        if self.mode == FULL and getattr(self, "_blocked_reason", None) == "unknown_intent" and self.blocked_streak >= 1:
+        if self.cfg.uses_resilience() and getattr(self, "_blocked_reason", None) == "unknown_intent" and self.blocked_streak >= 1:
             self._blocked_reason = None
             for r in sensing["robots"]:
                 if self.belief_at(r["pos"], t + 1) is None or t - self.belief_at(r["pos"], t + 1).sent_tick > 1:
@@ -1440,7 +1448,7 @@ class RobotAgent:
         if yr:
             payload["yr"] = yr
             self._yield_request = None
-        if self.mode == FULL:
+        if self.cfg.uses_predictive_rerouting():
             blk = sorted(self.known_blocked.items(), key=lambda kv: -kv[1])[:10]
             payload["blk"] = [[c[0], c[1], first] for c, first in blk]
             clr = sorted(self.cleared_cells.items(), key=lambda kv: -kv[1])[:10]

@@ -115,22 +115,25 @@ class SwarmConfig:
 
     # Scenario overrides (filled by scenario builder)
     scenario_params: dict[str, Any] = field(default_factory=dict)
+    # Component switches for leave-one-out analysis of the full system: any of
+    # "ai", "resilience", "allocation", "rerouting"
+    disable: tuple = ()
 
     # Feature toggles derived from mode (can be overridden for experiments)
     def uses_reservations(self) -> bool:
         return self.mode in (RESERVATION, RESERVATION_AI, FULL)
 
     def uses_ai(self) -> bool:
-        return self.mode in (RESERVATION_AI, FULL)
+        return self.mode in (RESERVATION_AI, FULL) and "ai" not in self.disable
 
     def uses_resilience(self) -> bool:
-        return self.mode == FULL
+        return self.mode == FULL and "resilience" not in self.disable
 
     def uses_smart_allocation(self) -> bool:
-        return self.mode == FULL
+        return self.mode == FULL and "allocation" not in self.disable
 
     def uses_predictive_rerouting(self) -> bool:
-        return self.mode == FULL
+        return self.mode == FULL and "rerouting" not in self.disable
 
     def uses_p2p_intents(self) -> bool:
         return self.mode != STOP_AND_WAIT

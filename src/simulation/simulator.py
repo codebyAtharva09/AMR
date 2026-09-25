@@ -118,17 +118,9 @@ class BaseFleetSimulator:
             "dataset_reference": "Simulated Edge Telemetry — DEDICAT6G Reference",
             "status": "NOMINAL - EDGE TELEMETRY ACTIVE",
         }
-        self.latest_benchmark_summary: dict[str, Any] | None = {
-            "seeds": 10,
-            "baseline_makespan_mean": 44.8,
-            "decentralized_makespan_mean": 34.2,
-            "decentralized_throughput_gain_pct": 23.6,
-            "decentralized_collisions": 0,
-            "baseline_collisions": 0,
-            "decentralized_deadlocks": 0,
-            "baseline_deadlocks": 1,
-            "timestamp": time.time(),
-        }
+        # Previously hard-coded (44.8 / 34.2 / +23.6%); now read from a measured benchmark or None.
+        from src.metrics.measured_benchmark import legacy_benchmark_summary
+        self.latest_benchmark_summary: dict[str, Any] | None = legacy_benchmark_summary()
 
     def add_robot(self, robot: AMRRobot) -> None:
         self.robots[robot.robot_id] = robot
@@ -1385,7 +1377,7 @@ class BaseFleetSimulator:
         self._detect_and_resolve_wfg_deadlocks()
         self.reservation_table.prune_expired(self.time_step)
 
-        # DEDICAT6G Hardware Telemetry Dynamic Profiler
+        # Synthetic per-state CPU/RAM model (NOT measured telemetry; see docs/LIMITATIONS.md)
         for robot in self.robots.values():
             if robot.state in {"REROUTING", "NEGOTIATING"}:
                 robot.cpu_usage = round(self.rng.uniform(94.0, 99.2), 1)
@@ -1592,7 +1584,9 @@ class BaseFleetSimulator:
                 self.scenario_registry.execute("amr_failure", self)
         elif self.demo_timer <= 86:
             self.demo_stage = 9
-            self.demo_banner = "STEP 9/10: Centralized Baseline vs Decentralized Fleet Multi-Seed Benchmark (+23.6% Gain)"
+            gain = (self.latest_benchmark_summary or {}).get("decentralized_throughput_gain_pct")
+            self.demo_banner = ("STEP 9/10: Stop-and-Wait vs Decentralized Multi-Seed Benchmark "
+                                + (f"({gain:+.1f}% makespan, measured)" if gain is not None else "(run the benchmark to measure)"))
         else:
             self.demo_stage = 10
             self.demo_banner = "STEP 10/10: Judge Demo Tour Complete — Zero Collisions & 9-Sheet Dossier Ready for Audit"
@@ -1605,7 +1599,7 @@ class BaseFleetSimulator:
                     "amrs": len(self.robots),
                     "tasks": len(self.tasks),
                     "makespan": self.metrics.makespan,
-                    "throughput_gain": 23.6,
+                    "throughput_gain": (self.latest_benchmark_summary or {}).get("decentralized_throughput_gain_pct"),
                     "conflicts_prevented": self.metrics.prevented_conflicts,
                     "deadlocks_resolved": self.metrics.deadlocks,
                     "sla_met_pct": 100.0,
@@ -2291,8 +2285,8 @@ class BaseFleetSimulator:
             "avg_ram_gb": fleet_ram,
             "ping_ms": 8.2 if not self.network_degraded else 214.5,
             "bandwidth_mbps": 124.5 if not self.network_degraded else 18.2,
-            "dataset_reference": "Simulated Edge Telemetry — DEDICAT6G Reference",
-            "status": "NOMINAL - EDGE TELEMETRY ACTIVE" if not self.network_degraded else "DEGRADED - VELOCITY THROTTLED",
+            "dataset_reference": "Synthetic per-state model (not measured); ping/bandwidth are fixed display values",
+            "status": "NOMINAL (SIMULATED)" if not self.network_degraded else "DEGRADED (SIMULATED)",
         }
 
         # -----------------------------------------------------------------
@@ -2311,12 +2305,13 @@ class BaseFleetSimulator:
             for t in self.tasks.values()
         ]
 
-        # 2. Makespan comparison
-        baseline_ms = 44.8
-        decent_ms = round(float(self.metrics.makespan if self.metrics.makespan > 0 else 34.2), 1)
+        # 2. Makespan comparison (measured benchmark mean vs this run; no hard-coded fallback)
+        bm = self.latest_benchmark_summary or {}
+        baseline_ms = bm.get("baseline_makespan_mean")
+        decent_ms = round(float(self.metrics.makespan), 1) if self.metrics.makespan > 0 else None
 
-        # 3. Throughput gain %
-        throughput_gain = round(((baseline_ms - decent_ms) / baseline_ms) * 100, 1) if baseline_ms > decent_ms else 23.6
+        # 3. Throughput gain % (measured 30-seed benchmark, stop-and-wait vs EdgeSwarm)
+        throughput_gain = bm.get("decentralized_throughput_gain_pct")
 
         # 4. Robot utilization rates
         utilization_breakdown = {
@@ -2368,15 +2363,9 @@ class BaseFleetSimulator:
             for r in self.robots.values()
         }
 
-        # 10. Scenario comparison matrix
-        scenario_matrix = [
-            {"scenario": "Aisle Blockage", "makespan": 36.4, "conflicts": 0, "status": "PASSED"},
-            {"scenario": "AMR Motor Failure", "makespan": 38.2, "conflicts": 0, "status": "PASSED"},
-            {"scenario": "Charging Outage", "makespan": 39.0, "conflicts": 0, "status": "PASSED"},
-            {"scenario": "Emergency Preemption", "makespan": 31.5, "conflicts": 0, "status": "PASSED"},
-            {"scenario": "Head-On P2P Bidding", "makespan": 33.8, "conflicts": 0, "status": "PASSED"},
-            {"scenario": "WFG Deadlock Break", "makespan": 35.1, "conflicts": 0, "status": "PASSED"},
-        ]
+        # 10. Scenario comparison matrix (measured, 10 AMRs, 30 seeds) - was a fixed table
+        from src.metrics.measured_benchmark import legacy_scenario_matrix
+        scenario_matrix = legacy_scenario_matrix()
 
         # Operational Metrics (Phase 7)
         completed_tasks_list = [t for t in self.tasks.values() if t.status == "completed"]

@@ -2169,7 +2169,7 @@
       // 2. Makespan Progress
       drawChart('chartMakespan', (ctx, w, h) => {
         const actualMs = makespanMs.decentralized_actual || 0;
-        const baselineMean = makespanMs.baseline_mean || 44.8;
+        const baselineMean = makespanMs.baseline_mean || 0;  // measured benchmark mean (0 = not measured yet)
         const maxV = Math.max(50, actualMs, baselineMean);
         const bH = (baselineMean / maxV) * (h - 45);
         const dH = (actualMs / maxV) * (h - 45);
@@ -2199,7 +2199,7 @@
       drawChart('chartThroughput', (ctx, w, h) => {
         ctx.fillStyle = '#059669';
         ctx.font = '900 28px monospace';
-        ctx.fillText(`+${Number(throughputVal).toFixed(1)}%`, 24, h / 2 - 4);
+        ctx.fillText(analytics.throughput_gain_pct == null ? 'n/a' : `${Number(throughputVal) >= 0 ? '+' : ''}${Number(throughputVal).toFixed(1)}%`, 24, h / 2 - 4);
         ctx.fillStyle = '#334155';
         ctx.font = '11px sans-serif';
         ctx.fillText('Measured delivery throughput gain over baseline', 24, h / 2 + 20);
@@ -2208,7 +2208,9 @@
         ctx.fillText('Derived from actual completed task deliveries and active fleet size', 24, h / 2 + 38);
       });
       if ($('analysis_chartThroughput')) {
-        $('analysis_chartThroughput').textContent = `The measured throughput demonstrates a ${Number(throughputVal).toFixed(1)}% efficiency speedup as decentralized collision avoidance prevents aisle gridlock.`;
+        $('analysis_chartThroughput').textContent = analytics.throughput_gain_pct == null
+          ? 'No measured benchmark available yet (run: python3 main.py --mode swarm-benchmark).'
+          : `Measured EdgeSwarm benchmark (30 seeds, stop-and-wait vs full system): mean makespan reduction ${Number(throughputVal).toFixed(1)}%. See the Command Center benchmark panel for per-scenario results.`;
       }
 
       // 4. Robot Utilization

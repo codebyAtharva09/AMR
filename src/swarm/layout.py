@@ -65,12 +65,13 @@ class GridMap:
         return self.in_bounds(c) and c not in self.blocked
 
     def neighbors(self, c: Cell) -> list[Cell]:
-        x, y = c
-        out = []
-        for dx, dy in DIRS:
-            n = (x + dx, y + dy)
-            if self.walkable(n):
-                out.append(n)
+        cache = self.__dict__.setdefault("_nbr_cache", {})
+        key = (c, len(self.blocked))
+        out = cache.get(key)
+        if out is None:
+            x, y = c
+            out = [n for n in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)) if self.walkable(n)]
+            cache[key] = out
         return out
 
     def free_cells(self) -> list[Cell]:

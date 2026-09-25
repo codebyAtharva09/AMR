@@ -43,6 +43,23 @@ class PortableModel:
                     "value": np.asarray(t["value"], dtype=np.float64),
                     "depth": int(t["depth"]),
                 })
+            # pad all trees into (n_trees, max_nodes) arrays so the whole ensemble is evaluated
+            # in one vectorised pass per depth level
+            T = len(self.trees)
+            M = max(len(t["feature"]) for t in self.trees)
+            self._F = np.full((T, M), -1, dtype=np.int64)
+            self._TH = np.zeros((T, M))
+            self._L = np.zeros((T, M), dtype=np.int64)
+            self._R = np.zeros((T, M), dtype=np.int64)
+            self._V = np.zeros((T, M))
+            for i, t in enumerate(self.trees):
+                n = len(t["feature"])
+                self._F[i, :n] = t["feature"]
+                self._TH[i, :n] = t["threshold"]
+                self._L[i, :n] = t["left"]
+                self._R[i, :n] = t["right"]
+                self._V[i, :n] = t["value"]
+            self._D = max(t["depth"] for t in self.trees)
             self.init = float(spec.get("init", 0.0))
             self.learning_rate = float(spec.get("learning_rate", 1.0))
         else:
@@ -70,11 +87,31 @@ class PortableModel:
             node = np.where(leaf, node, nxt)
         return t["value"][node]
 
+    def _ensemble_eval(self, X: np.ndarray) -> np.ndarray:
+        """Sum of leaf values over all trees, vectorised over (trees x samples)."""
+        T = self._F.shape[0]
+        S = X.shape[0]
+        ti = np.arange(T)[:, None]
+        si = np.arange(S)[None, :]
+        node = np.zeros((T, S), dtype=np.int64)
+        for _ in range(self._D + 1):
+            f = self._F[ti, node]
+            leaf = f < 0
+            if leaf.all():
+                break
+            xv = X[si, np.where(leaf, 0, f)]
+            nxt = np.where(xv <= self._TH[ti, node], self._L[ti, node], self._R[ti, node])
+            node = np.where(leaf, node, nxt)
+        return self._V[ti, node].sum(axis=0)
+
     def raw(self, X: np.ndarray) -> np.ndarray:
+        X = np.asarray(X, dtype=np.float64)
+        if X.shape[0] > 20000:  # bound memory of the vectorised ensemble evaluation
+            return np.concatenate([self.raw(X[i:i + 20000]) for i in range(0, X.shape[0], 20000)])
         X = self._prep(X)
         if self.kind == "logreg":
             z = X @ self.coef + self.intercept
-            return 1.0 / (1.0 + np.exp(-z)) if self.task == "classification" else z
+            return 1.0 / (1.0 + np.exp(-np.clip(z, -50, 50))) if self.task == "classification" else z
         if self.kind == "mlp":
             h = X
             for i, (W, b) in enumerate(zip(self.W, self.b)):
@@ -83,19 +120,14 @@ class PortableModel:
                     h = np.maximum(h, 0.0)
             h = h.reshape(-1)
             if self.task == "classification":
-                return 1.0 / (1.0 + np.exp(-h))
+                return 1.0 / (1.0 + np.exp(-np.clip(h, -50, 50)))
             return h
         if self.kind == "forest":
-            acc = np.zeros(X.shape[0])
-            for t in self.trees:
-                acc += self._tree_eval(t, X)
-            return acc / len(self.trees)
+            return self._ensemble_eval(X) / len(self.trees)
         # gbm
-        acc = np.full(X.shape[0], self.init)
-        for t in self.trees:
-            acc += self.learning_rate * self._tree_eval(t, X)
+        acc = self.init + self.learning_rate * self._ensemble_eval(X)
         if self.task == "classification":
-            return 1.0 / (1.0 + np.exp(-acc))
+            return 1.0 / (1.0 + np.exp(-np.clip(acc, -50, 50)))
         return acc
 
 
@@ -113,6 +145,8 @@ class ConflictPredictor:
         self.expected_delay_given_deadlock = float(self.meta.get("expected_delay_given_deadlock", 8.0))
         self.conflict_threshold = float(self.meta.get("conflict_threshold", 0.5))
         self.deadlock_threshold = float(self.meta.get("deadlock_threshold", 0.5))
+        self.action_conflict_threshold = float(self.meta.get("action_conflict_threshold", max(0.5, self.conflict_threshold)))
+        self.action_deadlock_threshold = float(self.meta.get("action_deadlock_threshold", max(0.5, self.deadlock_threshold)))
         self.calls = 0
         self.rows = 0
         self.total_s = 0.0
