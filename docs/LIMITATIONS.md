@@ -33,7 +33,7 @@
 
 ## 3. Edge-AI
 
-- It is trained on simulated rollouts of mode C, then used inside modes D and E, whose behaviour differs
+- It is trained on simulated rollouts of an *earlier revision* of mode C (before the v2/v3 planner fixes), then used inside modes D and E, whose behaviour differs
   (distribution shift).
 - The classifier is moderate: test F1 0.51, precision 0.44. About half of the alarms are false.
 - On validation seeds the best action threshold improved makespan by only about 0.7% over mode C. See the ablation

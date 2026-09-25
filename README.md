@@ -1,13 +1,50 @@
 # Smart Industrial Warehouse — Decentralized Autonomous AMR Fleet Coordination
 
-[![Tests](https://img.shields.io/badge/Tests-109%2F109%20Passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/pytest-155%20passing-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)]()
 [![Architecture](https://img.shields.io/badge/Architecture-Decentralized%20P2P%20Mesh-orange.svg)]()
-[![Standard](https://img.shields.io/badge/Standard-ISO%203691--4%20Compliant-purple.svg)]()
 
 A high-performance, decentralized coordination platform for Autonomous Mobile Robot (AMR) fleets operating in smart industrial warehouses. Designed to eliminate single points of failure inherent to centralized fleet dispatchers, this platform empowers every AMR as an independent edge computing node utilizing peer-to-peer (P2P) mesh communication, spatio-temporal reservation tables, dynamic negotiation protocols, and directed Wait-For-Graph (WFG) deadlock resolution.
 
 Includes an interactive **Three.js 3D Digital Twin**, real-time WebSocket telemetry streaming, automated Excel KPI reporting, and a 10-step executive live demonstration tour.
+
+## EdgeSwarm: predictive, resilient, energy-aware decentralized coordination (SIH26123)
+
+Every AMR runs its own copy of the coordinator (`src/swarm/agent.py`) using only its sensors and radio messages.
+The radio drops, delays and loses messages; a ground-truth monitor counts every collision.
+
+**Measured in simulation** (10 scenarios × 3/5/10/15 AMRs × 30 seeds, `experiments/results/benchmark_summary.json`):
+
+| | Stop-and-wait baseline | EdgeSwarm (full) |
+|---|---|---|
+| Inter-robot collisions (1200 runs each) | 0 | **0** |
+| Mean makespan | 217.5 ticks | **163.1 ticks (−25.0%)** |
+| Cells with ≥20% reduction | – | 21 / 40 (all 10- and 15-AMR cells; not at 3 AMRs, most 5-AMR cells) |
+
+The main gain comes from space-time reservations; the Edge-AI conflict predictor adds little on top (see ablation in
+`docs/EXPERIMENT_RESULTS.md`). No physical-robot tests have been done.
+
+```bash
+pip install -r requirements.txt
+python3 main.py --mode dashboard            # then open /command-center (Fleet Command Center, 7-scene demo)
+python3 main.py --mode edge-demo            # same demo headless
+python3 main.py --mode swarm --scenario high_congestion --robots 10 --seed 3
+python3 main.py --mode swarm-benchmark --quick
+python3 main.py --mode ablation --quick
+python3 main.py --mode train-ai
+python3 main.py --mode deadlock-suite
+pytest -q
+```
+
+Docs: [ARCHITECTURE](docs/ARCHITECTURE.md) · [EDGE_AI](docs/EDGE_AI.md) ·
+[COMMUNICATION_RESILIENCE](docs/COMMUNICATION_RESILIENCE.md) · [TASK_ALLOCATION](docs/TASK_ALLOCATION.md) ·
+[DEADLOCK_HANDLING](docs/DEADLOCK_HANDLING.md) · [BENCHMARK_METHODOLOGY](docs/BENCHMARK_METHODOLOGY.md) ·
+[EXPERIMENT_RESULTS](docs/EXPERIMENT_RESULTS.md) · [LIMITATIONS](docs/LIMITATIONS.md) · [NOVELTY](docs/NOVELTY.md) ·
+[DEMO_SCRIPT](docs/DEMO_SCRIPT.md) · [FINAL_READINESS](FINAL_READINESS.md)
+
+The original simulator below is kept unchanged as the baseline (`--mode demo / dashboard / benchmark`).
+
+---
 
 ---
 
@@ -37,7 +74,7 @@ Includes an interactive **Three.js 3D Digital Twin**, real-time WebSocket teleme
 - **Authoritative Hard Rack Obstacles**: 24 physical industrial storage racks (small, medium, large, multi-tier) strictly enforced across A* search, collision detection, movement physics, and task generation. Zero rack ghosting or corner cutting.
 - **Per-AMR Battery Governance**: Individual battery tracking (<35% trigger). Low-battery AMRs safely complete atomic steps, route through walkable aisles to available charging docks, charge for **exactly 5 seconds** (5 simulation ticks) to 100.0% full capacity, and resume assigned work queues without halting other fleet members.
 - **Live Speed Scaling**: Global (0.1x – 5.0x) and per-AMR speed adjustment updates velocity live while preserving AMR identity, coordinates, active routes, and task queues without resets or teleportation.
-- **ISO 3691-4 Industrial Safety Supervisor**: Enforces dynamic RESTRICTED, CAUTION, and CLEAR safety zones around hazards, triggering automated corridor clearing and safety stops.
+- **ISO 3691-4-inspired Safety Supervisor** (not certified): Enforces dynamic RESTRICTED, CAUTION, and CLEAR safety zones around hazards, triggering automated corridor clearing and safety stops.
 - **Comprehensive Analytics & Export**: Live Chart.js telemetry (makespan, throughput, message overhead, conflict mitigation) and automated multi-tab Excel workbook generation.
 
 ---
@@ -263,17 +300,9 @@ pytest tests/test_final_targeted_fixes.py -v
 
 ## Benchmark Results
 
-Empirical results captured across high-density workloads on the default warehouse layout:
-
-| Fleet Configuration | Task Count | Completion Rate | Total Steps | Makespan Reduction | Stalls / Freezes |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **5 AMRs** | 100 tasks | **100% (100/100)** | 819 ticks | Baseline | **0** |
-| **10 AMRs** | 100 tasks | **100% (100/100)** | 491 ticks | **-40.0%** | **0** |
-| **20 AMRs** | 100 tasks | **100% (100/100)** | 285 ticks | **-65.2%** | **0** |
-
-- **Dock Session Duration**: Exactly 5.0 seconds (5 simulation ticks) across all charging sessions.
-- **Physical Rack Penetrations**: **0** penetrations recorded across all tests.
-- **Full Test Suite Status**: **109 / 109 Passed (100%)**.
+The table that used to be here (819/491/285 ticks) had no reproducible experiment behind it; see `AUDIT_REPORT.md`.
+Measured results for the legacy simulator are in `docs/baseline_results.md`; results for EdgeSwarm are in
+[`docs/EXPERIMENT_RESULTS.md`](docs/EXPERIMENT_RESULTS.md).
 
 ---
 
