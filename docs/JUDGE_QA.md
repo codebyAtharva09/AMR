@@ -14,8 +14,8 @@ have not measured, say so. Honest answers score better than confident guesses.
 >
 > This is already built. We tested it over 2,400 simulated runs against the stop-and-wait baseline from the problem
 > statement. There were zero robot-to-robot collisions, and jobs finished 25% faster overall and 36% faster with 15
-> robots. We also report where it is weaker: small fleets of 3–5 robots gain only 7–15%. Next we put it on three
-> Raspberry Pi robots."
+> robots. We also report where it is weaker: small fleets of 3–5 robots gain only 7–15%. It is pure software. Next we package it
+> as a ROS 2 node so it can run on the robots' own computers."
 
 ## Likely questions
 
@@ -37,7 +37,7 @@ It is simulation, and we say so on every slide. It was built so the results are 
   (10 situations × 5 and 10 robots), the result was *identical* to the simulation. That was about 129,000 UDP
   messages with 0 collisions (`experiments/results/distributed_check.json`).
 
-The next step is 3 Raspberry Pi robots on a test floor.
+The next step is a ROS 2 package tested in a Gazebo multi-robot simulation. It is pure software; no new hardware is needed.
 
 **3. How can you promise zero collisions if messages are lost?**
 Safety does not depend on the radio. A robot enters a cell only if two things hold:
@@ -75,8 +75,8 @@ task batching for small fleets.
 
 - Radio use stays about 300 bytes per robot per tick, whether there are 3 or 20 robots.
 - Thinking time per robot grows slowly: 1.6 ms with 3 robots and 6.5 ms with 20 (laptop).
-- The Raspberry Pi 4 figure is an estimate: laptop time × an assumed 6× slowdown gives about 29 ms per decision with
-  15 robots. We have not measured it on a Pi yet.
+- That is a small fraction of each 1-second decision cycle. Even an edge computer several times slower than a laptop
+  would have plenty of headroom, although we have not measured one.
 
 **8. How do you handle deadlocks?**
 Robots build a wait-for chain from what they hear. When they find a circle, the lowest-priority robot gives way or
@@ -84,9 +84,10 @@ parks in a passing bay. There are also rules for stations and robots that stop m
 puzzles, stop-and-wait solved circular wait and the 4-way crossing 0 out of 10 times. EdgeSwarm solved every puzzle
 10 out of 10 times.
 
-**9. What hardware, and what does it cost?**
-One Raspberry Pi 4 (4 GB) per robot, about ₹11.5k (robu.in, Sep 2026), with no central server to buy. The model
-needs only NumPy (`requirements-edge.txt`, `Dockerfile.edge`).
+**9. Does it need new hardware? What does it cost?**
+No. EdgeSwarm is software. It runs on the computer each AMR already has (any Linux box: Raspberry Pi- or Jetson-class
+boards, or an industrial PC), and there is no central server to buy or license. The AI model needs only NumPy
+(`requirements-edge.txt`, `Dockerfile.edge`). The code is open-source (MIT).
 
 **10. Why not ROS 2 / Nav2 / Gazebo right away?**
 We needed thousands of reproducible runs with a ground-truth monitor, so we built a fast grid simulator first.
