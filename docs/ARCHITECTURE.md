@@ -8,7 +8,7 @@ This repository now contains **two simulators side by side**:
 | Decision model | one process reads every robot's true state, robots updated one after another | every robot decides **simultaneously** from its **own** inbox, sensors and odometry |
 | Communication | message log, no range/latency/loss applied | radio model with range, latency + jitter, loss, dead zones, outages, per-link failures, bytes |
 | Planning | static A*, current-tick reservation | stop-and-wait / reactive A* / **space-time A*** with reservations from peers' broadcast plans |
-| UI | classic dashboard `/` (unchanged, now links to the Command Center) | Fleet Command Center `/command-center` |
+| UI | classic dashboard (removed) | Fleet Command Center `/command-center` (`/` redirects here) |
 | CLI | `--mode demo | dashboard | benchmark | simulation` (unchanged) | `--mode swarm | edge-demo | swarm-benchmark | ablation | train-ai | deadlock-suite | edge-profile` |
 
 All 109 original tests still pass. The legacy code was only changed to remove the hard-coded benchmark figures

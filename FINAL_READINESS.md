@@ -22,7 +22,7 @@ Every "evidence" entry is a file in this repository.
 | 15 | Zero collisions | ✅ (simulation) | `success_criteria.zero_inter_robot_collisions` |
 | 16 | ≥20% makespan reduction | 🟡 | 25.0% overall, 21/40 cells; not met for 3-AMR and most 5-AMR cells (`docs/EXPERIMENT_RESULTS.md` §3) |
 | 17 | Ablation A–E | ✅ | `experiments/results/ablation_summary.json` |
-| 18 | Tests | ✅ | `pytest -q` → 156 passed; E2E passes |
+| 18 | Tests | ✅ | `pytest -q` → 154 passed; E2E passes |
 | 23 | Distributed runtime (1 OS process per robot, UDP) | ✅ | `--mode distributed`; 20/20 runs identical to in-process (`experiments/results/distributed_check.json`) |
 | 24 | ROS 2 interface spec | 🟡 | `deploy/ros2/` (message + topic mapping; node not yet written) |
 | 19 | Performance profile | ✅ | `experiments/results/performance.json` |

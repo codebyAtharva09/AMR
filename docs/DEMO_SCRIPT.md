@@ -5,7 +5,7 @@
 ```bash
 pip install -r requirements.txt
 python3 main.py --mode dashboard          # prints the port, usually http://127.0.0.1:8000
-# open http://127.0.0.1:8000/command-center (the classic dashboard stays at /)
+# open http://127.0.0.1:8000/command-center (/ redirects there)
 ```
 
 - Offline fallback: `python3 main.py --mode edge-demo` runs the same seven scenes in the terminal.

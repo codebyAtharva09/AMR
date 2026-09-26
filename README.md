@@ -1,12 +1,12 @@
 # Smart Industrial Warehouse — Decentralized Autonomous AMR Fleet Coordination
 
-[![Tests](https://img.shields.io/badge/pytest-155%20passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/pytest-154%20passing-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)]()
 [![Architecture](https://img.shields.io/badge/Architecture-Decentralized%20P2P%20Mesh-orange.svg)]()
 
 A high-performance, decentralized coordination platform for Autonomous Mobile Robot (AMR) fleets operating in smart industrial warehouses. Designed to eliminate single points of failure inherent to centralized fleet dispatchers, this platform empowers every AMR as an independent edge computing node utilizing peer-to-peer (P2P) mesh communication, spatio-temporal reservation tables, dynamic negotiation protocols, and directed Wait-For-Graph (WFG) deadlock resolution.
 
-Includes an interactive **Three.js 3D Digital Twin**, real-time WebSocket telemetry streaming, automated Excel KPI reporting, and a 10-step executive live demonstration tour.
+Includes the **3D Fleet Command Center** (Three.js digital twin, served locally, works offline) with a 7-scene guided demo.
 
 ## EdgeSwarm: predictive, resilient, energy-aware decentralized coordination (SIH26123)
 
@@ -112,17 +112,15 @@ flowchart TD
     end
 
     subgraph Telemetry ["Monitoring & Operations"]
-        DASH["Web Dashboard (Port 8000)"]
-        WS["WebSocket Streamer (Port 8765)"]
+        DASH["Fleet Command Center (Port 8000)"]
         TWIN["Three.js 3D Digital Twin"]
         EXCEL["Automated Excel KPI Exporter"]
     end
 
     Fleet --> CoreEngine
     CoreEngine --> Environment
-    CoreEngine --> WS
-    WS --> DASH
-    WS --> TWIN
+    CoreEngine --> DASH
+    DASH --> TWIN
     CoreEngine --> EXCEL
 ```
 
@@ -201,17 +199,13 @@ Directed dependency graph tracking which AMR is waiting on which peer. When a cy
 
 ## Interactive 3D Digital Twin & Dashboard
 
-The platform includes a zero-dependency, rich browser frontend built with **Vanilla HTML5/CSS3/JavaScript** and **Three.js**:
+The browser front end is the **Fleet Command Center** at `/command-center`. `/` redirects there.
+- Live 3D twin: differential-drive AMRs, tote transfers, LiDAR and safety fields, workers, dead zones, AI risk arcs.
+- A 2D view, Start / Pause / Step / Reset controls, speed control, day and night themes.
+- Fleet, AI-calls, Robot ("why this task?"), Shift-log, Scenario, Builder and Results tabs.
+- A 7-scene guided SIH demo.
 
-- **Real-Time 3D Rendering**: Isometric, Top-Down, and First-Person Follow camera perspectives displaying dynamic AMR meshes, elevated packages, physical multi-tier rack structures, and safety zones.
-- **Live Fleet Telemetry**: Real-time KPI cards displaying active makespan, throughput, messages exchanged, collisions prevented, deadlocks resolved, and individual AMR battery percentages.
-- **Interactive Fleet Controls**:
-  - Start, Pause, Step execution.
-  - Live global speed slider (0.1x to 5.0x) and per-AMR speed controls.
-  - Manual emergency incident trigger and dynamic safety barrier placement.
-  - **10-Step Executive Judge Demo**: Automated showcase tour highlighting mesh networking, priority bidding, dynamic obstacles, restricted zones, and freight spikes.
-- **Live Analytics Tab**: Interactive Chart.js graphs detailing latency distributions, throughput progression, and battery burn curves.
-- **Automated Excel Export**: Downloads a comprehensive multi-sheet `.xlsx` workbook containing executive summaries, KPI trends, decision logs, and incident audits.
+The older "classic" dashboard has been removed.
 
 ---
 
@@ -268,7 +262,7 @@ python3 main.py --mode dashboard
 ```bash
 python3 -m src.visualization.dashboard_server
 ```
-Navigate to **`http://localhost:8000`** in your browser. The dashboard automatically connects to WebSocket server `ws://localhost:8765`.
+Open **`http://127.0.0.1:8000/command-center`** in your browser (`/` redirects there).
 
 ### 2. Run Headless Simulation Demo
 ```bash
@@ -354,11 +348,11 @@ Measured results for the legacy simulator are in `docs/baseline_results.md`; res
 │   ├── wms/
 │   │   └── mock_wms.py                 # Mock Warehouse Management System integration
 │   └── visualization/
-│       ├── dashboard_server.py         # HTTP & WebSocket server (ports 8000 & 8765)
+│       ├── dashboard_server.py         # HTTP server for the Fleet Command Center (port 8000)
 │       └── static/
 │           ├── index.html              # Dashboard UI structure & control panels
 │           ├── styles.css              # Modern dark-mode industrial design system
-│           └── digital_twin_3d.js      # Three.js 3D warehouse digital twin visualizer
+│           └── swarm_twin_3d.js        # Three.js 3D warehouse digital twin
 └── tests/                              # 26 automated test suites (109 tests)
     ├── test_final_targeted_fixes.py    # Verification suite for battery, speed, and rack fixes
     ├── test_two_bug_fixes.py           # High-density 20 AMR / 100 task & return-home tests

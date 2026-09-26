@@ -31,7 +31,7 @@ It is simulation, and we say so on every slide. It was built so the results are 
 - Robots see only their own sensors and radio messages. There is no shared "god view".
 - The radio drops and delays messages.
 - 30 seeds per setting, with 95% confidence intervals.
-- 156 automated tests.
+- 154 automated tests (plus a browser end-to-end test).
 - **It already runs distributed.** Each robot can run as its own operating-system process. It has its own memory and
   its own copy of the AI model, and it talks to the others only through UDP messages. In 20 out of 20 test runs
   (10 situations × 5 and 10 robots), the result was *identical* to the simulation. That was about 129,000 UDP

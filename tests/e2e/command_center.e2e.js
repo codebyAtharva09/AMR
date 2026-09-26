@@ -109,14 +109,11 @@ async function state(page) { return page.evaluate(async () => (await fetch('/api
   await page.click('#v3d');
   await page.screenshot({ path: process.env.SHOT || '/tmp/command_center_e2e.png' });
 
-  // ---------------------------------------------------------------- classic dashboard (baseline checklist, current UI)
-  const p2 = await browser.newPage();
-  p2.on('pageerror', e => errors.push('classic pageerror: ' + e.message));
-  await p2.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
-  await p2.waitForFunction(() => document.querySelectorAll('#fleet .robot-card, #fleet > *').length >= 1, null, { timeout: 15000 });
-  results.classic_fleet_cards = await p2.locator('#fleet > *').count();
-  results.classic_cmd_link = await p2.locator('#navCommandCenter').count();
-  assert(results.classic_cmd_link === 1, 'classic dashboard links to command center');
+  // ---------------------------------------------------------------- root redirects to the Command Center
+  results.root_redirect = await page.evaluate(async () => new URL((await fetch('/')).url).pathname);
+  assert(results.root_redirect === '/command-center', '/ redirects to /command-center');
+  results.classic_link = await page.locator('a.link').count();
+  assert(results.classic_link === 0, 'no classic dashboard link');
 
   await browser.close();
   if (errors.length) { console.error(JSON.stringify({ results, errors }, null, 1)); process.exit(1); }
