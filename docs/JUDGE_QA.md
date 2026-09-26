@@ -31,7 +31,11 @@ It is simulation, and we say so on every slide. It was built so the results are 
 - Robots see only their own sensors and radio messages. There is no shared "god view".
 - The radio drops and delays messages.
 - 30 seeds per setting, with 95% confidence intervals.
-- 155 automated tests.
+- 156 automated tests.
+- **It already runs distributed.** Each robot can run as its own operating-system process. It has its own memory and
+  its own copy of the AI model, and it talks to the others only through UDP messages. In 20 out of 20 test runs
+  (10 situations × 5 and 10 robots), the result was *identical* to the simulation. That was about 129,000 UDP
+  messages with 0 collisions (`experiments/results/distributed_check.json`).
 
 The next step is 3 Raspberry Pi robots on a test floor.
 
@@ -41,7 +45,9 @@ Safety does not depend on the radio. A robot enters a cell only if two things ho
 - its own sensor sees the cell is empty, and
 - every higher-priority neighbour it can sense has sent a fresh message saying it will not take that cell.
 
-If a message is missing, the robot waits. Result: 0 collisions in all runs, including the outage scenarios.
+If a message is missing, the robot waits. It never guesses. A short proof is in `docs/SAFETY_PROOF.md`. We also
+stress-tested it well beyond reality: 400 runs at 30%, 60%, 90% and **100%** message loss, with 0 collisions. Even
+with every message lost, 99.9% of orders were still delivered, just more slowly.
 
 **4. What does the AI add? Could you do without it?**
 Honestly, very little on top of road booking: about +0.2 percentage points in the ablation. Road booking
@@ -84,7 +90,9 @@ needs only NumPy (`requirements-edge.txt`, `Dockerfile.edge`).
 
 **10. Why not ROS 2 / Nav2 / Gazebo right away?**
 We needed thousands of reproducible runs with a ground-truth monitor, so we built a fast grid simulator first.
-Everything runs as per-robot code, so the next step is to wrap each robot in a ROS 2 node.
+Each robot already runs as its own process and talks only through messages, so moving to ROS 2 means changing how
+messages travel, not the decision logic. The message definition and topic mapping are ready in `deploy/ros2/`
+(`RobotState.msg` on `/fleet/state`, best-effort QoS). The ROS 2 node itself is the first task for the finale.
 
 **11. How was the AI trained? Any data leakage?**
 

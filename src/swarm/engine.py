@@ -54,7 +54,7 @@ def load_ai(path: str):
 
 class SwarmSimulation:
     def __init__(self, cfg: SwarmConfig, spec: ScenarioSpec | None = None, ai=None,
-                 sample_hook: Callable | None = None):
+                 sample_hook: Callable | None = None, agent_factory: Callable | None = None):
         self.cfg = cfg
         self.spec = spec or build_scenario(cfg.scenario, cfg.robots, cfg.tasks, cfg.seed)
         self.rng = random.Random(f"sim:{cfg.seed}:{self.spec.name}")
@@ -74,7 +74,10 @@ class SwarmSimulation:
         self.agents: dict[str, RobotAgent] = {}
         for i, start in enumerate(self.spec.starts):
             rid = f"AMR-{i + 1:02d}"
-            ag = RobotAgent(rid, i, cfg, self.gm, self.oracle, start, ai=ai if cfg.uses_ai() else None)
+            if agent_factory is not None:   # e.g. one OS process per robot (src/swarm/distributed.py)
+                ag = agent_factory(rid, i, cfg, self.gm, start)
+            else:
+                ag = RobotAgent(rid, i, cfg, self.gm, self.oracle, start, ai=ai if cfg.uses_ai() else None)
             ag.battery = self.spec.batteries[i]
             self.agents[rid] = ag
             self.world.bodies[rid] = RobotBody(rid, start, battery=self.spec.batteries[i])
@@ -143,14 +146,19 @@ class SwarmSimulation:
                 msgs = ag._build_messages(t)
             else:
                 msgs = ag.think(t, sensing, self)
+            nbytes = 0
             for kind, payload, receiver in msgs:
-                n = self.network.broadcast(rid, pos[rid], t, kind, payload, pos, receiver)
-                ag.c.messages_sent += 1
-                ag.c.bytes_sent += self.network.encode_size(kind, payload)
+                self.network.broadcast(rid, pos[rid], t, kind, payload, pos, receiver)
+                nbytes += self.network.encode_size(kind, payload)
+            self._count_sent(ag, len(msgs), nbytes)
             if ag.task_id and ag.task_id in self.world.tasks:
                 ts = self.world.tasks[ag.task_id]
                 if ts.started_tick is None:
                     ts.started_tick = t
+
+    def _count_sent(self, ag, n: int, nbytes: int) -> None:
+        ag.c.messages_sent += n
+        ag.c.bytes_sent += nbytes
 
     # ------------------------------------------------------------------ main loop
     def step(self) -> None:

@@ -18,6 +18,15 @@ def run_swarm_cli(args) -> None:
         cfg.edge = EDGE_PROFILES[args.edge]
         m = SwarmSimulation(cfg).run()
         print(json.dumps(m, indent=2))
+    elif mode == "distributed":
+        from src.swarm.config import SwarmConfig
+        from src.swarm.distributed import run_distributed
+        cfg = SwarmConfig(mode=args.coordination, seed=args.seed, robots=args.robots, tasks=4 * args.robots,
+                          scenario=args.scenario)
+        r = run_distributed(cfg)
+        m = r.pop("metrics")
+        r.update({k: m[k] for k in ("makespan", "completed_tasks", "inter_robot_collisions", "messages_sent")})
+        print(json.dumps(r, indent=2))
     elif mode == "edge-demo":
         from src.command_center.demo import run_headless_demo
         out = run_headless_demo()

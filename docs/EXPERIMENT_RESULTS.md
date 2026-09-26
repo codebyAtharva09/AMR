@@ -115,7 +115,45 @@ Source: `models/training_report.json`.
 Per-robot compute grows slowly with fleet size; bandwidth stays ~300 B/robot/tick. Raspberry Pi / Jetson rows in
 `performance.json` are **estimates** (measured × assumed slow-down), not hardware measurements.
 
-## 8. Result history (kept for transparency)
+## 8. Distributed runtime check (one OS process per robot)
+
+`python3 experiments/distributed_check.py` runs each scenario twice with seed 11: once with all robots in one process,
+and once with every robot in its own OS process (`src/swarm/distributed.py`, spawn start method). In the second run,
+each robot has its own memory and its own copy of the AI model, and robot-to-robot messages travel as UDP datagrams
+through a radio emulator.
+
+| Runs | Identical outcome* | UDP datagrams | Collisions |
+|---|---|---|---|
+| 20 (10 scenarios × 5 and 10 AMRs) | **20 / 20** | 129,407 | 0 |
+
+\* makespan, completed tasks, collisions, near misses, messages, bytes, distance, waiting, deadlocks and AI actions
+are all equal. Source: `experiments/results/distributed_check.json`. This shows the coordinator depends only on its
+messages and sensors. It does not measure real-hardware timing.
+
+## 8b. Safety stress test: extreme message loss
+
+`python3 experiments/safety_stress.py` runs full mode with packet loss forced to 30%, 60%, 90% and 100%. It uses
+10 scenarios × 5 and 10 AMRs × seeds 1–5 (400 runs, cap 1000 ticks). The argument for why this must hold is in
+`docs/SAFETY_PROOF.md`.
+
+| Loss | AMRs | Runs | Collisions | Orders delivered | Mean makespan (completed runs) |
+|---|---|---|---|---|---|
+| 30% | 5 / 10 | 50 / 50 | 0 / 0 | 100% / 100% | 146.8 / 176.0 |
+| 60% | 5 / 10 | 50 / 50 | 0 / 0 | 100% / 100% | 151.8 / 192.6 |
+| 90% | 5 / 10 | 50 / 50 | 0 / 0 | 100% / 100% | 168.4 / 227.7 |
+| **100%** | 5 / 10 | 50 / 50 | **0 / 0** | 100% / 99.9% (48 of 50 runs finished in time) | 205.5 / 372.9 |
+
+With every radio message lost, robots keep delivering using only their own sensors: slower, but with no collisions.
+Source: `experiments/results/safety_stress.json`.
+
+## 9. Derived impact figures
+
+- **Orders per shift with the same fleet:** 1 ÷ (1 − time saving) = ×1.41 at 10 AMRs (28.9%) and ×1.57 at 15 AMRs
+  (36.4%), for a fixed batch of orders.
+- **Battery energy:** fleet total over all cells is 5.3% lower in full mode (7.1% lower at 15 AMRs). Waiting time is
+  72.8% lower (sum over all cells, `benchmark_summary.json`).
+
+## 10. Result history (kept for transparency)
 
 | Version | Overall reduction | Cells ≥20% | What changed |
 |---|---|---|---|

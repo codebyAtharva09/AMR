@@ -50,7 +50,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="AMR warehouse coordination prototype")
     parser.add_argument("--mode", choices=["demo", "simulation", "benchmark", "dashboard",
                                            "swarm", "edge-demo", "swarm-benchmark", "ablation", "train-ai",
-                                           "deadlock-suite", "edge-profile"], default="demo")
+                                           "deadlock-suite", "edge-profile", "distributed"], default="demo")
     parser.add_argument("--coordination", default="full",
                         help="EdgeSwarm mode: stop_and_wait | decentralized_astar | reservation | reservation_ai | full")
     parser.add_argument("--scenario", default="medium_congestion")

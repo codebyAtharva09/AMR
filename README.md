@@ -39,6 +39,7 @@ python3 main.py --mode swarm-benchmark --quick
 python3 main.py --mode ablation --quick
 python3 main.py --mode train-ai
 python3 main.py --mode deadlock-suite
+python3 main.py --mode distributed --robots 5   # one OS process per robot, messages over UDP
 pytest -q
 ```
 
