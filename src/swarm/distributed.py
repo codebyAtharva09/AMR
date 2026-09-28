@@ -15,14 +15,16 @@ Usage: `python3 main.py --mode distributed --scenario medium_congestion --robots
 from __future__ import annotations
 
 import multiprocessing as mp
-import pickle
+import json
 import socket
 import time
+from dataclasses import asdict
 from types import SimpleNamespace
 from typing import Any
 
 from src.swarm.config import SwarmConfig
 from src.swarm.engine import SwarmSimulation
+from src.swarm.network import Message
 
 _LOCAL_METHODS = {"receive", "act", "observe", "think", "_set_goal", "_build_messages", "snapshot", "_apply_wms"}
 UDP_TIMEOUT_S = 5.0
@@ -45,6 +47,15 @@ class _EnvProxy:
     def complete_drop(self, agent, task_id, t):
         return self._call("complete_drop", agent, task_id, t)
 
+
+
+def _enc(obj) -> bytes:
+    """UDP wire format is plain JSON (no object deserialisation), so a forged datagram cannot execute code."""
+    return json.dumps(obj, separators=(",", ":")).encode()
+
+
+def _dec(data: bytes):
+    return json.loads(data.decode())
 
 def _robot_main(conn, rid: str, index: int, cfg: SwarmConfig, gm, start, radio_port: int) -> None:
     """Entry point of one robot process."""
@@ -78,14 +89,14 @@ def _robot_main(conn, rid: str, index: int, cfg: SwarmConfig, gm, start, radio_p
                 conn.send(("ok", None))
             elif op == "receive":           # (receive, tick, n_datagrams): read the radio's UDP deliveries
                 t, n = cmd[1], cmd[2]
-                msgs = [pickle.loads(sock.recvfrom(65535)[0]) for _ in range(n)]
+                msgs = [_dec(sock.recvfrom(65535)[0]) for _ in range(n)]
                 msgs.sort(key=lambda m: m[0])
-                agent.receive([m[1] for m in msgs], t)
+                agent.receive([Message(**m[1]) for m in msgs], t)
                 conn.send(("ok", None))
             elif op in ("think", "_build_messages"):
                 out = agent.think(cmd[1], cmd[2], env) if op == "think" else agent._build_messages(cmd[1])
                 for seq, (kind, payload, receiver) in enumerate(out):   # broadcast over UDP
-                    sock.sendto(pickle.dumps((seq, kind, payload, receiver), protocol=5), radio)
+                    sock.sendto(_enc((seq, kind, payload, receiver)), radio)
                 conn.send(("ok", len(out)))
             elif op in _LOCAL_METHODS:
                 conn.send(("ok", getattr(agent, op)(*cmd[1])))
@@ -143,12 +154,12 @@ class RemoteAgent:
 
     def _receive(self, msgs: list, t: int) -> None:
         for seq, m in enumerate(msgs):                # radio -> robot, one UDP datagram per message
-            self._sim.radio_sock.sendto(pickle.dumps((seq, m), protocol=5), self._udp)
+            self._sim.radio_sock.sendto(_enc((seq, asdict(m))), self._udp)
         self._sim.udp_datagrams += len(msgs)
         self._rpc("receive", t, len(msgs))
 
     def _collect(self, n: int) -> list:
-        got = [pickle.loads(self._sim.radio_sock.recvfrom(65535)[0]) for _ in range(n)]
+        got = [_dec(self._sim.radio_sock.recvfrom(65535)[0]) for _ in range(n)]
         self._sim.udp_datagrams += n
         got.sort(key=lambda m: m[0])
         return [(k, p, r) for _, k, p, r in got]

@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-25 21:13:43",
+ "generated": "2026-09-28 15:30:37",
  "start_method": "spawn",
  "compared_keys": [
   "makespan",
@@ -29,7 +29,7 @@
    "udp_datagrams": 1802,
    "collisions": 0,
    "identical": true,
-   "wall_s": 2.01
+   "wall_s": 2.29
   },
   {
    "scenario": "medium_congestion",
@@ -41,7 +41,7 @@
    "udp_datagrams": 2145,
    "collisions": 0,
    "identical": true,
-   "wall_s": 2.32
+   "wall_s": 2.45
   },
   {
    "scenario": "high_congestion",
@@ -53,7 +53,7 @@
    "udp_datagrams": 2585,
    "collisions": 0,
    "identical": true,
-   "wall_s": 2.73
+   "wall_s": 2.61
   },
   {
    "scenario": "dynamic_obstacle",
@@ -65,7 +65,7 @@
    "udp_datagrams": 2280,
    "collisions": 0,
    "identical": true,
-   "wall_s": 2.47
+   "wall_s": 2.32
   },
   {
    "scenario": "blocked_aisle",
@@ -77,7 +77,7 @@
    "udp_datagrams": 2511,
    "collisions": 0,
    "identical": true,
-   "wall_s": 2.65
+   "wall_s": 2.79
   },
   {
    "scenario": "narrow_intersection",
@@ -89,7 +89,7 @@
    "udp_datagrams": 3861,
    "collisions": 0,
    "identical": true,
-   "wall_s": 3.44
+   "wall_s": 3.47
   },
   {
    "scenario": "comm_latency",
@@ -101,7 +101,7 @@
    "udp_datagrams": 2323,
    "collisions": 0,
    "identical": true,
-   "wall_s": 2.56
+   "wall_s": 2.6
   },
   {
    "scenario": "comm_outage",
@@ -125,7 +125,7 @@
    "udp_datagrams": 2293,
    "collisions": 0,
    "identical": true,
-   "wall_s": 2.55
+   "wall_s": 2.69
   },
   {
    "scenario": "mixed_stress",
@@ -137,7 +137,7 @@
    "udp_datagrams": 2064,
    "collisions": 0,
    "identical": true,
-   "wall_s": 2.82
+   "wall_s": 2.81
   },
   {
    "scenario": "low_congestion",
@@ -149,7 +149,7 @@
    "udp_datagrams": 9180,
    "collisions": 0,
    "identical": true,
-   "wall_s": 5.94
+   "wall_s": 6.45
   },
   {
    "scenario": "medium_congestion",
@@ -161,7 +161,7 @@
    "udp_datagrams": 10236,
    "collisions": 0,
    "identical": true,
-   "wall_s": 6.34
+   "wall_s": 6.86
   },
   {
    "scenario": "high_congestion",
@@ -173,7 +173,7 @@
    "udp_datagrams": 12638,
    "collisions": 0,
    "identical": true,
-   "wall_s": 7.27
+   "wall_s": 7.76
   },
   {
    "scenario": "dynamic_obstacle",
@@ -185,7 +185,7 @@
    "udp_datagrams": 9420,
    "collisions": 0,
    "identical": true,
-   "wall_s": 6.27
+   "wall_s": 6.87
   },
   {
    "scenario": "blocked_aisle",
@@ -197,7 +197,7 @@
    "udp_datagrams": 12704,
    "collisions": 0,
    "identical": true,
-   "wall_s": 7.44
+   "wall_s": 8.35
   },
   {
    "scenario": "narrow_intersection",
@@ -209,7 +209,7 @@
    "udp_datagrams": 18442,
    "collisions": 0,
    "identical": true,
-   "wall_s": 9.25
+   "wall_s": 9.59
   },
   {
    "scenario": "comm_latency",
@@ -221,7 +221,7 @@
    "udp_datagrams": 11242,
    "collisions": 0,
    "identical": true,
-   "wall_s": 6.71
+   "wall_s": 8.2
   },
   {
    "scenario": "comm_outage",
@@ -233,7 +233,7 @@
    "udp_datagrams": 5784,
    "collisions": 0,
    "identical": true,
-   "wall_s": 6.72
+   "wall_s": 6.8
   },
   {
    "scenario": "low_battery",
@@ -245,7 +245,7 @@
    "udp_datagrams": 10670,
    "collisions": 0,
    "identical": true,
-   "wall_s": 7.47
+   "wall_s": 7.4
   },
   {
    "scenario": "mixed_stress",
@@ -257,7 +257,7 @@
    "udp_datagrams": 5910,
    "collisions": 0,
    "identical": true,
-   "wall_s": 6.64
+   "wall_s": 7.65
   }
  ]
 }
