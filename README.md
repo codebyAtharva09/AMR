@@ -1,6 +1,6 @@
 # Smart Industrial Warehouse — Decentralized Autonomous AMR Fleet Coordination
 
-[![Tests](https://img.shields.io/badge/pytest-154%20passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/pytest-156%20passing-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)]()
 [![Architecture](https://img.shields.io/badge/Architecture-Decentralized%20P2P%20Mesh-orange.svg)]()
 
@@ -26,6 +26,10 @@ The radio drops, delays and loses messages; a ground-truth monitor counts every 
 | Inter-robot collisions (1200 runs each) | 0 | **0** |
 | Mean makespan | 217.5 ticks | **163.1 ticks (−25.0%)** |
 | Cells with ≥20% reduction | – | 21 / 40 (all 10- and 15-AMR cells; not at 3 AMRs, most 5-AMR cells) |
+
+**Versus a central fleet server** (same planner, perfect Wi-Fi, `experiments/central_outage.py`, 300 runs): tied with no
+disruption (central 0–2% ahead, within noise). During a 60 s Wi-Fi/server outage the central fleet freezes (about 1 order delivered)
+while EdgeSwarm keeps delivering 10–23 orders and finishes 18–21% sooner. There were 0 collisions.
 
 The main gain comes from space-time reservations; the Edge-AI conflict predictor adds little on top (see ablation in
 `docs/EXPERIMENT_RESULTS.md`). No physical-robot tests have been done.

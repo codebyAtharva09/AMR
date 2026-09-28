@@ -146,6 +146,39 @@ messages and sensors. It does not measure real-hardware timing.
 With every radio message lost, robots keep delivering using only their own sensors: slower, but with no collisions.
 Source: `experiments/results/safety_stress.json`.
 
+## 8c. Central fleet server vs EdgeSwarm under Wi-Fi/server outages
+
+`experiments/central_outage.py` → `experiments/results/central_outage.json`. The scenario is medium congestion, with 5/10/15 AMRs and 10 seeds each (300 runs).
+Both architectures use the **same planning brain**. The central server is modelled generously: it gets a perfect network with unlimited range and 0 latency/loss.
+Its one assumption is that a robot holds position while its link to the server is down. This is a modelling assumption, not a measurement of any vendor's product.
+EdgeSwarm uses the scenario's realistic radio. Each disruption starts at t = 30 s.
+
+| Disruption | AMRs | Central makespan (s) | EdgeSwarm makespan (s) | EdgeSwarm vs central | Orders delivered during disruption (central → EdgeSwarm) |
+|---|---|---|---|---|---|
+| No disruption | 5 | 132.8 ± 8.7 | 135.1 ± 8.62 | -1.7% | – |
+| No disruption | 10 | 139.6 ± 7.47 | 142.5 ± 5.1 | -2.1% | – |
+| No disruption | 15 | 167.6 ± 9.21 | 168.0 ± 9.48 | -0.2% | – |
+| 30 s site outage | 5 | 175.1 ± 10.03 | 140.8 ± 11.7 | +19.6% | 1.0 → 5.9 |
+| 30 s site outage | 10 | 177.1 ± 6.1 | 150.8 ± 7.27 | +14.9% | 0.5 → 9.7 |
+| 30 s site outage | 15 | 197.8 ± 4.15 | 170.9 ± 4.89 | +13.6% | 0.9 → 11.8 |
+| 60 s site outage | 5 | 192.7 ± 8.18 | 152.1 ± 9.55 | +21.1% | 1.0 → 10.3 |
+| 60 s site outage | 10 | 201.0 ± 8.96 | 161.5 ± 6.55 | +19.7% | 0.5 → 18.5 |
+| 60 s site outage | 15 | 225.4 ± 6.89 | 185.8 ± 7.2 | +17.6% | 0.9 → 23.2 |
+| 120 s site outage | 5 | 265.4 ± 10.0 | 171.3 ± 15.63 | +35.5% | 1.0 → 15.2 |
+| 120 s site outage | 10 | 266.1 ± 5.2 | 197.0 ± 6.7 | +26.0% | 0.5 → 29.4 |
+| 120 s site outage | 15 | 289.6 ± 6.07 | 215.9 ± 4.73 | +25.4% | 0.9 → 37.1 |
+| 60 s dead zone (centre) | 5 | 186.1 ± 9.11 | 145.9 ± 12.35 | +21.6% | 2.6 → 10.4 |
+| 60 s dead zone (centre) | 10 | 191.7 ± 7.0 | 159.7 ± 6.74 | +16.7% | 3.2 → 19.4 |
+| 60 s dead zone (centre) | 15 | 216.0 ± 8.57 | 180.5 ± 8.99 | +16.4% | 6.2 → 24.1 |
+
+Collisions across all 300 runs: **0**.
+
+How to read this:
+
+- **No disruption:** the idealised central server is 0–2% faster. This is within the 95% confidence intervals, so the two are statistically tied.
+- **Any outage or dead zone:** central robots freeze, and about 1 order is delivered during the window. EdgeSwarm keeps delivering 6–37 orders and finishes 14–36% sooner.
+- **Limits:** the result is simulation only, uses one scenario family, and depends on the hold-when-disconnected assumption.
+
 ## 9. Derived impact figures
 
 - **Orders per shift with the same fleet:** 1 ÷ (1 − time saving) = ×1.41 at 10 AMRs (28.9%) and ×1.57 at 15 AMRs

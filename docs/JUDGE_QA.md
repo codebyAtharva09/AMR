@@ -22,7 +22,10 @@ have not measured, say so. Honest answers score better than confident guesses.
 **1. How is this different from Open-RMF or MiR Fleet?**
 Both plan traffic in one place. Open-RMF's docs call its traffic schedule "a centralized database", and MiR Fleet is
 a central server. In EdgeSwarm every robot runs the same coordinator on its own computer. There is no server that can
-fail. We measured it under 15% message loss, delays and full radio outages, and saw 0 collisions.
+fail. We measured this directly (`experiments/central_outage.py`, 300 runs). We gave a central server the *same* planner and a
+perfect network. With no disruption it is 0–2% faster, which is within noise. During a 60 s Wi-Fi or server outage its robots freeze
+and deliver about 1 order. EdgeSwarm keeps delivering 10–23 orders and finishes 18–21% sooner. There were 0 collisions in all 300 runs.
+The central model assumes robots hold still while disconnected. That is our modelling assumption, not a vendor measurement.
 
 **2. This is only simulation. Why should we believe it?**
 It is simulation, and we say so on every slide. It was built so the results are hard to fool:
@@ -31,7 +34,7 @@ It is simulation, and we say so on every slide. It was built so the results are 
 - Robots see only their own sensors and radio messages. There is no shared "god view".
 - The radio drops and delays messages.
 - 30 seeds per setting, with 95% confidence intervals.
-- 154 automated tests (plus a browser end-to-end test).
+- 156 automated tests (plus a browser end-to-end test).
 - **It already runs distributed.** Each robot can run as its own operating-system process. It has its own memory and
   its own copy of the AI model, and it talks to the others only through UDP messages. In 20 out of 20 test runs
   (10 situations × 5 and 10 robots), the result was *identical* to the simulation. That was about 129,000 UDP
