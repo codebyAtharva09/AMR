@@ -1,6 +1,6 @@
 # EdgeSwarm – judge Q&A prep and 60-second pitch
 
-Every number here comes from `docs/EXPERIMENT_RESULTS.md` (simulation, 30 seeds). If a judge asks for something we
+Every number here comes from `docs/EXPERIMENT_RESULTS.md` (simulation; the main benchmark uses 30 seeds; the outage, jam and stream tests use 10; the loss stress test uses 5). If a judge asks for something we
 have not measured, say so. Honest answers score better than confident guesses.
 
 ## 60-second pitch
@@ -36,8 +36,8 @@ It is simulation, and we say so on every slide. It was built so the results are 
 - An independent ground-truth monitor counts every collision.
 - Robots see only their own sensors and radio messages. There is no shared "god view".
 - The radio drops and delays messages.
-- 30 seeds per setting, with 95% confidence intervals.
-- 157 automated tests (plus a browser end-to-end test).
+- 30 seeds per setting in the main benchmark (10 in the side tests), with 95% confidence intervals.
+- 158 automated tests (plus a browser end-to-end test).
 - **It already runs distributed.** Each robot can run as its own operating-system process. It has its own memory and
   its own copy of the AI model, and it talks to the others only through UDP messages. In 20 out of 20 test runs
   (10 situations × 5 and 10 robots), the result was *identical* to the simulation. That was about 129,000 UDP
@@ -80,8 +80,8 @@ task batching for small fleets.
 **7. Does it scale?**
 
 - Radio use stays about 300 bytes per robot per tick, whether there are 3 or 20 robots.
-- Thinking time per robot grows slowly: 1.6 ms with 3 robots and 6.5 ms with 20 (laptop).
-- That is a small fraction of each 1-second decision cycle. Even an edge computer several times slower than a laptop
+- Thinking time per robot grows slowly: 1.6 ms with 3 robots and 6.5 ms with 20 (x86 development machine).
+- That is a small fraction of each 1-second decision cycle. Even an edge computer several times slower than that machine
   would have plenty of headroom, although we have not measured one.
 
 **8. How do you handle deadlocks?**
@@ -121,6 +121,11 @@ decisions live.
 Our first version froze task claims in safe mode, which hurt small fleets during outages. We found it in the
 benchmark, fixed it, re-ran everything, and kept the old results. Coincidentally, the first run gave 23.58%, close to
 a hard-coded "23.6%" in the original repo that had no experiment behind it. We removed that number.
+
+**15. Your robots load and unload in 2 s. Real ones take longer. Does the gain survive?**
+It shrinks, and we measured by how much. With 12 s handling, as in the DEDICAT6G logs, the time saving falls from 27% to 14%
+overall: 6%, 14% and 19% at 5, 10 and 15 AMRs (`EXPERIMENT_RESULTS.md` §8e). The absolute time saved stays similar, because
+coordination only helps while robots are driving. We still had 0 collisions.
 
 ## Demo checklist (2 minutes)
 

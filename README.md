@@ -1,6 +1,6 @@
 # Smart Industrial Warehouse — Decentralized Autonomous AMR Fleet Coordination
 
-[![Tests](https://img.shields.io/badge/pytest-157%20passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/pytest-158%20passing-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)]()
 [![Architecture](https://img.shields.io/badge/Architecture-Decentralized%20P2P%20Mesh-orange.svg)]()
 

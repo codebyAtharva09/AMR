@@ -1,0 +1,3683 @@
+{
+ "description": "Sensitivity to realistic load/unload time: 2 s (benchmark default) vs 12 s (DEDICAT6G trolley grab/release).",
+ "scenarios": [
+  "low_congestion",
+  "medium_congestion",
+  "high_congestion"
+ ],
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10
+ ],
+ "summary": [
+  {
+   "dwell_s": 2,
+   "robots": 5,
+   "stop_and_wait": 154.0,
+   "edgeswarm": 130.4,
+   "reduction_pct": 15.3
+  },
+  {
+   "dwell_s": 2,
+   "robots": 10,
+   "stop_and_wait": 196.4,
+   "edgeswarm": 146.2,
+   "reduction_pct": 25.5
+  },
+  {
+   "dwell_s": 2,
+   "robots": 15,
+   "stop_and_wait": 255.5,
+   "edgeswarm": 167.1,
+   "reduction_pct": 34.6
+  },
+  {
+   "dwell_s": 12,
+   "robots": 5,
+   "stop_and_wait": 244.6,
+   "edgeswarm": 229.6,
+   "reduction_pct": 6.1
+  },
+  {
+   "dwell_s": 12,
+   "robots": 10,
+   "stop_and_wait": 315.8,
+   "edgeswarm": 272.0,
+   "reduction_pct": 13.9
+  },
+  {
+   "dwell_s": 12,
+   "robots": 15,
+   "stop_and_wait": 378.2,
+   "edgeswarm": 304.9,
+   "reduction_pct": 19.4
+  },
+  {
+   "dwell_s": 2,
+   "robots": "all",
+   "stop_and_wait": 201.9,
+   "edgeswarm": 147.9,
+   "reduction_pct": 26.8
+  },
+  {
+   "dwell_s": 12,
+   "robots": "all",
+   "stop_and_wait": 312.9,
+   "edgeswarm": 268.8,
+   "reduction_pct": 14.1
+  }
+ ],
+ "total_collisions": 0,
+ "all_completed": true,
+ "runs": [
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 131,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 144,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 151,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 164,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 143,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 144,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 152,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 137,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 132,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 180,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 127,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 110,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 128,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 117,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 107,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 121,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 116,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 103,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 116,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 120,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 184,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 176,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 173,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 151,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 157,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 156,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 158,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 141,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 176,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 210,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 134,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 125,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 144,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 138,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 125,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 144,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 104,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 118,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 231,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 259,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 123,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 136,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 200,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 186,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 245,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 256,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 208,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 196,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 174,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 236,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 119,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 155,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 149,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 122,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 127,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 157,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 134,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 148,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 145,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 168,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 158,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 218,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 144,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 167,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 141,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 151,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 151,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 144,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 114,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 142,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 137,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 145,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 126,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 143,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 147,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 157,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 114,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 130,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 137,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 128,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 184,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 201,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 186,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 196,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 214,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 189,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 194,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 206,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 214,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 206,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 130,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 141,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 139,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 150,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 151,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 140,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 146,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 144,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 307,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 278,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 154,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 130,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 251,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 288,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 274,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 267,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 260,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 277,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 257,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 260,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 153,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 155,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 196,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 171,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 181,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 184,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 155,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 168,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 133,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 175,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 143,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 147,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 139,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 158,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 159,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 145,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 187,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 169,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 146,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 133,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 139,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 132,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 142,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 155,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 147,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 119,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 150,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 167,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 141,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 141,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 242,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 195,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 222,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 224,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 259,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 233,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 204,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 216,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 200,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 224,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 165,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 167,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 186,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 161,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 162,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 154,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 179,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 147,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 272,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 226,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 178,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 171,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 281,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 336,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 244,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 253,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 286,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 297,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 266,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 293,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 2,
+   "makespan": 192,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 2,
+   "makespan": 206,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 2,
+   "makespan": 204,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 2,
+   "makespan": 212,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 2,
+   "makespan": 193,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 2,
+   "makespan": 186,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 2,
+   "makespan": 181,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 2,
+   "makespan": 222,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 243,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 205,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 214,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 205,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 214,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 224,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 221,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 183,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 219,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 201,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 218,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 204,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 203,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 250,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 184,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 208,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 196,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 193,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 2,
+   "makespan": 186,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 2,
+   "makespan": 171,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 214,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 186,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 253,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 244,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 272,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 271,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 246,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 237,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 228,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 268,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 246,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 288,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 222,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 218,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 231,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 226,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 230,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 223,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 222,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 257,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 222,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 231,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 296,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 335,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 284,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 268,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 305,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 370,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 300,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 280,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 318,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 294,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 211,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 232,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 235,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 223,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 223,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 228,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 226,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 233,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 230,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 229,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 223,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 293,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 245,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 245,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 214,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 245,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 246,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 227,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 194,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 238,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 219,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 233,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 230,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "low_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 252,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 199,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 194,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 249,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 237,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 291,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 262,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 231,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 217,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 301,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 280,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 287,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 309,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 297,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 286,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 263,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 317,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 220,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 220,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 216,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 228,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 215,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 237,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 241,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 231,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 227,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 217,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 367,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 332,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 351,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 349,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 362,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 348,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 377,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 331,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 331,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 339,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 247,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 250,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 272,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 266,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 260,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 261,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 242,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 253,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 279,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 268,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 277,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 264,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 285,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 278,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 295,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 272,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 293,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 301,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 278,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 229,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 272,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 244,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 235,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "medium_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 246,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 243,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 274,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 267,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 243,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 253,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 5,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 317,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 401,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 414,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 418,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 400,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 380,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 353,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 491,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 356,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 409,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 407,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 344,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 362,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 397,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 353,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 354,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 351,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 354,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 363,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 343,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 10,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 405,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 560,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 558,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 458,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 447,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 466,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 417,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 489,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 461,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 435,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 517,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 1,
+   "dwell": 12,
+   "makespan": 446,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 2,
+   "dwell": 12,
+   "makespan": 441,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 3,
+   "dwell": 12,
+   "makespan": 438,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 4,
+   "dwell": 12,
+   "makespan": 427,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 5,
+   "dwell": 12,
+   "makespan": 429,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 6,
+   "dwell": 12,
+   "makespan": 408,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 7,
+   "dwell": 12,
+   "makespan": 415,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 8,
+   "dwell": 12,
+   "makespan": 486,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 9,
+   "dwell": 12,
+   "makespan": 448,
+   "completed": true,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "scenario": "high_congestion",
+   "robots": 15,
+   "seed": 10,
+   "dwell": 12,
+   "makespan": 383,
+   "completed": true,
+   "inter_robot_collisions": 0
+  }
+ ],
+ "wall_seconds": 231.6
+}

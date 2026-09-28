@@ -194,6 +194,28 @@ This measures **orders per hour directly** and replaces the earlier estimate der
 Collisions across all 60 runs: **0**. Stop-and-wait varies more at 10–15 AMRs because some seeds hit crossing jams it cannot clear.
 Limits: simulation only, one scenario family, and the order pickup/drop cells come from the scenario's own order pool.
 
+## 8e. Sensitivity to realistic load/unload time
+
+`experiments/handling_time.py` → `experiments/results/handling_time.json`. The main benchmark models pickup and drop at 2 s each.
+The DEDICAT6G logs [10] show trolley grab/release of about 12 s, so we re-ran low, medium and high congestion at both values (10 seeds each, 360 runs).
+
+| Handling time | AMRs | Stop-and-wait makespan (s) | EdgeSwarm makespan (s) | Reduction |
+|---|---|---|---|---|
+| 2 s | 5 | 154.0 | 130.4 | 15.3% |
+| 2 s | 10 | 196.4 | 146.2 | 25.5% |
+| 2 s | 15 | 255.5 | 167.1 | 34.6% |
+| 12 s | 5 | 244.6 | 229.6 | 6.1% |
+| 12 s | 10 | 315.8 | 272.0 | 13.9% |
+| 12 s | 15 | 378.2 | 304.9 | 19.4% |
+| 2 s | all | 201.9 | 147.9 | 26.8% |
+| 12 s | all | 312.9 | 268.8 | 14.1% |
+
+Collisions: **0**. Every run finished.
+
+**Honest reading:** with realistic 12 s handling, the relative gain shrinks from 27% to 14% overall (6% / 14% / 19% at 5 / 10 / 15 AMRs).
+This happens because both strategies spend the same time handling. The absolute time saved stays similar (e.g. 88 s → 73 s at 15 AMRs).
+The PS's ≥20% target is therefore met only in the 2 s setting. With 12 s handling it is narrowly missed at 15 AMRs (19.4%).
+
 ## 9. Derived impact figures
 
 - **Orders per shift with the same fleet:** 1 ÷ (1 − time saving) = ×1.41 at 10 AMRs (28.9%) and ×1.57 at 15 AMRs

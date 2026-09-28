@@ -28,7 +28,8 @@
 - Energy constants (0.12% per cell, 3% per tick charging) are simulation values. The DEDICAT6G telemetry in the repo
   is too coarse to calibrate them.
 - Pickup and drop take 2 ticks. The DEDICAT6G logs show trolley grab/release of about 12 s. With realistic handling
-  times the *relative* coordination gain would shrink, because both strategies spend the same time handling.
+  times the *relative* coordination gain shrinks, because both strategies spend the same time handling. Measured
+  in `EXPERIMENT_RESULTS.md` §8e: 27% → 14% overall (19% at 15 AMRs) with 12 s handling.
 - `E[delay|deadlock]` = 8 ticks in the AI decision rule is an assumed constant.
 
 ## 3. Edge-AI
@@ -44,8 +45,8 @@
 
 - Two maps: the repository's 20×23 rack warehouse and a 21×15 narrow-corridor map. Up to 15 AMRs in the benchmark;
   the engine accepts 20.
-- All tasks are released at t = 0. Makespan is the metric the PS names. Continuous-flow throughput is not
-  benchmarked.
+- The main benchmark releases all tasks at t = 0, because makespan is the metric the PS names. Continuous-flow throughput
+  is measured separately with a nonstop order stream (`EXPERIMENT_RESULTS.md` §8d, 10 seeds).
 - The stop-and-wait baseline needs randomized timeouts and back-off to finish its workload. Without them it gridlocks
   at the first head-on encounter. This is a design choice that makes the baseline *stronger*. It still cannot
   resolve single-cell 4-way or dead-end circular waits (`deadlock_suite.json`).
