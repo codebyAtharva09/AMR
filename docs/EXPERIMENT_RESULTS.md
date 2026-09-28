@@ -179,10 +179,25 @@ How to read this:
 - **Any outage or dead zone:** central robots freeze, and about 1 order is delivered during the window. EdgeSwarm keeps delivering 6–37 orders and finishes 14–36% sooner.
 - **Limits:** the result is simulation only, uses one scenario family, and depends on the hold-when-disconnected assumption.
 
+## 8d. Sustained throughput with a nonstop order stream
+
+`experiments/throughput_stream.py` → `experiments/results/throughput_stream.json`. The scenario is medium congestion over a 600 s horizon, with 10 seeds per cell.
+Each fleet starts with 2 orders per robot. New orders then arrive as a Poisson stream at a rate above what either method can serve, so the queue never empties.
+This measures **orders per hour directly** and replaces the earlier estimate derived from makespan.
+
+| AMRs | Stop-and-wait (orders/h) | EdgeSwarm (orders/h) | Paired ratio EdgeSwarm / stop-and-wait |
+|---|---|---|---|
+| 5 | 639.0 ± 18.1 | 844.8 ± 17.6 | ×1.324 ± 0.038 |
+| 10 | 877.2 ± 99.9 | 1480.8 ± 34.0 | ×1.762 ± 0.283 |
+| 15 | 1084.8 ± 97.2 | 1872.0 ± 80.6 | ×1.755 ± 0.16 |
+
+Collisions across all 60 runs: **0**. Stop-and-wait varies more at 10–15 AMRs because some seeds hit crossing jams it cannot clear.
+Limits: simulation only, one scenario family, and the order pickup/drop cells come from the scenario's own order pool.
+
 ## 9. Derived impact figures
 
 - **Orders per shift with the same fleet:** 1 ÷ (1 − time saving) = ×1.41 at 10 AMRs (28.9%) and ×1.57 at 15 AMRs
-  (36.4%), for a fixed batch of orders.
+  (36.4%), for a fixed batch of orders. This estimate is now superseded by the direct measurement in §8d (×1.32–1.76).
 - **Battery energy:** fleet total over all cells is 5.3% lower in full mode (7.1% lower at 15 AMRs). Waiting time is
   72.8% lower (sum over all cells, `benchmark_summary.json`).
 
