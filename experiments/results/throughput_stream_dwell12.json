@@ -1,0 +1,603 @@
+{
+ "description": "Sustained throughput with a continuous order stream (stop-and-wait vs EdgeSwarm).",
+ "dwell_s": 12,
+ "scenario": "medium_congestion",
+ "horizon_s": 600,
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10
+ ],
+ "summary": [
+  {
+   "robots": 5,
+   "stop_and_wait": {
+    "orders_per_hour_mean": 373.2,
+    "ci95": 8.4
+   },
+   "full": {
+    "orders_per_hour_mean": 427.8,
+    "ci95": 9.1
+   },
+   "ratio_mean": 1.147,
+   "ratio_ci95": 0.024
+  },
+  {
+   "robots": 10,
+   "stop_and_wait": {
+    "orders_per_hour_mean": 594.0,
+    "ci95": 40.1
+   },
+   "full": {
+    "orders_per_hour_mean": 745.2,
+    "ci95": 22.4
+   },
+   "ratio_mean": 1.268,
+   "ratio_ci95": 0.094
+  },
+  {
+   "robots": 15,
+   "stop_and_wait": {
+    "orders_per_hour_mean": 715.2,
+    "ci95": 92.2
+   },
+   "full": {
+    "orders_per_hour_mean": 969.0,
+    "ci95": 56.6
+   },
+   "ratio_mean": 1.411,
+   "ratio_ci95": 0.212
+  }
+ ],
+ "total_collisions": 0,
+ "runs": [
+  {
+   "mode": "full",
+   "robots": 5,
+   "seed": 1,
+   "offered": 404,
+   "delivered": 71,
+   "orders_per_hour": 426.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 5,
+   "seed": 2,
+   "offered": 412,
+   "delivered": 72,
+   "orders_per_hour": 432.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 5,
+   "seed": 3,
+   "offered": 424,
+   "delivered": 71,
+   "orders_per_hour": 426.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 5,
+   "seed": 4,
+   "offered": 411,
+   "delivered": 73,
+   "orders_per_hour": 438.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 5,
+   "seed": 5,
+   "offered": 377,
+   "delivered": 69,
+   "orders_per_hour": 414.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 5,
+   "seed": 6,
+   "offered": 402,
+   "delivered": 71,
+   "orders_per_hour": 426.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 5,
+   "seed": 7,
+   "offered": 365,
+   "delivered": 73,
+   "orders_per_hour": 438.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 5,
+   "seed": 8,
+   "offered": 405,
+   "delivered": 67,
+   "orders_per_hour": 402.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 5,
+   "seed": 9,
+   "offered": 415,
+   "delivered": 76,
+   "orders_per_hour": 456.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 5,
+   "seed": 10,
+   "offered": 400,
+   "delivered": 70,
+   "orders_per_hour": 420.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 5,
+   "seed": 1,
+   "offered": 404,
+   "delivered": 65,
+   "orders_per_hour": 390.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 5,
+   "seed": 2,
+   "offered": 412,
+   "delivered": 61,
+   "orders_per_hour": 366.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 5,
+   "seed": 3,
+   "offered": 424,
+   "delivered": 60,
+   "orders_per_hour": 360.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 5,
+   "seed": 4,
+   "offered": 411,
+   "delivered": 64,
+   "orders_per_hour": 384.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 5,
+   "seed": 5,
+   "offered": 377,
+   "delivered": 59,
+   "orders_per_hour": 354.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 5,
+   "seed": 6,
+   "offered": 402,
+   "delivered": 60,
+   "orders_per_hour": 360.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 5,
+   "seed": 7,
+   "offered": 365,
+   "delivered": 63,
+   "orders_per_hour": 378.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 5,
+   "seed": 8,
+   "offered": 405,
+   "delivered": 61,
+   "orders_per_hour": 366.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 5,
+   "seed": 9,
+   "offered": 415,
+   "delivered": 65,
+   "orders_per_hour": 390.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 5,
+   "seed": 10,
+   "offered": 400,
+   "delivered": 64,
+   "orders_per_hour": 384.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 10,
+   "seed": 1,
+   "offered": 775,
+   "delivered": 119,
+   "orders_per_hour": 714.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 10,
+   "seed": 2,
+   "offered": 745,
+   "delivered": 116,
+   "orders_per_hour": 696.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 10,
+   "seed": 3,
+   "offered": 764,
+   "delivered": 130,
+   "orders_per_hour": 780.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 10,
+   "seed": 4,
+   "offered": 729,
+   "delivered": 117,
+   "orders_per_hour": 702.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 10,
+   "seed": 5,
+   "offered": 784,
+   "delivered": 125,
+   "orders_per_hour": 750.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 10,
+   "seed": 6,
+   "offered": 738,
+   "delivered": 129,
+   "orders_per_hour": 774.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 10,
+   "seed": 7,
+   "offered": 733,
+   "delivered": 132,
+   "orders_per_hour": 792.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 10,
+   "seed": 8,
+   "offered": 797,
+   "delivered": 119,
+   "orders_per_hour": 714.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 10,
+   "seed": 9,
+   "offered": 733,
+   "delivered": 130,
+   "orders_per_hour": 780.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 10,
+   "seed": 10,
+   "offered": 760,
+   "delivered": 125,
+   "orders_per_hour": 750.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 10,
+   "seed": 1,
+   "offered": 775,
+   "delivered": 104,
+   "orders_per_hour": 624.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 10,
+   "seed": 2,
+   "offered": 745,
+   "delivered": 108,
+   "orders_per_hour": 648.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 10,
+   "seed": 3,
+   "offered": 764,
+   "delivered": 104,
+   "orders_per_hour": 624.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 10,
+   "seed": 4,
+   "offered": 729,
+   "delivered": 90,
+   "orders_per_hour": 540.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 10,
+   "seed": 5,
+   "offered": 784,
+   "delivered": 108,
+   "orders_per_hour": 648.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 10,
+   "seed": 6,
+   "offered": 738,
+   "delivered": 107,
+   "orders_per_hour": 642.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 10,
+   "seed": 7,
+   "offered": 733,
+   "delivered": 102,
+   "orders_per_hour": 612.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 10,
+   "seed": 8,
+   "offered": 797,
+   "delivered": 74,
+   "orders_per_hour": 444.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 10,
+   "seed": 9,
+   "offered": 733,
+   "delivered": 92,
+   "orders_per_hour": 552.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 10,
+   "seed": 10,
+   "offered": 760,
+   "delivered": 101,
+   "orders_per_hour": 606.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 15,
+   "seed": 1,
+   "offered": 1192,
+   "delivered": 160,
+   "orders_per_hour": 960.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 15,
+   "seed": 2,
+   "offered": 1148,
+   "delivered": 159,
+   "orders_per_hour": 954.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 15,
+   "seed": 3,
+   "offered": 1134,
+   "delivered": 141,
+   "orders_per_hour": 846.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 15,
+   "seed": 4,
+   "offered": 1103,
+   "delivered": 182,
+   "orders_per_hour": 1092.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 15,
+   "seed": 5,
+   "offered": 1159,
+   "delivered": 185,
+   "orders_per_hour": 1110.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 15,
+   "seed": 6,
+   "offered": 1190,
+   "delivered": 176,
+   "orders_per_hour": 1056.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 15,
+   "seed": 7,
+   "offered": 1233,
+   "delivered": 145,
+   "orders_per_hour": 870.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 15,
+   "seed": 8,
+   "offered": 1159,
+   "delivered": 148,
+   "orders_per_hour": 888.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 15,
+   "seed": 9,
+   "offered": 1166,
+   "delivered": 157,
+   "orders_per_hour": 942.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "full",
+   "robots": 15,
+   "seed": 10,
+   "offered": 1218,
+   "delivered": 162,
+   "orders_per_hour": 972.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 15,
+   "seed": 1,
+   "offered": 1192,
+   "delivered": 113,
+   "orders_per_hour": 678.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 15,
+   "seed": 2,
+   "offered": 1148,
+   "delivered": 71,
+   "orders_per_hour": 426.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 15,
+   "seed": 3,
+   "offered": 1134,
+   "delivered": 118,
+   "orders_per_hour": 708.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 15,
+   "seed": 4,
+   "offered": 1103,
+   "delivered": 151,
+   "orders_per_hour": 906.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 15,
+   "seed": 5,
+   "offered": 1159,
+   "delivered": 143,
+   "orders_per_hour": 858.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 15,
+   "seed": 6,
+   "offered": 1190,
+   "delivered": 116,
+   "orders_per_hour": 696.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 15,
+   "seed": 7,
+   "offered": 1233,
+   "delivered": 123,
+   "orders_per_hour": 738.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 15,
+   "seed": 8,
+   "offered": 1159,
+   "delivered": 87,
+   "orders_per_hour": 522.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 15,
+   "seed": 9,
+   "offered": 1166,
+   "delivered": 139,
+   "orders_per_hour": 834.0,
+   "inter_robot_collisions": 0
+  },
+  {
+   "mode": "stop_and_wait",
+   "robots": 15,
+   "seed": 10,
+   "offered": 1218,
+   "delivered": 131,
+   "orders_per_hour": 786.0,
+   "inter_robot_collisions": 0
+  }
+ ],
+ "wall_seconds": 96.0
+}

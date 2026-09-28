@@ -22,8 +22,8 @@
   matches the position in its message. Under those assumptions it is collision-free. It has not been verified
   against real sensing errors or a malicious or faulty robot.
 - The static position rank favours robots nearer the top-left of the map. Fairness is not optimised.
-- A robot in `SAFE_FALLBACK` claims no new tasks. A permanently isolated robot only finishes its current task and
-  drives home.
+- A robot in `SAFE_FALLBACK` keeps claiming tasks locally (v2; v1 froze claims and idled the fleet). Duplicate claims
+  are resolved by the physical pickup check, so two isolated robots may drive to the same order and one wastes the trip.
 - The WMS task feed is assumed to reach robots whose radio is up, retried for 50 ticks.
 - Energy constants (0.12% per cell, 3% per tick charging) are simulation values. The DEDICAT6G telemetry in the repo
   is too coarse to calibrate them.

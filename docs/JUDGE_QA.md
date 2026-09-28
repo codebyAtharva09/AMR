@@ -62,6 +62,9 @@ Honestly, very little on top of road booking: about +0.2 percentage points in th
 openly and do not claim the AI is the hero.
 
 **5. What happens in a Wi-Fi dead zone?**
+Behaviour depends on how fresh each neighbour's last plan is. Fresh plans are reserved around. Stale plans are predicted with a
+wider margin. With silence the robot uses only its own sensors and waits when unsure. The five radio states below are labels for
+the operator and trigger a re-sync on recovery.
 Each robot moves through 5 radio states:
 
 1. **CONNECTED** – normal operation.
@@ -109,8 +112,9 @@ messages travel, not the decision logic. The message definition and topic mappin
 - Test set: F1 0.51, ROC-AUC 0.83. The deadlock head has low precision (0.24), and we say so.
 
 **12. Security: can someone fake messages?**
-It is not handled yet. Signed messages (for example, a per-robot key) are on the roadmap. Even so, the safety rule
-still requires the robot's own sensor to see the cell as free.
+It is not handled yet, and we say so on the slide. The sensor check only stops a robot entering a cell that is already occupied.
+A forged "I will yield" message from a higher-priority robot could let two robots enter the same free cell at once, which
+breaks the safety proof. The fix is signed messages with a per-robot key, planned for Month 3–4.
 
 **13. Why is this useful for BEL?**
 Everything runs on-premise with no cloud or single point of failure, which suits sensitive depots and defence

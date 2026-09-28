@@ -30,12 +30,14 @@ SIZES = [5, 10, 15]
 SEEDS = list(range(1, 11))
 HORIZON = 600
 MODES = ["stop_and_wait", "full"]
+DWELL = int(__import__("os").environ.get("DWELL", "2"))
 
 
 def one(job):
     mode, n, seed = job
     cfg = SwarmConfig(mode=mode, seed=seed, robots=n, tasks=2 * n, scenario=SCENARIO)
     cfg.max_ticks = HORIZON
+    cfg.dwell_ticks = DWELL
     spec = build_scenario(SCENARIO, n, 2 * n, seed)
     pool_cells = [(t.pickup, t.drop) for t in build_scenario(SCENARIO, n, 60, seed).tasks]
     rng = random.Random(f"stream:{n}:{seed}")
@@ -81,10 +83,10 @@ def main(workers: int = 2):
         cell["ratio_mean"] = round(statistics.fmean(ratios), 3)
         cell["ratio_ci95"] = round(1.96 * statistics.stdev(ratios) / len(ratios) ** 0.5, 3)
         summary.append(cell)
-    out = {"description": __doc__.strip().splitlines()[0], "scenario": SCENARIO, "horizon_s": HORIZON, "seeds": SEEDS,
+    out = {"description": __doc__.strip().splitlines()[0], "dwell_s": DWELL, "scenario": SCENARIO, "horizon_s": HORIZON, "seeds": SEEDS,
            "summary": summary, "total_collisions": sum(r["inter_robot_collisions"] for r in rows),
            "runs": sorted(rows, key=lambda r: (r["robots"], r["mode"], r["seed"])), "wall_seconds": round(time.time() - t0, 1)}
-    (Path(__file__).resolve().parent / "results" / "throughput_stream.json").write_text(json.dumps(out, indent=1))
+    (Path(__file__).resolve().parent / "results" / ("throughput_stream.json" if DWELL == 2 else f"throughput_stream_dwell{DWELL}.json")).write_text(json.dumps(out, indent=1))
     for c in summary:
         print(c)
     print("collisions", out["total_collisions"])

@@ -194,6 +194,17 @@ This measures **orders per hour directly** and replaces the earlier estimate der
 Collisions across all 60 runs: **0**. Stop-and-wait varies more at 10–15 AMRs because some seeds hit crossing jams it cannot clear.
 Limits: simulation only, one scenario family, and the order pickup/drop cells come from the scenario's own order pool.
 
+With realistic **12 s** handling (`DWELL=12`, `throughput_stream_dwell12.json`):
+
+| AMRs | Stop-and-wait (orders/h) | EdgeSwarm (orders/h) | Paired ratio |
+|---|---|---|---|
+| 5 | 373.2 ± 8.4 | 427.8 ± 9.1 | ×1.147 ± 0.024 |
+| 10 | 594.0 ± 40.1 | 745.2 ± 22.4 | ×1.268 ± 0.094 |
+| 15 | 715.2 ± 92.2 | 969.0 ± 56.6 | ×1.411 ± 0.212 |
+
+Collisions: 0. The gain is smaller with realistic handling (×1.15–1.41), for the same reason as in §8e.
+
+
 ## 8e. Sensitivity to realistic load/unload time
 
 `experiments/handling_time.py` → `experiments/results/handling_time.json`. The main benchmark models pickup and drop at 2 s each.
