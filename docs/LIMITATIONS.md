@@ -61,13 +61,13 @@
 - Hard-coded figures were **removed** from the legacy dashboard, judge demo and Excel export. They now show the
   measured EdgeSwarm benchmark, or "not measured".
 - Legacy per-robot CPU and RAM remain a synthetic per-state model and are now **labelled** as such.
-- The 6 original E2E scripts in `tests/*.js` target an older UI (selectors such as `#tick`, `#robotCount`) and still
-  fail. The new `tests/e2e/command_center.e2e.js` covers both UIs.
+- The old E2E scripts for the removed classic dashboard were deleted. `tests/e2e/command_center.e2e.js` covers the Command Center.
 
 ## 6. What is not implemented
 
 - Multi-hop relaying or mesh routing (single-hop broadcast only).
-- Real P2P transport between separate processes or devices. The protocol runs inside one simulator process with
-  per-robot isolation of information, not of processes.
+- Real P2P transport across separate *devices*. Separate *processes* are implemented: `--mode distributed` runs one OS
+  process per robot that talks only over UDP sockets (`src/swarm/distributed.py`). All processes still run on one machine,
+  and no real radio or multi-device network has been tested.
 - Human-aware navigation beyond "people have right of way; step aside after 4 ticks".
 - Persistence or database of runs beyond JSONL result files.
