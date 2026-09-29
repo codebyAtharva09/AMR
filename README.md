@@ -1,6 +1,6 @@
 # Smart Industrial Warehouse — Decentralized Autonomous AMR Fleet Coordination
 
-[![Tests](https://img.shields.io/badge/pytest-158%20passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/pytest-161%20passing-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)]()
 [![Architecture](https://img.shields.io/badge/Architecture-Decentralized%20P2P%20Mesh-orange.svg)]()
 
@@ -51,7 +51,7 @@ Docs: [ARCHITECTURE](docs/ARCHITECTURE.md) · [EDGE_AI](docs/EDGE_AI.md) ·
 [COMMUNICATION_RESILIENCE](docs/COMMUNICATION_RESILIENCE.md) · [TASK_ALLOCATION](docs/TASK_ALLOCATION.md) ·
 [DEADLOCK_HANDLING](docs/DEADLOCK_HANDLING.md) · [BENCHMARK_METHODOLOGY](docs/BENCHMARK_METHODOLOGY.md) ·
 [EXPERIMENT_RESULTS](docs/EXPERIMENT_RESULTS.md) · [LIMITATIONS](docs/LIMITATIONS.md) · [NOVELTY](docs/NOVELTY.md) ·
-[DEMO_SCRIPT](docs/DEMO_SCRIPT.md) · [FINAL_READINESS](FINAL_READINESS.md)
+[DEMO_SCRIPT](docs/DEMO_SCRIPT.md) · [FINAL_READINESS](docs/FINAL_READINESS.md)
 
 The original simulator below is kept unchanged as the baseline (`--mode demo / dashboard / benchmark`).
 
@@ -305,7 +305,7 @@ pytest tests/test_final_targeted_fixes.py -v
 
 ## Benchmark Results
 
-The table that used to be here (819/491/285 ticks) had no reproducible experiment behind it; see `AUDIT_REPORT.md`.
+The table that used to be here (819/491/285 ticks) had no reproducible experiment behind it; see `docs/audit/AUDIT_REPORT.md`.
 Measured results for the legacy simulator are in `docs/baseline_results.md`; results for EdgeSwarm are in
 [`docs/EXPERIMENT_RESULTS.md`](docs/EXPERIMENT_RESULTS.md).
 
@@ -313,57 +313,35 @@ Measured results for the legacy simulator are in `docs/baseline_results.md`; res
 
 ## Repository Layout
 
+The repository is organised by deployment stage: **source → tests → experiments/evidence → deployment → docs**.
+
 ```
 .
-├── main.py                             # Main CLI entry point (demo, dashboard, benchmark)
-├── requirements.txt                    # Project dependencies
-├── pytest.ini                          # Pytest configuration
-├── README.md                           # Project documentation
+├── main.py                     # single CLI: demo | dashboard | swarm | distributed | swarm-benchmark | ablation | ...
+├── pyproject.toml, Makefile    # packaging (`pip install -e .` → `edgeswarm` command) and `make test|dashboard|experiments`
+├── requirements.txt            # runtime deps (operator PC); robot-side deps are in deploy/edge/
+├── configs/                    # swarm_default.json, edge_profiles.json, scenarios/*.json (scenario builder saves here)
 ├── src/
-│   ├── warehouse/
-│   │   └── warehouse.py                # 20x23 warehouse model, 24 racks, walkability engine
-│   ├── robots/
-│   │   └── amr.py                      # AMR robot state, kinematics, telemetry, energy state
-│   ├── planning/
-│   │   ├── astar.py                    # Multi-agent 4D A* pathfinder with obstacle blocking
-│   │   ├── reservation_table.py        # Spatio-temporal vertex and edge reservation tables
-│   │   └── congestion.py               # Spatial traffic tracking and bottleneck prediction
-│   ├── coordination/
-│   │   ├── peer_network.py             # Decentralized P2P mesh network simulation
-│   │   ├── conflict_resolution.py      # Priority bidding protocol & Wait-For-Graph (WFG)
-│   │   ├── safety_supervisor.py        # ISO 3691-4 dynamic safety zones & supervisor
-│   │   ├── incident_manager.py         # Incident raising, escalation, and resolution
-│   │   └── recovery.py                 # Fault recovery and deadlock concession handlers
-│   ├── tasks/
-│   │   ├── task.py                     # Task definitions, priorities, deadlines, statuses
-│   │   ├── package.py                  # Physical cargo package tracking model
-│   │   └── allocation_policy.py        # Multi-mode task allocation policies
-│   ├── simulation/
-│   │   ├── simulator.py                # Decentralized fleet simulator & baseline simulator
-│   │   ├── scenarios.py                # 12 automated industrial test scenarios
-│   │   └── benchmark.py                # Comparative benchmark runner (decentralized vs baseline)
-│   ├── safety/
-│   │   └── supervisor.py               # Hardware-level safety rules & monitoring
-│   ├── reporting/
-│   │   └── excel_export.py             # Multi-tab Excel audit report and KPI exporter
-│   ├── metrics/
-│   │   ├── collector.py                # Metrics collector (makespan, throughput, messages)
-│   │   └── system_profiler.py          # Edge computing CPU/memory profiler
-│   ├── wms/
-│   │   └── mock_wms.py                 # Mock Warehouse Management System integration
-│   └── visualization/
-│       ├── dashboard_server.py         # HTTP server for the Fleet Command Center (port 8000)
-│       └── static/
-│           ├── index.html              # Dashboard UI structure & control panels
-│           ├── styles.css              # Modern dark-mode industrial design system
-│           └── swarm_twin_3d.js        # Three.js 3D warehouse digital twin
-└── tests/                              # 26 automated test suites (109 tests)
-    ├── test_final_targeted_fixes.py    # Verification suite for battery, speed, and rack fixes
-    ├── test_two_bug_fixes.py           # High-density 20 AMR / 100 task & return-home tests
-    ├── test_rack_system_and_corridors.py # Rack collision & corridor spacing validation
-    ├── test_charging.py                # Battery degradation and docking tests
-    ├── test_allocation_and_speed.py    # Speed scaling and task assignment tests
-    └── ...
+│   ├── swarm/                  # ★ EdgeSwarm core: agent (per-robot brain), safety gate, belief/comm states,
+│   │                           #   space-time planner, radio model, world + ground-truth monitor, distributed runtime
+│   ├── edge_ai/                # conflict/deadlock predictor: features, training, NumPy-only inference
+│   ├── baselines/              # published comparison planners (PIBT, central, perfect information)
+│   ├── command_center/         # controller + 7-scene demo behind the 3D dashboard
+│   ├── visualization/          # HTTP server + Three.js 3D Command Center (static/)
+│   └── simulation/, warehouse/, planning/, coordination/, ...   # original (legacy) prototype, kept working
+├── models/                     # trained Edge-AI model (255 KB JSON) + training report
+├── tests/                      # 161 pytest tests + tests/e2e (Playwright browser test)
+├── experiments/                # one script per experiment; results/*.json = every number in the deck
+├── deploy/
+│   ├── docker/                 # Dockerfile.server (dashboard), Dockerfile.edge (arm64 robot image), docker-compose.yml
+│   ├── edge/                   # edge_benchmark.py (time the loop on a Pi/Jetson), requirements-edge.txt, systemd unit
+│   └── ros2/                   # RobotState.msg + topic/QoS mapping for the ROS 2 node
+├── docs/                       # architecture, safety proof, experiment results, limitations, judge Q&A, readiness
+│   └── audit/                  # audit of the original repository
+├── presentation_assets/        # figures + demo video (figure_sources.json maps each figure to its data)
+├── datasets/dedicat6g/         # DEDICAT 6G warehouse robot KPI logs (sensitivity inputs, not benchmark inputs)
+├── notebooks/                  # the team's original Colab prototype
+└── archive/                    # superseded scratch scripts and legacy browser tests (not run in CI)
 ```
 
 ---

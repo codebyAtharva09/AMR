@@ -132,5 +132,5 @@ The controller only steps the simulation and injects operator disruptions. It ne
 | RAM | Python peak via tracemalloc | reported against the profile budget |
 | Messages | JSON bytes counted | same, checked against a 1,400-byte datagram budget |
 
-**Nothing has been run on physical hardware.** `deploy/edge_benchmark.py` measures the per-robot decision loop on a
-real Pi or Jetson, and `deploy/Dockerfile.edge` builds an arm64 image. See `docs/LIMITATIONS.md`.
+**Nothing has been run on physical hardware.** `deploy/edge/edge_benchmark.py` measures the per-robot decision loop on a
+real Pi or Jetson, and `deploy/docker/Dockerfile.edge` builds an arm64 image. See `docs/LIMITATIONS.md`.

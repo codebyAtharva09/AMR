@@ -1,0 +1,13 @@
+# Robot-side image: the EdgeSwarm agent + Edge-AI inference (NumPy only).
+# Multi-arch: Raspberry Pi 4/5 (arm64), Jetson (arm64), x86 dev boxes.
+#   docker buildx build --platform linux/arm64 -f deploy/docker/Dockerfile.edge -t edgeswarm-edge .
+# Not yet tested on physical hardware (see docs/LIMITATIONS.md).
+FROM python:3.11-slim
+WORKDIR /app
+COPY deploy/edge/requirements-edge.txt /app/deploy/edge/requirements-edge.txt
+RUN pip install --no-cache-dir -r deploy/edge/requirements-edge.txt
+COPY src /app/src
+COPY models /app/models
+COPY deploy /app/deploy
+# default: time the per-robot decision loop on this device
+CMD ["python3", "deploy/edge/edge_benchmark.py", "--robots", "10"]

@@ -5,7 +5,7 @@ per-robot decision ("think") time, planning time, AI inference time, message
 processing time, process CPU usage and peak Python memory; then applies the
 documented EDGE profiles (CPU slow-down factors) to estimate per-robot budget use
 on Raspberry Pi 4 / Jetson Nano class hardware.  These are ESTIMATES, not
-hardware measurements.  Run deploy/edge_benchmark.py on a real device to measure.
+hardware measurements.  Run deploy/edge/edge_benchmark.py on a real device to measure.
 
     python3 main.py --mode edge-profile
 Output: experiments/results/performance.json

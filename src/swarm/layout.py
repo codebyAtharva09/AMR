@@ -181,6 +181,39 @@ def micro_map(kind: str) -> GridMap:
     return gm
 
 
+def large_warehouse_map(bays_x: int = 10, bays_y: int = 5) -> GridMap:
+    """Procedural large rack warehouse for scaling tests (not the benchmark map).
+
+    Rack blocks are 8 cells long and 2 deep, separated by 2-wide aisles and 2-wide cross-aisles, with a 2-wide
+    perimeter lane and one parking row of home cells along the bottom wall. Default 10x5 bays -> 102 x 23 cells (100 home cells).
+    """
+    rack_w, rack_h, gap = 8, 2, 2
+    width = gap + bays_x * (rack_w + gap)
+    height = gap + bays_y * (rack_h + gap) + 1          # +1 parking row
+    blocked = set()
+    for by in range(bays_y):
+        y0 = gap + by * (rack_h + gap)
+        for bx in range(bays_x):
+            x0 = gap + bx * (rack_w + gap)
+            for y in range(y0, y0 + rack_h):
+                for x in range(x0, x0 + rack_w):
+                    blocked.add((x, y))
+    gm = GridMap(width=width, height=height, blocked=blocked, name=f"large_warehouse_{width}x{height}")
+    park = height - 1
+    gm.charging_docks = [(0, 0), (width - 1, 0), (0, park - 1), (width - 1, park - 1)]
+    gm.home_cells = [(x, park) for x in range(1, width - 1)]
+    faces = set()
+    for (x, y) in blocked:
+        for dy in (-1, 1):
+            c = (x, y + dy)
+            if gm.walkable(c) and c not in gm.home_cells:
+                faces.add(c)
+    faces = sorted(c for c in faces if gm.degree(c) >= 3 and c not in gm.charging_docks)
+    gm.pickup_cells = [c for c in faces if c[0] < width // 2]
+    gm.drop_cells = [c for c in faces if c[0] >= width // 2]
+    return gm
+
+
 def get_map(name: str) -> GridMap:
     if name in ("default", "rack_warehouse_20x23"):
         return default_warehouse_map()
@@ -188,4 +221,6 @@ def get_map(name: str) -> GridMap:
         return narrow_map()
     if name in ("corridor", "cross"):
         return micro_map(name)
+    if name.startswith("large"):
+        return large_warehouse_map()
     raise ValueError(f"unknown map {name}")

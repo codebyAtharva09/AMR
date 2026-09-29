@@ -5,7 +5,7 @@
 - Every result in this repository comes from simulation. **No robot, Raspberry Pi or Jetson was used.**
 - **EDGE mode** multiplies the host's measured decision time by an **assumed** slowdown (6× Raspberry Pi 4, 4×
   Jetson Nano). These factors are not measured.
-- `deploy/edge_benchmark.py` and `deploy/Dockerfile.edge` exist so the decision loop can be timed on real hardware.
+- `deploy/edge/edge_benchmark.py` and `deploy/docker/Dockerfile.edge` exist so the decision loop can be timed on real hardware.
   Until someone runs them on a device, no hardware claim should be made.
 - The radio is a model:
   - no multipath or interference;

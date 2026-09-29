@@ -1,0 +1,26 @@
+{
+  "simulation": {
+    "name": "simulation",
+    "enabled": false,
+    "cpu_slowdown": 1.0,
+    "decision_budget_ms": 200.0,
+    "ram_budget_mb": 64.0,
+    "max_message_bytes": 1400
+  },
+  "raspberry_pi_4": {
+    "name": "raspberry_pi_4",
+    "enabled": true,
+    "cpu_slowdown": 6.0,
+    "decision_budget_ms": 200.0,
+    "ram_budget_mb": 256.0,
+    "max_message_bytes": 1400
+  },
+  "jetson_nano": {
+    "name": "jetson_nano",
+    "enabled": true,
+    "cpu_slowdown": 4.0,
+    "decision_budget_ms": 200.0,
+    "ram_budget_mb": 512.0,
+    "max_message_bytes": 1400
+  }
+}

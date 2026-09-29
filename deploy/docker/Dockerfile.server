@@ -1,0 +1,13 @@
+# Operator-side image: 3D Command Center (watch-only dashboard) + benchmark/demo CLI.
+#   docker build -f deploy/docker/Dockerfile.server -t edgeswarm-dashboard .
+#   docker run -p 8000:8000 edgeswarm-dashboard   ->  http://localhost:8000/command-center
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+COPY main.py pytest.ini /app/
+COPY src /app/src
+COPY models /app/models
+COPY configs /app/configs
+EXPOSE 8000
+CMD ["python3", "main.py", "--mode", "dashboard", "--host", "0.0.0.0", "--port", "8000"]

@@ -5,7 +5,7 @@ market-based allocation and learned collision predictors all exist in the litera
 project contributes is a **specific, working, measured combination** running on per-robot local knowledge, together
 with an honest comparison against a stop-and-wait baseline and against its own ablations.
 
-The "Before" column describes the repository as audited (`AUDIT_REPORT.md`).
+The "Before" column describes the repository as audited (`docs/audit/AUDIT_REPORT.md`).
 
 ## Innovation 1: Predictive conflict intelligence
 

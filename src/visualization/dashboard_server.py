@@ -104,4 +104,9 @@ def start_dashboard(host: str = "127.0.0.1", port: int = 8000):
 
 
 if __name__ == "__main__":
-    start_dashboard()
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--host", default="127.0.0.1")
+    ap.add_argument("--port", type=int, default=8000)
+    a = ap.parse_args()
+    start_dashboard(a.host, a.port)

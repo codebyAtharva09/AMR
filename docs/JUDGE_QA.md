@@ -37,7 +37,7 @@ It is simulation, and we say so on every slide. It was built so the results are 
 - Robots see only their own sensors and radio messages. There is no shared "god view".
 - The radio drops and delays messages.
 - 30 seeds per setting in the main benchmark (10 in the side tests), with 95% confidence intervals.
-- 158 automated tests (plus a browser end-to-end test).
+- 161 automated tests (plus a browser end-to-end test).
 - **It already runs distributed.** Each robot can run as its own operating-system process. It has its own memory and
   its own copy of the AI model, and it talks to the others only through UDP messages. In 20 out of 20 test runs
   (10 situations × 5 and 10 robots), the result was *identical* to the simulation. That was about 129,000 UDP
@@ -96,7 +96,7 @@ puzzles, stop-and-wait solved circular wait and the 4-way crossing 0 out of 10 t
 **9. Does it need new hardware? What does it cost?**
 No. EdgeSwarm is software. It runs on the computer each AMR already has (any Linux box: Raspberry Pi- or Jetson-class
 boards, or an industrial PC), and there is no central server to buy or license. The AI model needs only NumPy
-(`requirements-edge.txt`, `Dockerfile.edge`). The code is open-source (MIT).
+(`deploy/edge/requirements-edge.txt`, `Dockerfile.edge`). The code is open-source (MIT).
 
 **10. Why not ROS 2 / Nav2 / Gazebo right away?**
 We needed thousands of reproducible runs with a ground-truth monitor, so we built a fast grid simulator first.
@@ -130,6 +130,12 @@ a hard-coded "23.6%" in the original repo that had no experiment behind it. We r
 It shrinks, and we measured by how much. With 12 s handling, as in the DEDICAT6G logs, the time saving falls from 27% to 14%
 overall: 6%, 14% and 19% at 5, 10 and 15 AMRs (`EXPERIMENT_RESULTS.md` §8e). The absolute time saved stays similar, because
 coordination only helps while robots are driving. We still had 0 collisions.
+
+**16. Is it better than a modern planner, not just stop-and-wait?**
+Not in normal operation, and we measured it. We ran PIBT (Okumura et al. 2019), a strong published planner, centrally with a
+perfect instant view of every robot. With perfect Wi-Fi it is 7–21% faster than EdgeSwarm. In a 60 s Wi-Fi or server outage the central
+fleet has to stop, and EdgeSwarm is 10–20% faster (`EXPERIMENT_RESULTS.md` §8f). Our claim is resilience with no single point of failure,
+not beating a central planner that has perfect Wi-Fi. Next we will add a decentralized PIBT-style "push" to close that gap.
 
 ## Demo checklist (2 minutes)
 

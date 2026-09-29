@@ -242,7 +242,7 @@ So **no ≥20% claim exists anywhere in measured output**. The +23.6% figure onl
 | Safety under asymmetric packet loss | Collisions | Safety rule uses sensing + binding one-tick declarations. Proven in DEADLOCK_HANDLING/COMMUNICATION docs; ground-truth checker in every run. |
 | Only 2 CPU cores in the build environment | Benchmark wall time | Efficient engine; seeds × scenarios parallelised over 2 workers. |
 | Modifying the original simulator breaks 109 tests | Regression | New engine is **additive** (`src/swarm`, `src/edge_ai`). The original simulator is only touched to remove fabricated numbers. |
-| Python on a Raspberry Pi is slower than the dev machine | Edge claims | Measure on the dev machine. Apply a documented slowdown factor in EDGE mode. Ship `deploy/edge_benchmark.py` so it can be measured on real hardware. Never claim hardware results. |
+| Python on a Raspberry Pi is slower than the dev machine | Edge claims | Measure on the dev machine. Apply a documented slowdown factor in EDGE mode. Ship `deploy/edge/edge_benchmark.py` so it can be measured on real hardware. Never claim hardware results. |
 
 ## 16. Recommended implementation order (the plan I'm following)
 

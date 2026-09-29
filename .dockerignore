@@ -1,0 +1,10 @@
+.git
+node_modules
+notebooks
+datasets
+archive
+presentation_assets
+experiments/results/*.jsonl
+experiments/results/*.gz
+**/__pycache__
+.pytest_cache

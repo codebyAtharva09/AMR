@@ -62,13 +62,15 @@ def main() -> None:
     parser.add_argument("--robots", type=int, default=5)
     parser.add_argument("--tasks", type=int, default=12)
     parser.add_argument("--steps", type=int, default=30)
+    parser.add_argument("--host", default="127.0.0.1", help="dashboard bind address (0.0.0.0 inside Docker)")
+    parser.add_argument("--port", type=int, default=8000, help="dashboard port")
     args = parser.parse_args()
 
     if args.mode in {"demo", "simulation"}:
         run_demo(args.seed, args.robots, args.tasks)
     elif args.mode == "dashboard":
         import subprocess, sys
-        subprocess.run([sys.executable, "src/visualization/dashboard_server.py"], check=False)
+        subprocess.run([sys.executable, "src/visualization/dashboard_server.py", "--host", args.host, "--port", str(args.port)], check=False)
     elif args.mode == "benchmark":
         report = run_benchmark(seed_count=10, robot_count=args.robots, task_count=args.tasks, steps=args.steps)
         print(json.dumps(report["summary"], indent=2))

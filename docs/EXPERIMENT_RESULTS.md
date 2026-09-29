@@ -227,6 +227,31 @@ Collisions: **0**. Every run finished.
 This happens because both strategies spend the same time handling. The absolute time saved stays similar (e.g. 88 s → 73 s at 15 AMRs).
 The PS's ≥20% target is therefore met only in the 2 s setting. With 12 s handling it is narrowly missed at 15 AMRs (19.4%).
 
+## 8f. Against a strong published planner: central PIBT with perfect information
+
+`experiments/pibt_compare.py` → `experiments/results/pibt_compare.json`, with the baseline in `src/baselines/pibt.py`.
+PIBT is Okumura et al., IJCAI 2019. Here it plans every move centrally with an instant, perfect view of all robots.
+Allocation, charging and handling are shared with EdgeSwarm, so only the motion layer differs. 10 seeds per cell.
+
+| Condition | AMRs | PIBT makespan (s) | EdgeSwarm makespan (s) | EdgeSwarm vs PIBT |
+|---|---|---|---|---|
+| Normal (6 scenarios) | 5 | 132.8 | 142.0 | -6.9% |
+| Normal (6 scenarios) | 10 | 144.5 | 160.8 | -11.3% |
+| Normal (6 scenarios) | 15 | 156.2 | 189.7 | -21.4% |
+| 60 s Wi-Fi/server outage | 5 | 189.2 | 152.1 | +19.6% |
+| 60 s Wi-Fi/server outage | 10 | 189.9 | 161.5 | +15.0% |
+| 60 s Wi-Fi/server outage | 15 | 206.8 | 185.8 | +10.2% |
+
+Per scenario, normal operation (all sizes pooled): low_congestion -7.2%; medium_congestion -11.1%; high_congestion -10.2%; dynamic_obstacle -9.2%; blocked_aisle -14.0%; narrow_intersection -25.8%.
+
+Collisions: PIBT 0, EdgeSwarm 0. Every run finished.
+
+**Honest reading:**
+
+- With a perfect network, a central state-of-the-art planner is **7–21% faster** than EdgeSwarm. The gap grows with fleet size and in narrow corridors, where PIBT's priority inheritance pushes robots out of each other's way.
+- During a 60 s outage, the central fleet must stop, assuming robots hold still without the server link. There EdgeSwarm is **10–20% faster**.
+- EdgeSwarm trades some peak efficiency for having no single point of failure. A decentralized PIBT-style "push" is the obvious next step to close the normal-operation gap.
+
 ## 9. Derived impact figures
 
 - **Orders per shift with the same fleet:** 1 ÷ (1 − time saving) = ×1.41 at 10 AMRs (28.9%) and ×1.57 at 15 AMRs
@@ -243,5 +268,5 @@ The PS's ≥20% target is therefore met only in the 2 s setting. With 12 s handl
 | v3 (final) | **25.02%** | **21/40** | rank-consistent planning around unknown robots (removed 700+ tick outliers) |
 
 Note: v1's 23.58% is numerically close to the **23.6% that was hard-coded** in the original repository. This is a
-coincidence; the old number had no experiment behind it (`AUDIT_REPORT.md`). Archived runs:
+coincidence; the old number had no experiment behind it (`docs/audit/AUDIT_REPORT.md`). Archived runs:
 `benchmark_v1_*`, `benchmark_v2_summary.json`, `ablation_v1/v2_summary.json`.

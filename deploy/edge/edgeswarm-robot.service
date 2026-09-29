@@ -1,0 +1,18 @@
+# systemd unit for running the EdgeSwarm agent on an AMR's onboard Linux computer.
+# Install:  sudo cp deploy/edge/edgeswarm-robot.service /etc/systemd/system/ && sudo systemctl enable --now edgeswarm-robot
+# NOTE: the ROS 2 node that this unit will launch on a real robot is finale work (deploy/ros2/README.md).
+# Today it runs the on-device timing benchmark so the board can be characterised.
+[Unit]
+Description=EdgeSwarm robot agent (decentralized fleet coordination)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/edgeswarm
+ExecStart=/usr/bin/python3 deploy/edge/edge_benchmark.py --robots 10
+Restart=on-failure
+User=edgeswarm
+
+[Install]
+WantedBy=multi-user.target

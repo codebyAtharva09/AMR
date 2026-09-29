@@ -1,0 +1,10 @@
+# Local deployment: the watch-only Command Center.
+#   docker compose -f deploy/docker/docker-compose.yml up --build
+services:
+  dashboard:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile.server
+    ports:
+      - "8000:8000"
+    restart: unless-stopped

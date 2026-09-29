@@ -90,7 +90,7 @@ discriminates well (AUC 0.92) but has low precision, because deadlocks are rare 
 
 | | Value |
 |---|---|
-| Runtime dependencies on the robot | numpy only (`deploy/requirements-edge.txt`) |
+| Runtime dependencies on the robot | numpy only (`deploy/edge/requirements-edge.txt`) |
 | Model file (3 heads) | 255 KB |
 | Inference latency, portable runtime, dev machine | 0.21 ms per call for 1 pair · 0.39 ms for 8 pairs · 0.73 ms for 32 pairs (23 µs/pair) |
 | In-loop measurement | `ai_inference.mean_us_per_pair` in every benchmark run. See `EXPERIMENT_RESULTS.md` and `experiments/results/performance.json`. |

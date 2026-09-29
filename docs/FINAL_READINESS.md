@@ -5,7 +5,7 @@ Every "evidence" entry is a file in this repository.
 
 | # | Feature | Status | Evidence |
 |---|---|---|---|
-| 1 | Audit of original repo | ✅ | `AUDIT_REPORT.md`, `experiments/results/baseline_audit.json` |
+| 1 | Audit of original repo | ✅ | `docs/audit/AUDIT_REPORT.md`, `experiments/results/baseline_audit.json` |
 | 2 | Baseline measured and preserved | ✅ | `docs/baseline_results.md`, branch `baseline/original` (= untouched `main` @1c9d663), legacy CLI modes still work |
 | 3 | Decentralized per-robot coordinator (no central planner) | ✅ | `src/swarm/agent.py`, `tests/test_swarm_core.py` |
 | 4 | Collision-safe under message loss (safety layer) | ✅ | 0 collisions in 4500+ runs, `benchmark_summary.json`, `ablation_summary.json` |
@@ -22,7 +22,7 @@ Every "evidence" entry is a file in this repository.
 | 15 | Zero collisions | ✅ (simulation) | `success_criteria.zero_inter_robot_collisions` |
 | 16 | ≥20% makespan reduction | 🟡 | 25.0% overall, 21/40 cells; not met for 3-AMR and most 5-AMR cells (`docs/EXPERIMENT_RESULTS.md` §3) |
 | 17 | Ablation A–E | ✅ | `experiments/results/ablation_summary.json` |
-| 18 | Tests | ✅ | `pytest -q` → 158 passed; E2E passes |
+| 18 | Tests | ✅ | `pytest -q` → 161 passed; E2E passes |
 | 23 | Distributed runtime (1 OS process per robot, UDP) | ✅ | `--mode distributed`; 20/20 runs identical to in-process (`experiments/results/distributed_check.json`) |
 | 25 | Central server vs EdgeSwarm under outages | ✅ | 300 runs: tied with no outage; 60 s outage → central ~1 order, EdgeSwarm 10–23 (`experiments/results/central_outage.json`) |
 | 26 | Sustained throughput, nonstop order stream | ✅ | ×1.32 / ×1.76 / ×1.76 orders per hour at 5/10/15 AMRs, 0 collisions (`experiments/results/throughput_stream.json`) |

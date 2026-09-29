@@ -5,8 +5,8 @@ It runs a normal simulation, but records the time each robot spends in its own
 decision step (receive -> act -> think), which is exactly the code that would run
 on the robot's computer.  The world/physics/network emulation cost is excluded.
 
-    python3 deploy/edge_benchmark.py --robots 10 --scenario medium_congestion
-Writes deploy/edge_benchmark_<hostname>.json.  Nothing in this repository claims
+    python3 deploy/edge/edge_benchmark.py --robots 10 --scenario medium_congestion
+Writes deploy/edge/edge_benchmark_<hostname>.json.  Nothing in this repository claims
 hardware numbers until this file has been produced on real hardware.
 """
 from __future__ import annotations
@@ -20,7 +20,7 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from src.swarm.config import FULL, SwarmConfig  # noqa: E402
@@ -50,7 +50,7 @@ def main() -> None:
         "ai_inference": ai, "wall_s": round(time.perf_counter() - t0, 2),
         "collisions": m["inter_robot_collisions"],
     }
-    path = ROOT / "deploy" / f"edge_benchmark_{out['host']}.json"
+    path = ROOT / "deploy" / "edge" / f"edge_benchmark_{out['host']}.json"
     path.write_text(json.dumps(out, indent=2))
     print(json.dumps(out, indent=2))
 

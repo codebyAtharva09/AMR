@@ -18,7 +18,7 @@ from src.swarm.layout import GridMap, get_map
 from src.swarm.world import Blockage, Human, TaskSpec
 
 Cell = tuple[int, int]
-SCENARIO_DIR = Path(__file__).resolve().parents[2] / "scenarios"
+SCENARIO_DIR = Path(__file__).resolve().parents[2] / "configs" / "scenarios"
 
 BENCHMARK_SCENARIOS = [
     "low_congestion", "medium_congestion", "high_congestion", "dynamic_obstacle", "blocked_aisle",
@@ -136,6 +136,13 @@ def build_scenario(name: str, robots: int = 5, tasks: int | None = None, seed: i
         east = [c for c in gm.drop_cells]
         tlist = _flow_tasks(rng, ntask, west, east, 0.4)
         return ScenarioSpec(name, gm, starts, tlist, [100.0] * robots, net, description=DESCRIPTIONS[name], seed=seed)
+
+    if name == "large_warehouse":
+        gm = get_map("large")
+        starts = _starts(gm, robots)
+        tlist = _flow_tasks(rng, ntask, gm.pickup_cells, gm.drop_cells, 0.3)
+        return ScenarioSpec(name, gm, starts, tlist, [100.0] * robots, net,
+                            description="Scaling test: procedural 102x23 rack warehouse, medium flows.", seed=seed)
 
     gm = get_map("default")
     starts = _starts(gm, robots)
