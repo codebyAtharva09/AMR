@@ -252,6 +252,54 @@ Collisions: PIBT 0, EdgeSwarm 0. Every run finished.
 - During a 60 s outage, the central fleet must stop, assuming robots hold still without the server link. There EdgeSwarm is **10–20% faster**.
 - EdgeSwarm trades some peak efficiency for having no single point of failure. A decentralized PIBT-style "push" is the obvious next step to close the normal-operation gap.
 
+## 8g. Scaling to 100 AMRs (procedural 102×23 warehouse)
+
+`experiments/scaling_large.py` → `experiments/results/scaling_large.json`. 3 seeds per cell; runs at 100 AMRs take minutes each.
+
+| AMRs | Method | Makespan (s) | Finished | Collisions | Radio bytes/robot/tick |
+|---|---|---|---|---|---|
+| 25 | edgeswarm | 495.0 | 3/3 | 0 | 325.6 |
+| 25 | stop_and_wait | 562.0 | 3/3 | 0 | 308.1 |
+| 25 | pibt | 441.0 | 3/3 | 0 | 325.1 |
+| 50 | edgeswarm | 566.7 | 3/3 | 0 | 327.6 |
+| 50 | stop_and_wait | 758.3 | 3/3 | 0 | 309.1 |
+| 50 | pibt | 450.3 | 3/3 | 0 | 325.7 |
+| 100 | edgeswarm | 841.3 | 3/3 | 0 | 327.5 |
+| 100 | stop_and_wait | 1363.7 | 3/3 | 0 | 317.1 |
+| 100 | pibt | 513.7 | 3/3 | 0 | 324.6 |
+
+**Reading:**
+
+- At 100 AMRs EdgeSwarm needs **38% less time than stop-and-wait** (841 s vs 1364 s), with 0 collisions. Radio load stays flat at about 330 B per robot per second.
+- Central PIBT with perfect information is fastest at every size (514 s at 100 AMRs). The gap to a perfect central planner grows with fleet size, which is the cost of having no server.
+- Only 3 seeds and one map; all robots ran in one process on one machine.
+
+## 8h. Robustness beyond the proof's assumptions: sensor dropouts and missed cycles
+
+`experiments/robustness_noise.py` → `experiments/results/robustness_noise.json`. 10 AMRs, medium and high congestion, 10 seeds each (20 runs per condition), with 15% packet loss in every run.
+
+| Condition | Robot collisions | Runs with a collision | Orders delivered |
+|---|---|---|---|
+| baseline (15% loss only) | 0 | 0/20 | 100.0% |
+| missed cycles 5% | 0 | 0/20 | 100.0% |
+| missed cycles 20% | 0 | 0/20 | 100.0% |
+| sensor dropout 5%, fusion OFF | 20 | 9/20 | 100.0% |
+| sensor dropout 5%, fusion ON | 2 | 1/20 | 100.0% |
+| sensor dropout 20%, fusion OFF | 52 | 17/20 | 100.0% |
+| sensor dropout 20%, fusion ON | 12 | 7/20 | 100.0% |
+| sensor dropout 5%, fusion + tracking | 2 | 1/20 | 98.4% |
+| sensor dropout 20%, fusion + tracking | 19 | 10/20 | 97.8% |
+| dropout 20% + missed cycles 20%, fusion ON | 48 | 15/20 | 100.0% |
+| dropout 20% + missed cycles 20%, fusion + tracking | 87 | 14/20 | 99.5% |
+
+**Honest reading. This is the main open weakness:**
+
+- **Missed decision cycles are safe.** With 5–20% of cycles skipped (CPU stall, clock drift) there were 0 collisions, because a silent robot is simply treated as "unknown → wait".
+- **Sensor dropouts break the zero-collision result.** The safety proof assumes the short-range sensor never misses an adjacent robot. If a sensor misses a neighbour *and* that neighbour's radio report is also lost, two robots can enter the same cell.
+- **Sensor/radio fusion (now on by default) cuts collisions 4–10×:** from 20 to 2 at 5% dropout, and from 52 to 12 at 20% dropout. It does not reach zero.
+- A track-continuity "ghost" rule (`track_ghosts`, off by default) did **not** help further, so it stays disabled.
+- **Real deployment needs a redundant safety sensor:** a certified safety scanner / e-stop layer, which industrial AMRs already carry (ISO 3691-4). EdgeSwarm sits above that layer; it does not replace it.
+
 ## 9. Derived impact figures
 
 - **Orders per shift with the same fleet:** 1 ÷ (1 − time saving) = ×1.41 at 10 AMRs (28.9%) and ×1.57 at 15 AMRs

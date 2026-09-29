@@ -303,7 +303,24 @@ class RobotAgent:
         if target is None or target == self.pos:
             return self.pos
         sensed_robots = [r["pos"] for r in sensing["robots"]]
+        # sensor/radio fusion: a neighbour that reported its position at the end of the last tick counts as
+        # present even if the sensor missed it this tick (a no-op with perfect sensing; guards sensor dropouts)
+        for bel in (self.beliefs.values() if self.cfg.sensor_fusion else ()):
+            if bel.sent_tick == t - 1 and manhattan(bel.pos, self.pos) <= 2 and bel.pos not in sensed_robots:
+                sensed_robots.append(bel.pos)
         occupied = set(sensed_robots) | set(sensing["humans"]) | sensing["blocked"]
+        if self.cfg.track_ghosts:
+            # track continuity: a robot seen near me last tick can have moved at most 1 cell. If it vanished and
+            # nothing (sensor or any fresh report) explains where it went, treat its old cell + neighbours as occupied.
+            known = set(sensed_robots) | {bel.pos for bel in self.beliefs.values() if bel.sent_tick == t - 1}
+            ghosts = set()
+            for p in getattr(self, "_prev_known", ()):
+                if manhattan(p, self.pos) <= 3 and not any(manhattan(k, p) <= 1 for k in known):
+                    ghosts.add(p)
+            for g in ghosts:
+                occupied.add(g)
+                occupied.update(self.gm.neighbors(g))
+            self._prev_known = {k for k in known if manhattan(k, self.pos) <= 3} | ghosts
         blocker_id = None
         reason = None
         if not self.gm.walkable(target) or target in occupied:

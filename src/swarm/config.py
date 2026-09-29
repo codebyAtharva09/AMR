@@ -79,6 +79,8 @@ class SwarmConfig:
 
     # Robot physics / tasks
     sensing_radius: int = 2            # onboard proximity sensing (lidar/UWB), Manhattan cells
+    sensor_fusion: bool = True         # count fresh radio position reports as sensed (guards sensor dropouts)
+    track_ghosts: bool = False         # keep a vanished neighbour as a 1-cell "ghost" unless a report explains it (noisy sensors)
     dwell_ticks: int = 2               # pickup / drop handling time
     move_energy: float = 0.12          # % battery per cell moved
     carry_energy: float = 0.04         # extra % per cell when loaded

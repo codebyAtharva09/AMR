@@ -137,6 +137,12 @@ perfect instant view of every robot. With perfect Wi-Fi it is 7–21% faster tha
 fleet has to stop, and EdgeSwarm is 10–20% faster (`EXPERIMENT_RESULTS.md` §8f). Our claim is resilience with no single point of failure,
 not beating a central planner that has perfect Wi-Fi. Next we will add a decentralized PIBT-style "push" to close that gap.
 
+**17. What if a sensor misses a robot?**
+Then the zero-collision result no longer holds, and we measured it (`EXPERIMENT_RESULTS.md` §8h). With 20% sensor dropouts and 15% radio
+loss, we saw 52 collisions in 20 runs. Fusing the sensor with fresh radio position reports cuts that to 12, but not to zero. That is why
+EdgeSwarm sits on top of the AMR's certified safety scanner and e-stop (ISO 3691-4), not in place of it. Missed decision cycles
+(CPU stalls) are safe: 0 collisions at 20% skipped cycles.
+
 ## Demo checklist (2 minutes)
 
 1. `python main.py --mode dashboard` → `/command-center`, **Run 7-scene SIH demo**.

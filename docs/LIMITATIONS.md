@@ -72,3 +72,9 @@
   and no real radio or multi-device network has been tested.
 - Human-aware navigation beyond "people have right of way; step aside after 4 ticks".
 - Persistence or database of runs beyond JSONL result files.
+
+## Sensor dropouts (measured, §8h)
+
+- The safety gate assumes the robot's own short-range sensor never misses an adjacent robot.
+- With sensor dropouts plus radio loss, collisions occur. Fusion cuts them 4–10× but not to zero.
+- On a real AMR, the certified safety scanner / e-stop layer (ISO 3691-4) must stay underneath EdgeSwarm.
