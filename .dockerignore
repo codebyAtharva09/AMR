@@ -1,8 +1,6 @@
 .git
 node_modules
-notebooks
 datasets
-archive
 presentation_assets
 experiments/results/*.jsonl
 experiments/results/*.gz

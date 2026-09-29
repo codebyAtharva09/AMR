@@ -339,9 +339,7 @@ The repository is organised by deployment stage: **source → tests → experime
 ├── docs/                       # architecture, safety proof, experiment results, limitations, judge Q&A, readiness
 │   └── audit/                  # audit of the original repository
 ├── presentation_assets/        # figures + demo video (figure_sources.json maps each figure to its data)
-├── datasets/dedicat6g/         # DEDICAT 6G warehouse robot KPI logs (sensitivity inputs, not benchmark inputs)
-├── notebooks/                  # the team's original Colab prototype
-└── archive/                    # superseded scratch scripts and legacy browser tests (not run in CI)
+└── datasets/dedicat6g/         # DEDICAT 6G warehouse robot KPI logs (sensitivity inputs, not benchmark inputs)
 ```
 
 ---

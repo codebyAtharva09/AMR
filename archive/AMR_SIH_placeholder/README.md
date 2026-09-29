@@ -1,2 +1,0 @@
-# AMR_SIH
-FILES

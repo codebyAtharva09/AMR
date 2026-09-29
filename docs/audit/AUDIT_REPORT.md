@@ -1,6 +1,6 @@
 # AUDIT_REPORT — AMR_WAREHOUSE_SIH (SIH 2026, PS 26123)
 
-Audit date: 2026-09-25 · Audited commit: `1c9d663` (branch `main`) · Auditor: Claude (Cowork), for Atharva Sarde
+Audit date: 2026-09-25 · Audited commit: `1c9d663` (branch `main`)
 
 Method: every file was read, and behaviour was checked by **running the code**. The README's claims were not taken at face value.
 Evidence commands and raw output files are listed in §17. Measured numbers live in
